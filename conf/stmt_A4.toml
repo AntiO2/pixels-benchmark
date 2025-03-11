@@ -329,7 +329,7 @@ sql = "SELECT applicantid, amount, id, loantrans_ts FROM loantrans where status=
 
 [AT-5]
 sql = [
-    "SELECT id FROM LoanTrans WHERE applicantID = ? and ADD_DAYS(CAST(TO_TIMESTAMP(contract_timestamp,'YYYY-MM-DD HH24:MI:SS.FF9') as date),duration) < CAST('2024-01-01' as date) and status!='lent';",
+    "SELECT id FROM LoanTrans WHERE applicantID = ? and ADD_DAYS(CAST(TO_TIMESTAMP(contract_timestamp,'YYYY-MM-DD HH24:MI:SS.FF9') as date),duration) < CAST('2024-01-01' as date) and status='lent';",
     " UPDATE LoanTrans SET delinquency=1 where id = ?"
 ]
 
