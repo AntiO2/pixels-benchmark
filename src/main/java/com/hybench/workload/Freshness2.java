@@ -18,6 +18,7 @@ import java.util.Iterator;
 import java.util.TimeZone;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
+import java.util.concurrent.TimeUnit;
 
 public class Freshness2 {
     public static Logger logger = LogManager.getLogger(Freshness2.class);
@@ -315,6 +316,7 @@ public class Freshness2 {
         try {
             pstmt_ap = conn_ap.prepareStatement(sqls.fresh_iq());
             pstmt_ap.setInt(1,testid1);
+            sleep();
             ts_Q1 = System.currentTimeMillis();
             // get the UTC time
             //ts_Q1= Instant.now().toEpochMilli();
@@ -383,6 +385,7 @@ public class Freshness2 {
         try {
             pstmt_ap = conn_ap.prepareStatement(sqls.fresh_iq1());
             pstmt_ap.setInt(1,testid2);
+            sleep();
             ts_Q2 = System.currentTimeMillis();
             rs_ap = pstmt_ap.executeQuery();
             while(rs_ap.next()){
@@ -448,6 +451,7 @@ public class Freshness2 {
         try {
             pstmt_ap = conn_ap.prepareStatement(sqls.fresh_iq1());
             pstmt_ap.setInt(1,testid3);
+            sleep();
             ts_Q3 = System.currentTimeMillis();
             rs_ap = pstmt_ap.executeQuery();
             while(rs_ap.next()){
@@ -474,6 +478,13 @@ public class Freshness2 {
         }
         return list;
     }
+    
+    private void sleep() {
+        try {
+            TimeUnit.MICROSECONDS.sleep(100);
+        } catch (Exception e) {
 
+        }
+    }
 
 }
