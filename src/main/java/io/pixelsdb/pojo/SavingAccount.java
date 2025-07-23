@@ -1,17 +1,15 @@
 package io.pixelsdb.pojo;
 /**
- *
  * @time 2022-10-12
  * @version 1.0.0
  * @file SavingAccount.java
- * @description
- *  For savingAccount table
+ * @description For savingAccount table
  **/
-import java.util.Date;
+
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.StringJoiner;
-
 
 
 public record SavingAccount
@@ -21,8 +19,7 @@ public record SavingAccount
          int isBlocked,
          Date timestamp,
          Date fresh_ts
-        )
-{
+        ) {
     @Override
     public String toString() {
         StringJoiner joiner = new StringJoiner(",");
@@ -35,8 +32,7 @@ public record SavingAccount
         return joiner.toString();
     }
 
-    public String convertDateToString(java.util.Date date)
-    {
+    public String convertDateToString(java.util.Date date) {
         // "yyyy-MM-dd HH:mm:ss.SSS"
         DateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS");
         String dateToString = df.format(date);

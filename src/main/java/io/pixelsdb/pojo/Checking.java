@@ -1,16 +1,15 @@
 package io.pixelsdb.pojo;
 /**
- *
  * @time 2022-10-12
  * @author Chao Zhang
  * @version 1.0.0
  * @file Checking.java
- * @description
- *  for checking table
+ * @description for checking table
  **/
-import java.util.Date;
+
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.StringJoiner;
 
 /**
@@ -24,8 +23,7 @@ public record Checking
          double amount,
          String type,
          Date timestamp
-        )
-{
+        ) {
     public String toString() {
         StringJoiner joiner = new StringJoiner(",");
         joiner.add(Integer.toString(id))
@@ -37,8 +35,7 @@ public record Checking
         return joiner.toString();
     }
 
-    public String convertDateToString(java.util.Date date)
-    {
+    public String convertDateToString(java.util.Date date) {
         // "yyyy-MM-dd HH:mm:ss.SSS"
         DateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS");
         String dateToString = df.format(date);

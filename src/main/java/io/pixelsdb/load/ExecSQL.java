@@ -1,12 +1,11 @@
 package io.pixelsdb.load;
 /**
- *
  * @time 2023-03-04
  * @version 1.0.0
  * @file ExecSQL.java
- * @description
- *  execute sqls, such as ddl file
+ * @description execute sqls, such as ddl file
  **/
+
 import io.pixelsdb.dbconn.ConnectionMgr;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -23,13 +22,13 @@ public class ExecSQL {
     Logger logger = LogManager.getLogger(ExecSQL.class);
     String filePath = null;
 
-    public ExecSQL(String file){
+    public ExecSQL(String file) {
         this.filePath = file;
     }
 
-    public void execute(){
+    public void execute() {
         ConnectionMgr cmgr = new ConnectionMgr();
-        Connection conn = cmgr.getConnection();
+        Connection conn = ConnectionMgr.getConnection();
         Statement stmt = null;
         String readLine = null;
         StringBuffer sql = new StringBuffer();
@@ -38,19 +37,16 @@ public class ExecSQL {
             stmt = conn.createStatement();
             BufferedReader in = new BufferedReader
                     (new FileReader(filePath));
-            while((readLine = in.readLine()) != null) {
+            while ((readLine = in.readLine()) != null) {
                 String line = readLine.trim();
                 if (line.length() != 0) {
                     if (line.startsWith("--")) {
                         System.out.println(line);
                     } else {
-                        if (line.endsWith("\\;"))
-                        {
+                        if (line.endsWith("\\;")) {
                             sql.append(line.replaceAll("\\\\;", ";"));
                             sql.append("\n");
-                        }
-                        else
-                        {
+                        } else {
                             sql.append(line.replaceAll("\\\\;", ";"));
                             if (line.endsWith(";")) {
                                 String query = sql.toString();
@@ -71,8 +67,8 @@ public class ExecSQL {
             e.printStackTrace();
         } catch (IOException e) {
             e.printStackTrace();
-        } finally{
-            if(conn != null){
+        } finally {
+            if (conn != null) {
                 try {
                     conn.close();
                 } catch (SQLException e) {

@@ -4,11 +4,9 @@ package io.pixelsdb.load;
  * @version 1.0.0
  * @file DataGenerator_RiskControlling.java
  * @description
- *
  **/
 
 import io.pixelsdb.ConfigLoader;
-import com.hybench.pojo.*;
 import io.pixelsdb.pojo.*;
 import io.pixelsdb.util.RandomGenerator;
 
@@ -18,7 +16,7 @@ import java.util.*;
 public class DataGenerator_RiskControlling {
     private String sf = "1x";
 
-    public DataGenerator_RiskControlling(String sf){
+    public DataGenerator_RiskControlling(String sf) {
         this.sf = sf;
     }
 
@@ -30,8 +28,7 @@ public class DataGenerator_RiskControlling {
         int c = 0, r;
         Random rg = new Random();
 
-        while((l = b.readLine()) != null)
-        {
+        while ((l = b.readLine()) != null) {
             if (c < list.length)
                 r = c++;
             else
@@ -119,11 +116,11 @@ public class DataGenerator_RiskControlling {
             checkingAccount_fileWriter = new FileWriter(DataPath + checkingAccount_writePath, true);
             checkingAccount_bufferedWriter = new BufferedWriter(checkingAccount_fileWriter);
 
-            blocked_transfer_fileWriter =  new FileWriter(DataPath + "blocked_transfer.csv", false);
+            blocked_transfer_fileWriter = new FileWriter(DataPath + "blocked_transfer.csv", false);
             blocked_transfer_bufferedWriter = new BufferedWriter(blocked_transfer_fileWriter);
 
 
-            blocked_checking_fileWriter =  new FileWriter(DataPath + "blocked_checking.csv", false);
+            blocked_checking_fileWriter = new FileWriter(DataPath + "blocked_checking.csv", false);
             blocked_checking_bufferedWriter = new BufferedWriter(blocked_checking_fileWriter);
 
 
@@ -152,9 +149,9 @@ public class DataGenerator_RiskControlling {
                 // generate the timestamp
                 Date date = RG.getRandomTimestamp(CR.startDate, CR.midPointDate);
                 // generate the blocked label
-                int blocked=0;
-                if(Blocked_ids.contains(i))
-                    blocked=1;
+                int blocked = 0;
+                if (Blocked_ids.contains(i))
+                    blocked = 1;
 
                 // generate a new customer
                 Customer cust = new Customer(i, companyId, gender, Namebuilder.toString(), age, phone, province, city, 0, CR.customer_loanbalance, 0, 0, 0, blocked, date, date);
@@ -179,17 +176,17 @@ public class DataGenerator_RiskControlling {
         }
         // Generate the Company
         Long first_company = CR.customer_number + 1;
-        int lower_company =  first_company.intValue();
+        int lower_company = first_company.intValue();
         Long company_number = CR.company_number;
-        int upper_company = company_number.intValue()+first_company.intValue();
+        int upper_company = company_number.intValue() + first_company.intValue();
         try {
-            company_fileWriter = new FileWriter(DataPath+company_writePath, false);
+            company_fileWriter = new FileWriter(DataPath + company_writePath, false);
             company_bufferedWriter = new BufferedWriter(company_fileWriter);
             for (int i = lower_company; i < upper_company; i++) {
                 // generate the category
                 String category = RG.getRandomCategory();
                 // generate the name
-                String name = category + String.valueOf(i) + category.hashCode();
+                String name = category + i + category.hashCode();
                 // generate the staff size
                 int staff_size = RG.getRandomint(CR.company_size_lower, CR.company_size_upper);
                 // generate the phone
@@ -200,13 +197,13 @@ public class DataGenerator_RiskControlling {
                 // generate the city
                 String city = RG.getRandomItem(citylist);
                 // generate the date
-                Date date = RG.getRandomTimestamp(CR.startDate,CR.midPointDate);
+                Date date = RG.getRandomTimestamp(CR.startDate, CR.midPointDate);
                 // generate the blocked ids
-                int blocked=0;
-                if(Blocked_ids.contains(i))
-                    blocked=1;
+                int blocked = 0;
+                if (Blocked_ids.contains(i))
+                    blocked = 1;
                 // generate a new company
-                Company company = new Company(i, name, category, staff_size, CR.company_loanbalance, phone, province, city, 0, 0, 0,0,blocked, date, date);
+                Company company = new Company(i, name, category, staff_size, CR.company_loanbalance, phone, province, city, 0, 0, 0, 0, blocked, date, date);
                 company_bufferedWriter.write(company.toString());
                 company_bufferedWriter.write(NEW_LINE_SEPARATOR);
 
@@ -227,33 +224,32 @@ public class DataGenerator_RiskControlling {
             checkingAccount_bufferedWriter.flush();
             checkingAccount_bufferedWriter.close();
 
-        }
-        catch (IOException e) {
+        } catch (IOException e) {
             e.printStackTrace();
         }
         // generate the transfers
         Long transfer_cust_number = Math.round(CR.transfer_number * CR.cust_rate);
-        Long transfer_number =CR.transfer_number;
+        Long transfer_number = CR.transfer_number;
 
         try {
-            transfer_fileWriter = new FileWriter(DataPath+transfer_writePath, false);
+            transfer_fileWriter = new FileWriter(DataPath + transfer_writePath, false);
             transfer_bufferedWriter = new BufferedWriter(transfer_fileWriter);
             for (long i = 1; i <= transfer_cust_number; i++) {
                 // get the random source id and target id
                 int src = 0;
                 int tar = 0;
                 while (src == tar) {
-                    src = RG.getRandomint(1,customer_size);
-                    tar = RG.getRandomint(1,customer_size+company_size);
+                    src = RG.getRandomint(1, customer_size);
+                    tar = RG.getRandomint(1, customer_size + company_size);
                 }
 
                 // add the related ids into the blocked set
-                if(Blocked_ids.contains(tar)){
+                if (Blocked_ids.contains(tar)) {
                     blocked_transfer_bufferedWriter.write(String.valueOf(src));
                     blocked_transfer_bufferedWriter.write(NEW_LINE_SEPARATOR);
                 }
 
-                double amount=RG.getRandomDouble(CR.customer_savingbalance * 0.01);
+                double amount = RG.getRandomDouble(CR.customer_savingbalance * 0.01);
 //                if(rand<0.01){
 //                    Related_Rejected_LoanApp_ids.add(i);
 //                    amount= CR.customer_savingbalance;
@@ -262,7 +258,7 @@ public class DataGenerator_RiskControlling {
 
                 Date date = RG.getRandomTimestamp(CR.midPoint, CR.endYear);
                 // generate the new trans
-                Transfer trans = new Transfer(i, src, tar, amount, RG.getRandomCustTransferType(), date,null);
+                Transfer trans = new Transfer(i, src, tar, amount, RG.getRandomCustTransferType(), date, null);
                 transfer_bufferedWriter.write(trans.toString());
                 transfer_bufferedWriter.write(NEW_LINE_SEPARATOR);
             }
@@ -274,26 +270,26 @@ public class DataGenerator_RiskControlling {
                 int src = 0;
                 int tar = 0;
                 while (src == tar) {
-                    src = RG.getRandomint(customer_size+1,customer_size+company_size);
-                    tar = RG.getRandomint(1,customer_size+company_size);
+                    src = RG.getRandomint(customer_size + 1, customer_size + company_size);
+                    tar = RG.getRandomint(1, customer_size + company_size);
                 }
 
                 // add the related ids into the blocked set
-                if(Blocked_ids.contains(tar)){
+                if (Blocked_ids.contains(tar)) {
                     blocked_transfer_bufferedWriter.write(String.valueOf(src));
                     blocked_transfer_bufferedWriter.write(NEW_LINE_SEPARATOR);
                 }
 
-                double amount=RG.getRandomDouble(CR.customer_savingbalance * 0.01);
+                double amount = RG.getRandomDouble(CR.customer_savingbalance * 0.01);
 //                if(rand<0.01){
 //                    Related_Rejected_LoanApp_ids.add(i);
 //                    amount= CR.customer_savingbalance;
 //                }
 //                else amount= RG.getRandomDouble(CR.customer_savingbalance * 0.01);
 
-                Date date = RG.getRandomTimestamp(CR.startDate,CR.midPointDate);
+                Date date = RG.getRandomTimestamp(CR.startDate, CR.midPointDate);
                 // generate the new trans
-                Transfer trans = new Transfer(i, src, tar, amount, RG.getRandomCompanyTransferType(), date,null);
+                Transfer trans = new Transfer(i, src, tar, amount, RG.getRandomCompanyTransferType(), date, null);
                 transfer_bufferedWriter.write(trans.toString());
                 transfer_bufferedWriter.write(NEW_LINE_SEPARATOR);
             }
@@ -302,16 +298,15 @@ public class DataGenerator_RiskControlling {
 
             blocked_transfer_bufferedWriter.flush();
             blocked_transfer_bufferedWriter.close();
-        }
-        catch (IOException e) {
+        } catch (IOException e) {
             e.printStackTrace();
         }
 
         // generate the checks
-        int checks_cust_number =  Double.valueOf(CR.checking_number * (1-CR.cust_rate)).intValue();
-        Long checks_number =CR.checking_number;
+        int checks_cust_number = Double.valueOf(CR.checking_number * (1 - CR.cust_rate)).intValue();
+        Long checks_number = CR.checking_number;
         try {
-            checking_fileWriter = new FileWriter(DataPath+checking_writePath, false);
+            checking_fileWriter = new FileWriter(DataPath + checking_writePath, false);
             checking_bufferedWriter = new BufferedWriter(checking_fileWriter);
             for (int i = 1; i <= checks_cust_number; i++) {
                 // get the random source id and target id
@@ -323,7 +318,7 @@ public class DataGenerator_RiskControlling {
                 }
 
                 // add the related ids into the blocked set
-                if(Blocked_ids.contains(tar)){
+                if (Blocked_ids.contains(tar)) {
                     blocked_checking_bufferedWriter.write(String.valueOf(src));
                     blocked_checking_bufferedWriter.write(NEW_LINE_SEPARATOR);
                 }
@@ -344,12 +339,12 @@ public class DataGenerator_RiskControlling {
                 int src = 0;
                 int tar = 0;
                 while (src == tar) {
-                    src = RG.getRandomint(customer_size+1,customer_size+company_size);
-                    tar = RG.getRandomint(1,customer_size+company_size);
+                    src = RG.getRandomint(customer_size + 1, customer_size + company_size);
+                    tar = RG.getRandomint(1, customer_size + company_size);
                 }
 
                 // add the related ids into the blocked set
-                if(Blocked_ids.contains(tar)){
+                if (Blocked_ids.contains(tar)) {
                     blocked_checking_bufferedWriter.write(String.valueOf(src));
                     blocked_checking_bufferedWriter.write(NEW_LINE_SEPARATOR);
                 }
@@ -365,28 +360,27 @@ public class DataGenerator_RiskControlling {
 
             blocked_checking_bufferedWriter.flush();
             blocked_checking_bufferedWriter.close();
-        }
-        catch (IOException e) {
+        } catch (IOException e) {
             e.printStackTrace();
         }
 
         // generate the loan applications
         Long loanapps_number = CR.loanapps_number;
-        int loansapps_cust_number =  Double.valueOf(loanapps_number * (1-CR.cust_rate)).intValue();
+        int loansapps_cust_number = Double.valueOf(loanapps_number * (1 - CR.cust_rate)).intValue();
         int loansapps_company_number = loanapps_number.intValue() - loansapps_cust_number;
-        int loansapps_company_number_lb = loansapps_cust_number+1;
+        int loansapps_company_number_lb = loansapps_cust_number + 1;
         int loansapps_company_number_ub = loansapps_company_number + loansapps_company_number_lb;
         Date loanDate = CR.loanDate;
-        Date startDate= CR.startDate;
+        Date startDate = CR.startDate;
         Date endDate = CR.endDate;
         try {
-            loanapps_fileWriter = new FileWriter(DataPath+loanapps_writePath, false);
+            loanapps_fileWriter = new FileWriter(DataPath + loanapps_writePath, false);
             loanapps_bufferedWriter = new BufferedWriter(loanapps_fileWriter);
-            loantrans_fileWriter = new FileWriter(DataPath+loantrans_writePath, false);
+            loantrans_fileWriter = new FileWriter(DataPath + loantrans_writePath, false);
             loantrans_bufferedWriter = new BufferedWriter(loantrans_fileWriter);
             // generate the customer loan applications and transactions
             for (int i = 1; i <= loansapps_cust_number; i++) {
-                Date contractTimestamp=null;
+                Date contractTimestamp = null;
                 int custID = RG.getRandomint(1, lower_company - 1);
                 double amount = RG.getRandomDouble(CR.customer_loanbalance * CR.loan_rate);
                 Date loan_date = RG.getRandomTimestamp(loanDate, endDate);
@@ -398,18 +392,18 @@ public class DataGenerator_RiskControlling {
                 loanapps_bufferedWriter.write(NEW_LINE_SEPARATOR);
 
                 Date OneDayAfter = DateUtility.OneDayAfter(loan_date);
-                if(status=="accept")
-                    contractTimestamp=OneDayAfter;
-                LoanTrans loantrans = new LoanTrans(i, custID, i, amount, status, OneDayAfter, duration, contractTimestamp,0);
+                if (status == "accept")
+                    contractTimestamp = OneDayAfter;
+                LoanTrans loantrans = new LoanTrans(i, custID, i, amount, status, OneDayAfter, duration, contractTimestamp, 0);
                 loantrans_bufferedWriter.write(loantrans.toString());
                 loantrans_bufferedWriter.write(NEW_LINE_SEPARATOR);
             }
 
             // generate the company loan applications and transactions
-            for (int i=loansapps_company_number_lb;i< loansapps_company_number_ub;i++) {
-                Date contractTimestamp=null;
-                Long cid = RG.getRandomLong(1+CR.customer_number,CR.customer_number+CR.company_number);
-                int companyId= cid.intValue();
+            for (int i = loansapps_company_number_lb; i < loansapps_company_number_ub; i++) {
+                Date contractTimestamp = null;
+                Long cid = RG.getRandomLong(1 + CR.customer_number, CR.customer_number + CR.company_number);
+                int companyId = cid.intValue();
                 double amount = RG.getRandomDouble(CR.company_loanbalance * CR.loan_rate);
                 Date loan_date = RG.getRandomTimestamp(loanDate, endDate);
                 int duration = RG.getRandomLoanDuration();
@@ -418,9 +412,9 @@ public class DataGenerator_RiskControlling {
                 loanapps_bufferedWriter.write(loanapp.toString());
                 loanapps_bufferedWriter.write(NEW_LINE_SEPARATOR);
                 Date OneDayAfter = DateUtility.OneDayAfter(loan_date);
-                if(status=="accept")
-                    contractTimestamp=OneDayAfter;
-                LoanTrans loantrans = new LoanTrans(i, companyId, i, amount, status, OneDayAfter, duration, contractTimestamp,0);
+                if (status == "accept")
+                    contractTimestamp = OneDayAfter;
+                LoanTrans loantrans = new LoanTrans(i, companyId, i, amount, status, OneDayAfter, duration, contractTimestamp, 0);
                 loantrans_bufferedWriter.write(loantrans.toString());
                 loantrans_bufferedWriter.write(NEW_LINE_SEPARATOR);
             }
@@ -429,30 +423,28 @@ public class DataGenerator_RiskControlling {
             loanapps_bufferedWriter.close();
             loantrans_bufferedWriter.flush();
             loantrans_bufferedWriter.close();
-        }
-        catch (IOException e) {
+        } catch (IOException e) {
             e.printStackTrace();
         }
 
         // parameter curation
         try {
-            Integer contention_num = Integer.parseInt(ConfigLoader.prop.getProperty("contention_num","100"));
+            Integer contention_num = Integer.parseInt(ConfigLoader.prop.getProperty("contention_num", "100"));
             Integer[] list1 = new Integer[contention_num];
             Related_Blocked_Transfer_ids = Arrays.asList(reservoir_sampling(DataPath + "blocked_transfer.csv", list1));
             Integer[] list2 = new Integer[contention_num];
             Related_Blocked_Checking_ids = Arrays.asList(reservoir_sampling(DataPath + "blocked_checking.csv", list2));
-        }
-        catch (IOException e) {
+        } catch (IOException e) {
             e.printStackTrace();
         }
         // write the anomalies
         try {
 
-            FileOutputStream f = new FileOutputStream(new File(DataPath+"Related_transfer_bids"));
+            FileOutputStream f = new FileOutputStream(new File(DataPath + "Related_transfer_bids"));
             ObjectOutputStream o = new ObjectOutputStream(f);
             o.writeObject(Related_Blocked_Transfer_ids);
 
-            f = new FileOutputStream(new File(DataPath+"Related_checking_bids"));
+            f = new FileOutputStream(new File(DataPath + "Related_checking_bids"));
             o = new ObjectOutputStream(f);
             o.writeObject(Related_Blocked_Checking_ids);
 
@@ -511,6 +503,6 @@ public class DataGenerator_RiskControlling {
         System.out.println("----------------");
         System.out.println("----------------");
         System.out.println("----------------");
-        System.out.println("Data generation took "+(millisEnd - millisStart) + " ms");
+        System.out.println("Data generation took " + (millisEnd - millisStart) + " ms");
     }
 }

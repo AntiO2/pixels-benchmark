@@ -24,25 +24,25 @@ docker image `quay.io/debezium/postgres:16` is recommended.
 
 ## Step 1: Data Generation and Loading [PostgreSQL 16]
 ```
-psql -h localhost -U postgres -c 'create database hybench_sf1x;'
+psql -h localhost -U postgres -c 'create database pixels_bench_sf1x;'
 
-bash hybench -t sql -c conf/pg.props -f conf/ddl_pg.sql
+./pixels_bench -t sql -c conf/pg.props -f conf/ddl_pg.sql
 
-bash hybench -t gendata -c conf/pg.props -f conf/stmt_postgres.toml
+./pixels_bench -t gendata -c conf/pg.props -f conf/stmt_postgres.toml
 
-psql -h localhost -U postgres -d hybench_sf1x -f conf/load_data_pg.sql
+psql -h localhost -U postgres -d pixels_bench_sf1x -f conf/load_data_pg.sql
 ```
 
-## Step 2: Index Building [PostgreSQL 14]
+## Step 2: Index Building [PostgreSQL 16]
 
 ```
-bash hybench -t sql -c conf/pg.props -f conf/create_index_pg.sql
+./pixels_bench -t sql -c conf/pg.props -f conf/create_index_pg.sql
 ```
 
-## Step 3: Run the Benchmark [PostgreSQL 14]
+## Step 3: Run the Benchmark [PostgreSQL 16]
 
 ```
-bash hybench -t runall -c conf/pg.props -f conf/stmt_postgres.toml
+./pixels_bench -t runall -c conf/pg.props -f conf/stmt_postgres.toml
 ```
 
 ## Performance Metrics
@@ -115,6 +115,6 @@ make sure the user has the write permission to the folder or use the sudo comman
 
 ---
 
-This repository is based on the [HyBench](https://github.com/Rucchao/HyBench-2024) benchmark
+This repository is derived from the [HyBench](https://github.com/Rucchao/HyBench-2024) benchmark
 and draws inspiration from the [HATtrick](https://github.com/UWHustle/HATtrick) approach.
 

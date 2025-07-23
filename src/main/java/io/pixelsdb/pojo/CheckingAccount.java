@@ -1,16 +1,15 @@
 package io.pixelsdb.pojo;
 /**
- *
  * @time 2022-10-12
  * @author Chao Zhang
  * @version 1.0.0
  * @file CheckingAccount.java
- * @description
- *  for checkingaccount table
+ * @description for checkingaccount table
  **/
-import java.util.Date;
+
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.StringJoiner;
 
 /**
@@ -23,8 +22,7 @@ public record CheckingAccount
          double balance,
          int isBlocked,
          Date timestamp
-        )
-{
+        ) {
     @Override
     public String toString() {
         StringJoiner joiner = new StringJoiner(",");
@@ -36,8 +34,7 @@ public record CheckingAccount
         return joiner.toString();
     }
 
-    public String convertDateToString(java.util.Date date)
-    {
+    public String convertDateToString(java.util.Date date) {
         // "yyyy-MM-dd HH:mm:ss.SSS"
         DateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS");
         String dateToString = df.format(date);

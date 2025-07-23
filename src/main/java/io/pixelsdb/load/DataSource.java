@@ -3,9 +3,9 @@ package io.pixelsdb.load;
  * @time 2023-03-04
  * @version 1.0.0
  * @file DataSource.java
- * @description
- *  load data generator config
+ * @description load data generator config
  **/
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -24,16 +24,16 @@ public class DataSource {
     public List<String> Province2City_list = new ArrayList<String>();
     public Set<String> ProvinceSet = new HashSet<>();
     public HashMap<String, List<String>> Province_Cities_Map = new HashMap<>();
-    public  String[] gender  = {"female", "male"};
+    public String[] gender = {"female", "male"};
 
-    public DataSource(){
+    public DataSource() {
         load(FirstName_female, FirstName_female_list);
         load(FirstName_male, FirstName_male_list);
         load(LastName, LastName_list);
         loadLocation(Province2City);
     }
 
-    private void load(String fileName, List<String> lst){
+    private void load(String fileName, List<String> lst) {
         try {
             BufferedReader Br = new BufferedReader(
                     new InputStreamReader(loader.getResourceAsStream(fileName)));
@@ -46,24 +46,23 @@ public class DataSource {
         }
     }
 
-    private void loadLocation(String fileName){
+    private void loadLocation(String fileName) {
         try {
             BufferedReader Br = new BufferedReader(
                     new InputStreamReader(loader.getResourceAsStream(fileName)));
             String line;
             while ((line = Br.readLine()) != null) {
-                String Province = line.split("\\s+")[0].toString();
-                String City = line.split("\\s+")[1].toString();
-                if(!ProvinceSet.contains(Province)){
+                String Province = line.split("\\s+")[0];
+                String City = line.split("\\s+")[1];
+                if (!ProvinceSet.contains(Province)) {
                     ProvinceSet.add(Province);
                     List<String> city_list = new ArrayList<String>();
                     city_list.add(City);
-                    Province_Cities_Map.put(Province,city_list);
-                }
-                else {
+                    Province_Cities_Map.put(Province, city_list);
+                } else {
                     List<String> city_list = Province_Cities_Map.get(Province);
                     city_list.add(City);
-                    Province_Cities_Map.put(Province,city_list);
+                    Province_Cities_Map.put(Province, city_list);
                 }
             }
         } catch (IOException e) {

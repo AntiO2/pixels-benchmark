@@ -5,7 +5,7 @@ import umontreal.iro.lecuyer.probdist.PowerDist;
 import java.util.Random;
 
 public class PowerCDF {
-    private PowerDist powerDist;
+    private final PowerDist powerDist;
 
     public PowerCDF(double a, double b, double alpha) {
         powerDist = new PowerDist(a, b, alpha);

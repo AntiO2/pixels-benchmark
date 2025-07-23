@@ -1,12 +1,11 @@
 package io.pixelsdb.pojo;
 /**
- *
  * @time 2022-10-12
  * @version 1.0.0
  * @file Company.java
- * @description
- *  for company table
+ * @description for company table
  **/
+
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -29,8 +28,7 @@ public record Company
          int isblocked,
          Date createdDate,
          Date LastUpdateTime
-        )
-{
+        ) {
     @Override
     public String toString() {
         StringJoiner joiner = new StringJoiner(",");
@@ -52,8 +50,7 @@ public record Company
         return joiner.toString();
     }
 
-    public String convertDateToString(Date date)
-    {
+    public String convertDateToString(Date date) {
         // "yyyy-MM-dd"
         DateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS");
         String dateToString = df.format(date);

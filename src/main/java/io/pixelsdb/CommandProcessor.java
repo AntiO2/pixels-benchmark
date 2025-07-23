@@ -1,16 +1,15 @@
 package io.pixelsdb;
 /**
- *
  * @time 2023-03-04
  * @version 1.0.0
  * @file CommandProcessor.java
- * @description
- *   define options in command line.
+ * @description define options in command line.
  **/
 
 import org.apache.commons.cli.*;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+
 import java.util.HashMap;
 
 public class CommandProcessor {
@@ -18,19 +17,19 @@ public class CommandProcessor {
     Options cmdOptions = null;
     String[] cmdLines = null;
 
-    public CommandProcessor(String[] args){
+    public CommandProcessor(String[] args) {
         this.cmdLines = args;
     }
 
     // option builder. add new option if needed.
-    public void optionBuilder(Options options){
-        options.addOption("h","help",false,"Print PixelsBench usage information");
+    public void optionBuilder(Options options) {
+        options.addOption("h", "help", false, "Print PixelsBench usage information");
 
         Option testType = Option.builder("t")
                 .longOpt("testType")
                 .desc("This is for test type. Now we support three types, execSql, gendata and runX.")
                 .hasArg()
-                .argName( "type" )
+                .argName("type")
                 .build();
         options.addOption(testType);
 
@@ -59,8 +58,8 @@ public class CommandProcessor {
     }
 
     // Parse command Line
-    public HashMap<String,String> commandPaser(String[] cmdLine){
-        HashMap<String,String> argsList = new HashMap<String,String>();
+    public HashMap<String, String> commandPaser(String[] cmdLine) {
+        HashMap<String, String> argsList = new HashMap<String, String>();
         CommandLineParser parser = new DefaultParser();
         cmdOptions = new Options();
         optionBuilder(cmdOptions);
@@ -70,54 +69,54 @@ public class CommandProcessor {
         } catch (ParseException e) {
             e.printStackTrace();
         }
-        processArgs(argsList,argsLine);
+        processArgs(argsList, argsLine);
         return argsList;
     }
 
     // Read command line.
-    public void processArgs(HashMap<String,String> argsList,CommandLine cmdLine){
+    public void processArgs(HashMap<String, String> argsList, CommandLine cmdLine) {
         if (cmdLine.hasOption('h')) {
             printHelp();
             System.exit(0);
         }
 
-        if(cmdLine.hasOption("testType")){
-            argsList.put("t",cmdLine.getOptionValue("t"));
+        if (cmdLine.hasOption("testType")) {
+            argsList.put("t", cmdLine.getOptionValue("t"));
         }
 
-        if(cmdLine.hasOption("c")){
-            argsList.put("c",cmdLine.getOptionValue("c"));
+        if (cmdLine.hasOption("c")) {
+            argsList.put("c", cmdLine.getOptionValue("c"));
         }
 
-        if(cmdLine.hasOption("f")){
-            argsList.put("f",cmdLine.getOptionValue("f"));
+        if (cmdLine.hasOption("f")) {
+            argsList.put("f", cmdLine.getOptionValue("f"));
         }
 
-        if(cmdLine.hasOption("s")){
-            argsList.put("s","true");
+        if (cmdLine.hasOption("s")) {
+            argsList.put("s", "true");
         }
     }
 
     // help info
-    public void printHelp(){
+    public void printHelp() {
         HelpFormatter formatter = new HelpFormatter();
-        formatter.printHelp( "pixelsbench " + " [options]", cmdOptions );
+        formatter.printHelp("pixels_bench " + " [options]", cmdOptions);
         System.out.println("Example:");
         System.out.println("Step 1: run sql files for init or cleanup");
-        System.out.println("  pixelsbench -t sql -f sql/sqlfile.sql -c conf/db.properties");
+        System.out.println("  pixels_bench -t sql -f sql/sqlfile.sql -c conf/db.properties");
         System.out.println("Step 2: generate data and load");
-        System.out.println("  pixelsbench -t gendata -c conf/db.properties -f sql/sql_file.sql");
+        System.out.println("  pixels_bench -t gendata -c conf/db.properties -f sql/sql_file.sql");
         System.out.println("Step 3: run TP workload");
-        System.out.println("  pixelsbench -t runtp -c conf/db.properties -f sql/sql_file.sql");
+        System.out.println("  pixels_bench -t runtp -c conf/db.properties -f sql/sql_file.sql");
         System.out.println("Step 4: run AP workload");
-        System.out.println("  pixelsbench -t runap -c conf/db.properties -f sql/sql_file.sql");
+        System.out.println("  pixels_bench -t runap -c conf/db.properties -f sql/sql_file.sql");
         System.out.println("Step 5: run XP workload");
-        System.out.println("  pixelsbench -t runxp -c conf/db.properties -f sql/sql_file.sql");
+        System.out.println("  pixels_bench -t runxp -c conf/db.properties -f sql/sql_file.sql");
         System.out.println("Step 6: run fresh workload");
-        System.out.println("  pixelsbench -t runfresh -c conf/db.properties -f sql/sql_file.sql");
+        System.out.println("  pixels_bench -t runfresh -c conf/db.properties -f sql/sql_file.sql");
         System.out.println("Step 7: run htap workload");
-        System.out.println("  pixelsbench -t runhtap -c conf/db.properties -f sql/sql_file.sql");
+        System.out.println("  pixels_bench -t runhtap -c conf/db.properties -f sql/sql_file.sql");
         System.out.println("Step 8: run all workload");
-        System.out.println("  pixelsbench -t runall -c conf/db.properties -f sql/sql_file.sql");
+        System.out.println("  pixels_bench -t runall -c conf/db.properties -f sql/sql_file.sql");
     }
 }

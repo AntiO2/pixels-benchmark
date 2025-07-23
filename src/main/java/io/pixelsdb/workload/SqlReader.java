@@ -1,7 +1,6 @@
 package io.pixelsdb.workload;
 
 /**
- *
  * @version 1.00
  * @time 2023-03-07
  * @file SqlReader.java
@@ -19,17 +18,18 @@ public class SqlReader {
     Sqlstmts sqls = null;
 
 
-    public SqlReader(String filePath){
+    public SqlReader(String filePath) {
         this.filePath = filePath;
     }
+
     // read sqls from sql files
-    public Sqlstmts loader(){
+    public Sqlstmts loader() {
         sqls = new Sqlstmts();
-        try{
+        try {
             BufferedReader Br = new BufferedReader(new FileReader(filePath));
             Toml toml = new Toml().read(Br);
 
-            
+
             sqls.setAp_q1(toml.getString("AP-1.sql"));
             sqls.setAp_q2(toml.getString("AP-2.sql"));
             sqls.setAp_q2_1(toml.getString("AP-2.1.sql"));
@@ -88,21 +88,21 @@ public class SqlReader {
             sqls.setFresh_iq(toml.getString("fresh.sql"));
             sqls.setFresh_iq1(toml.getString("fresh-1.sql"));
 
-        }catch(Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         }
         return sqls;
     }
 
-    public String[] getSqlArrayFromList(List<String> sqlList){
+    public String[] getSqlArrayFromList(List<String> sqlList) {
         String[] sqls = new String[sqlList.size()];
-        for(int i = 0;i < sqlList.size();i++){
+        for (int i = 0; i < sqlList.size(); i++) {
             sqls[i] = sqlList.get(i);
         }
         return sqls;
     }
 
-    public Sqlstmts getSqls(){
+    public Sqlstmts getSqls() {
         return this.sqls;
     }
 }

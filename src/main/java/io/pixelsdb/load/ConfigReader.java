@@ -1,14 +1,13 @@
 package io.pixelsdb.load;
 /**
- *
  * @time 2023-03-04
  * @version 1.0.0
  * @file ConfigReader.java
  * @description
- *
  **/
 
 import com.moandjiezana.toml.Toml;
+
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.text.ParseException;
@@ -51,7 +50,8 @@ public class ConfigReader {
     public double cust_rate;
     public double loan_rate;
     public double prob_blocked;
-    public ConfigReader(String scale_factor){
+
+    public ConfigReader(String scale_factor) {
         load("parameters.toml", scale_factor);
     }
 
@@ -103,8 +103,7 @@ public class ConfigReader {
             // loantrans
             loantrans_number = toml.getLong(scale_factor + ".loantrans_number").intValue();
             loantrans_datapath = toml.getString(scale_factor + ".loantrans_datapath");
-        }
-        catch (ParseException e){
+        } catch (ParseException e) {
             e.printStackTrace();
         }
     }

@@ -1,12 +1,11 @@
 package io.pixelsdb.load;
 /**
- *
  * @time 2023-03-04
  * @version 1.0.0
  * @file DateUtility.java
- * @description
- *  Define date type and normalization
+ * @description Define date type and normalization
  **/
+
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -57,8 +56,7 @@ public class DateUtility {
         return Dateplus1day;
     }
 
-    public static String convertDateToString(Date date)
-    {
+    public static String convertDateToString(Date date) {
         // "yyyy-MM-dd HH:mm:ss.SSS"
         DateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS");
         String dateToString = df.format(date);

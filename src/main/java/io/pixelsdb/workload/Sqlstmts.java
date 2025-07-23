@@ -1,87 +1,91 @@
 package io.pixelsdb.workload;
 
 /**
- *
  * @version 1.00
  * @time 2023-03-08
  * @file Sqlstmts.java
- *
  **/
 public class Sqlstmts {
 
     // AP queries total 13
-    private  String ap_q1 = null;
-    private  String ap_q2 = null;
-    private  String ap_q2_1 = null;
-    private  String ap_q3 = null;
-    private  String ap_q4 = null;
-    private  String ap_q5 = null;
-    private  String ap_q6 = null;
-    private  String ap_q7 = null;
-    private  String ap_q8 = null;
-    private  String ap_q9 = null;
-    private  String ap_q10 = null;
-    private  String ap_q11 = null;
-    private  String ap_q12 = null;
-    private  String ap_q13 = null;
+    private String ap_q1 = null;
+    private String ap_q2 = null;
+    private String ap_q2_1 = null;
+    private String ap_q3 = null;
+    private String ap_q4 = null;
+    private String ap_q5 = null;
+    private String ap_q6 = null;
+    private String ap_q7 = null;
+    private String ap_q8 = null;
+    private String ap_q9 = null;
+    private String ap_q10 = null;
+    private String ap_q11 = null;
+    private String ap_q12 = null;
+    private String ap_q13 = null;
     // TP querys total 18
-    private  String tp_txn1 = null;
-    private  String tp_txn2 = null;
-    private  String tp_txn3 = null;
-    private  String tp_txn4 = null;
-    private  String tp_txn5 = null;
-    private  String tp_txn6 = null;
-    private  String tp_txn7 = null;
-    private  String tp_txn8 = null;
-    private  String[] tp_txn9 = null;
-    private  String[] tp_txn10 = null;
-    private  String[] tp_txn11 = null;
-    private  String[] tp_txn12 = null;
-    private  String[] tp_txn13 = null;
-    private  String[] tp_txn14 = null;
-    private  String[] tp_txn15 = null;
-    private  String[] tp_txn16 = null;
-    private  String[] tp_txn17 = null;
-    private  String[] tp_txn18 = null;
+    private String tp_txn1 = null;
+    private String tp_txn2 = null;
+    private String tp_txn3 = null;
+    private String tp_txn4 = null;
+    private String tp_txn5 = null;
+    private String tp_txn6 = null;
+    private String tp_txn7 = null;
+    private String tp_txn8 = null;
+    private String[] tp_txn9 = null;
+    private String[] tp_txn10 = null;
+    private String[] tp_txn11 = null;
+    private String[] tp_txn12 = null;
+    private String[] tp_txn13 = null;
+    private String[] tp_txn14 = null;
+    private String[] tp_txn15 = null;
+    private String[] tp_txn16 = null;
+    private String[] tp_txn17 = null;
+    private String[] tp_txn18 = null;
     // AT SQLs, total 6
-    private  String[] tp_at00 = null;
-    private  String[] tp_at0 = null;
-    private  String[] tp_at1 = null;
-    private  String[] tp_at2 = null;
-    private  String[] tp_at3 = null;
-    private  String tp_at3_1 = null;
-    private  String[] tp_at4 = null;
-    private  String tp_at4_1 = null;
-    private  String[] tp_at5 = null;
-    private  String tp_at5_1 = null;
-    private  String tp_at6_1 = null;
-    private  String[] tp_at6 = null;
+    private String[] tp_at00 = null;
+    private String[] tp_at0 = null;
+    private String[] tp_at1 = null;
+    private String[] tp_at2 = null;
+    private String[] tp_at3 = null;
+    private String tp_at3_1 = null;
+    private String[] tp_at4 = null;
+    private String tp_at4_1 = null;
+    private String[] tp_at5 = null;
+    private String tp_at5_1 = null;
+    private String tp_at6_1 = null;
+    private String[] tp_at6 = null;
     // IQ SQLs total 6
-    private  String ap_iq1 = null;
-    private  String ap_iq2 = null;
-    private  String ap_iq3 = null;
-    private  String ap_iq4 = null;
-    private  String ap_iq5 = null;
-    private  String ap_iq5_1 = null;
-    private  String ap_iq6 = null;
+    private String ap_iq1 = null;
+    private String ap_iq2 = null;
+    private String ap_iq3 = null;
+    private String ap_iq4 = null;
+    private String ap_iq5 = null;
+    private String ap_iq5_1 = null;
+    private String ap_iq6 = null;
 
     // Fresh sql
-    private  String fresh_iq = null;
-    private  String fresh_iq1 = null;
+    private String fresh_iq = null;
+    private String fresh_iq1 = null;
 
-    public String[] tp_at1() { return tp_at1; }
+    public String[] tp_at1() {
+        return tp_at1;
+    }
 
     public void setTp_at1(String[] tp_at1) {
         this.tp_at1 = tp_at1;
     }
 
-    public String[] tp_at2() { return tp_at2; }
+    public String[] tp_at2() {
+        return tp_at2;
+    }
 
     public void setTp_at2(String[] tp_at2) {
         this.tp_at2 = tp_at2;
     }
 
-    public String[] tp_at3() { return tp_at3; }
+    public String[] tp_at3() {
+        return tp_at3;
+    }
 
     public void setTp_at3(String[] tp_at3) {
         this.tp_at3 = tp_at3;
@@ -95,7 +99,9 @@ public class Sqlstmts {
         this.tp_at3_1 = tp_at3_1;
     }
 
-    public String[] tp_at4() { return tp_at4; }
+    public String[] tp_at4() {
+        return tp_at4;
+    }
 
     public void setTp_at4(String[] tp_at4) {
         this.tp_at4 = tp_at4;
@@ -109,7 +115,9 @@ public class Sqlstmts {
         this.tp_at4_1 = tp_at4_1;
     }
 
-    public String[] tp_at5() { return tp_at5; }
+    public String[] tp_at5() {
+        return tp_at5;
+    }
 
     public void setTp_at5(String[] tp_at5) {
         this.tp_at5 = tp_at5;
@@ -123,7 +131,9 @@ public class Sqlstmts {
         this.tp_at5_1 = tp_at5_1;
     }
 
-    public String[] tp_at6() { return tp_at6; }
+    public String[] tp_at6() {
+        return tp_at6;
+    }
 
     public void setTp_at6(String[] tp_at6) {
         this.tp_at6 = tp_at6;
@@ -133,7 +143,9 @@ public class Sqlstmts {
         return ap_q1;
     }
 
-    public void setAp_q1(String ap_q1) { this.ap_q1 = ap_q1; }
+    public void setAp_q1(String ap_q1) {
+        this.ap_q1 = ap_q1;
+    }
 
     public String ap_q2() {
         return ap_q2;
@@ -231,9 +243,13 @@ public class Sqlstmts {
         this.ap_q12 = ap_q12;
     }
 
-    public String ap_q13() { return ap_q13; }
+    public String ap_q13() {
+        return ap_q13;
+    }
 
-    public void setAp_q13(String ap_q13) { this.ap_q13 = ap_q13; }
+    public void setAp_q13(String ap_q13) {
+        this.ap_q13 = ap_q13;
+    }
 
     public String tp_txn1() {
         return tp_txn1;
@@ -435,25 +451,33 @@ public class Sqlstmts {
         this.ap_iq6 = ap_iq6;
     }
 
-    public String fresh_iq() { return fresh_iq; }
+    public String fresh_iq() {
+        return fresh_iq;
+    }
 
     public void setFresh_iq(String fresh_iq) {
         this.fresh_iq = fresh_iq;
     }
 
-    public String fresh_iq1() { return fresh_iq1; }
+    public String fresh_iq1() {
+        return fresh_iq1;
+    }
 
     public void setFresh_iq1(String fresh_iq1) {
         this.fresh_iq1 = fresh_iq1;
     }
 
-    public String[] tp_at0() { return tp_at0; }
+    public String[] tp_at0() {
+        return tp_at0;
+    }
 
     public void setTp_at0(String[] tp_at0) {
         this.tp_at0 = tp_at0;
     }
 
-    public String[] tp_at00() { return tp_at00; }
+    public String[] tp_at00() {
+        return tp_at00;
+    }
 
     public void setTp_at00(String[] tp_at00) {
         this.tp_at00 = tp_at00;

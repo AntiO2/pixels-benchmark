@@ -1,12 +1,13 @@
 package io.pixelsdb.pojo;
 /**
  * Copyright (C) 2022-2023 China Software Testing Center(CSTC)
+ *
  * @time 2022-10-12
  * @version 1.0.0
  * @file Customer.java
- * @description
- *   for customer table
+ * @description for customer table
  **/
+
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -29,8 +30,7 @@ public record Customer
          int isblocked,
          Date createdDate,
          Date LastUpdateDate
-        )
-{
+        ) {
     @Override
     public String toString() {
         StringJoiner joiner = new StringJoiner(",");
@@ -52,8 +52,7 @@ public record Customer
         return joiner.toString();
     }
 
-    public String convertDateToString(Date date)
-    {
+    public String convertDateToString(Date date) {
         // "yyyy-MM-dd"
         DateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS");
         String dateToString = df.format(date);

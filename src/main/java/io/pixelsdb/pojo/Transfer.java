@@ -1,15 +1,14 @@
 package io.pixelsdb.pojo;
 /**
- *
  * @time 2022-10-12
  * @version 1.0.0
  * @file Transfer.java
- * @description
- *      For transfer table
+ * @description For transfer table
  **/
-import java.util.Date;
+
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.StringJoiner;
 
 
@@ -21,8 +20,7 @@ public record Transfer
          String type,
          Date timestamp,
          Date fresh_ts
-        )
-{
+        ) {
     public String toString() {
         StringJoiner joiner = new StringJoiner(",");
         joiner.add(Long.toString(id))
@@ -35,8 +33,7 @@ public record Transfer
         return joiner.toString();
     }
 
-    public String convertDateToString(java.util.Date date)
-    {
+    public String convertDateToString(java.util.Date date) {
         // "yyyy-MM-dd HH:mm:ss.SSS"
         DateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS");
         String dateToString = df.format(date);

@@ -1,11 +1,9 @@
 package io.pixelsdb.workload;
 /**
- *
  * @time 2023-03-04
  * @version 1.0.0
  * @file APClient.java
- * @description
- *   AP Client Processor
+ * @description AP Client Processor
  **/
 
 
@@ -16,40 +14,39 @@ import java.lang.reflect.Method;
 import java.sql.*;
 import java.util.ArrayList;
 
-public class APClient extends Client{
+public class APClient extends Client {
     int customer_no;
     int company_no;
 //    RandomGenerator rg = new RandomGenerator();
 
     @Override
     // init the db here
-    public void doInit(){
+    public void doInit() {
 
         // tentative parameter curation
         Long customer_number = CR.customer_number;
-        Long company_number= CR.company_number;
+        Long company_number = CR.company_number;
         customer_no = customer_number.intValue() + 1;
         company_no = company_number.intValue();
 
     }
 
-    public int Get_blocked_transfer_Id(){
-        int Id=0;
-        Id=Related_Blocked_Transfer_ids.get(rg.getRandomint(Related_Blocked_Transfer_ids.size()));
+    public int Get_blocked_transfer_Id() {
+        int Id = 0;
+        Id = Related_Blocked_Transfer_ids.get(rg.getRandomint(Related_Blocked_Transfer_ids.size()));
         return Id;
     }
 
-    public int Get_blocked_account_Id(){
-        if(queue_ids.size()==0)
-            return rg.getRandomint(customer_no, customer_no+company_no);
-        else{
-            int Id=0;
+    public int Get_blocked_account_Id() {
+        if (queue_ids.size() == 0)
+            return rg.getRandomint(customer_no, customer_no + company_no);
+        else {
+            int Id = 0;
             int index = rg.getRandomint(queue_ids.size());
             int i = 0;
-            for(Integer obj : queue_ids)
-            {
+            for (Integer obj : queue_ids) {
                 if (i == index)
-                    Id=obj;
+                    Id = obj;
                 i++;
             }
             return Id;
@@ -58,7 +55,7 @@ public class APClient extends Client{
 
 
     // 6 Interative Queries
-    public ClientResult execIQ1(Connection conn){
+    public ClientResult execIQ1(Connection conn) {
         ClientResult cr = new ClientResult();
         PreparedStatement pstmt = null;
         int custid;
@@ -66,17 +63,16 @@ public class APClient extends Client{
         try {
             pstmt = conn.prepareStatement(sqls.ap_iq1());
 
-            double rate= rg.getRandomDouble();
-            if(rate<risk_rate/2)
+            double rate = rg.getRandomDouble();
+            if (rate < risk_rate / 2)
                 custid = Get_blocked_transfer_Id();
-            else if (rate<risk_rate){
+            else if (rate < risk_rate) {
                 custid = Get_blocked_account_Id();
-            }
-            else
-                custid=rg.getRandomint(customer_no);
+            } else
+                custid = rg.getRandomint(customer_no);
 
-            pstmt.setInt(1,custid);
-            pstmt.setInt(2,custid);
+            pstmt.setInt(1, custid);
+            pstmt.setInt(2, custid);
             long currentStarttTs = System.currentTimeMillis();
             pstmt.execute();
             long currentEndTs = System.currentTimeMillis();
@@ -91,7 +87,7 @@ public class APClient extends Client{
             cr.setResult(false);
             cr.setErrorMsg(e.getMessage());
             cr.setErrorCode(String.valueOf(e.getErrorCode()));
-        }  finally {
+        } finally {
             cr.setRt(responseTime);
             try {
                 pstmt.close();
@@ -102,23 +98,23 @@ public class APClient extends Client{
         return cr;
     }
 
-    public ClientResult execIQ2(Connection conn){
+    public ClientResult execIQ2(Connection conn) {
         ClientResult cr = new ClientResult();
         PreparedStatement pstmt = null;
         int companyid;
         long responseTime = 0L;
         try {
             pstmt = conn.prepareStatement(sqls.ap_iq2());
-          //  companyid = rg.getRandomint(customer_no, customer_no+company_no);
-            double rate= rg.getRandomDouble();
-            if(rate<risk_rate)
+            //  companyid = rg.getRandomint(customer_no, customer_no+company_no);
+            double rate = rg.getRandomDouble();
+            if (rate < risk_rate)
                 companyid = Get_blocked_account_Id();
             else
-                companyid = rg.getRandomint(customer_no, customer_no+company_no);
+                companyid = rg.getRandomint(customer_no, customer_no + company_no);
 
 
-            pstmt.setInt(1,companyid);
-            pstmt.setInt(2,companyid);
+            pstmt.setInt(1, companyid);
+            pstmt.setInt(2, companyid);
             long currentStarttTs = System.currentTimeMillis();
             pstmt.execute();
             long currentEndTs = System.currentTimeMillis();
@@ -133,7 +129,7 @@ public class APClient extends Client{
             cr.setResult(false);
             cr.setErrorMsg(e.getMessage());
             cr.setErrorCode(String.valueOf(e.getErrorCode()));
-        }  finally {
+        } finally {
             cr.setRt(responseTime);
             try {
                 pstmt.close();
@@ -144,15 +140,15 @@ public class APClient extends Client{
         return cr;
     }
 
-    public ClientResult execIQ3(Connection conn){
+    public ClientResult execIQ3(Connection conn) {
         ClientResult cr = new ClientResult();
         PreparedStatement pstmt = null;
-        int companyid=0;
+        int companyid = 0;
         long responseTime = 0L;
         try {
             pstmt = conn.prepareStatement(sqls.ap_iq3());
-            companyid = rg.getRandomint(customer_no,customer_no+company_no);
-            pstmt.setInt(1,companyid);
+            companyid = rg.getRandomint(customer_no, customer_no + company_no);
+            pstmt.setInt(1, companyid);
             long currentStarttTs = System.currentTimeMillis();
             pstmt.execute();
             long currentEndTs = System.currentTimeMillis();
@@ -178,16 +174,16 @@ public class APClient extends Client{
         return cr;
     }
 
-    public ClientResult execIQ4(Connection conn){
+    public ClientResult execIQ4(Connection conn) {
         ClientResult cr = new ClientResult();
         PreparedStatement pstmt = null;
         int companyid;
         long responseTime = 0L;
         try {
             pstmt = conn.prepareStatement(sqls.ap_iq4());
-            companyid = rg.getRandomint(customer_no,customer_no+company_no);
-            pstmt.setInt(1,companyid);
-            pstmt.setInt(2,companyid);
+            companyid = rg.getRandomint(customer_no, customer_no + company_no);
+            pstmt.setInt(1, companyid);
+            pstmt.setInt(2, companyid);
             long currentStarttTs = System.currentTimeMillis();
             pstmt.execute();
             long currentEndTs = System.currentTimeMillis();
@@ -202,7 +198,7 @@ public class APClient extends Client{
             cr.setResult(false);
             cr.setErrorMsg(e.getMessage());
             cr.setErrorCode(String.valueOf(e.getErrorCode()));
-        }  finally {
+        } finally {
             cr.setRt(responseTime);
             try {
                 pstmt.close();
@@ -213,21 +209,21 @@ public class APClient extends Client{
         return cr;
     }
 
-    public ClientResult execIQ5(Connection conn){
+    public ClientResult execIQ5(Connection conn) {
 
         ClientResult cr = new ClientResult();
         Statement stmt = null;
-        int applicantid=1;
-        try{
-            stmt = conn.createStatement();;
+        int applicantid = 1;
+        try {
+            stmt = conn.createStatement();
             ResultSet rs = stmt.executeQuery(sqls.ap_iq5_1());
-            while ( rs.next() ) {
-                applicantid= rs.getInt(1);
+            while (rs.next()) {
+                applicantid = rs.getInt(1);
             }
             rs.close();
         } catch (SQLException throwables) {
             throwables.printStackTrace();
-        }finally {
+        } finally {
 
             try {
                 stmt.close();
@@ -240,7 +236,7 @@ public class APClient extends Client{
         long responseTime = 0L;
         try {
             pstmt = conn.prepareStatement(sqls.ap_iq5());
-            pstmt.setInt(1,applicantid);
+            pstmt.setInt(1, applicantid);
             long currentStarttTs = System.currentTimeMillis();
             pstmt.execute();
             long currentEndTs = System.currentTimeMillis();
@@ -255,7 +251,7 @@ public class APClient extends Client{
             cr.setResult(false);
             cr.setErrorMsg(e.getMessage());
             cr.setErrorCode(String.valueOf(e.getErrorCode()));
-        }  finally {
+        } finally {
             cr.setRt(responseTime);
             try {
                 pstmt.close();
@@ -266,7 +262,7 @@ public class APClient extends Client{
         return cr;
     }
 
-    public ClientResult execIQ6(Connection conn){
+    public ClientResult execIQ6(Connection conn) {
 
         ClientResult cr = new ClientResult();
         PreparedStatement pstmt = null;
@@ -287,7 +283,7 @@ public class APClient extends Client{
             cr.setResult(false);
             cr.setErrorMsg(e.getMessage());
             cr.setErrorCode(String.valueOf(e.getErrorCode()));
-        }  finally {
+        } finally {
             try {
                 pstmt.close();
             } catch (SQLException e) {
@@ -298,7 +294,7 @@ public class APClient extends Client{
     }
 
     // 12 AP Queries
-    public ClientResult execQ1(Connection conn){
+    public ClientResult execQ1(Connection conn) {
         ClientResult cr = new ClientResult();
         PreparedStatement pstmt = null;
         int custid;
@@ -306,10 +302,10 @@ public class APClient extends Client{
         try {
             pstmt = conn.prepareStatement(sqls.ap_q1());
             custid = rg.getRandomint(customer_no);
-            pstmt.setInt(1,custid);
-            pstmt.setInt(2,custid);
-            pstmt.setInt(3,custid);
-            pstmt.setInt(4,custid);
+            pstmt.setInt(1, custid);
+            pstmt.setInt(2, custid);
+            pstmt.setInt(3, custid);
+            pstmt.setInt(4, custid);
             long currentStarttTs = System.currentTimeMillis();
             pstmt.execute();
             long currentEndTs = System.currentTimeMillis();
@@ -324,7 +320,7 @@ public class APClient extends Client{
             cr.setResult(false);
             cr.setErrorMsg(e.getMessage());
             cr.setErrorCode(String.valueOf(e.getErrorCode()));
-        }  finally {
+        } finally {
             cr.setRt(responseTime);
             try {
                 pstmt.close();
@@ -335,22 +331,22 @@ public class APClient extends Client{
         return cr;
     }
 
-    public ClientResult execQ2(Connection conn){
+    public ClientResult execQ2(Connection conn) {
         ClientResult cr = new ClientResult();
         PreparedStatement pstmt = null;
         PreparedStatement stmt = null;
         int custid = 1;
-        try{
+        try {
             stmt = conn.prepareStatement(sqls.ap_q2_1());
-            stmt.setInt(1,customer_no);
+            stmt.setInt(1, customer_no);
             ResultSet rs = stmt.executeQuery();
-            if ( rs.next() ) {
-                custid= rs.getInt(1);
+            if (rs.next()) {
+                custid = rs.getInt(1);
             }
             rs.close();
         } catch (SQLException throwables) {
             throwables.printStackTrace();
-        }finally {
+        } finally {
             try {
                 stmt.close();
             } catch (SQLException e) {
@@ -361,7 +357,7 @@ public class APClient extends Client{
         long responseTime = 0L;
         try {
             pstmt = conn.prepareStatement(sqls.ap_q2());
-            pstmt.setInt(1,custid);
+            pstmt.setInt(1, custid);
             long currentStarttTs = System.currentTimeMillis();
             pstmt.execute();
             long currentEndTs = System.currentTimeMillis();
@@ -376,7 +372,7 @@ public class APClient extends Client{
             cr.setResult(false);
             cr.setErrorMsg(e.getMessage());
             cr.setErrorCode(String.valueOf(e.getErrorCode()));
-        }  finally {
+        } finally {
             cr.setRt(responseTime);
             try {
                 pstmt.close();
@@ -387,7 +383,7 @@ public class APClient extends Client{
         return cr;
     }
 
-    public ClientResult execQ3(Connection conn){
+    public ClientResult execQ3(Connection conn) {
         ClientResult cr = new ClientResult();
         PreparedStatement pstmt = null;
         int custid;
@@ -395,8 +391,8 @@ public class APClient extends Client{
         try {
             pstmt = conn.prepareStatement(sqls.ap_q3());
             custid = rg.getRandomint(customer_no);
-            pstmt.setInt(1,custid);
-            pstmt.setInt(2,custid);
+            pstmt.setInt(1, custid);
+            pstmt.setInt(2, custid);
             long currentStarttTs = System.currentTimeMillis();
             pstmt.execute();
             long currentEndTs = System.currentTimeMillis();
@@ -411,7 +407,7 @@ public class APClient extends Client{
             cr.setResult(false);
             cr.setErrorMsg(e.getMessage());
             cr.setErrorCode(String.valueOf(e.getErrorCode()));
-        }  finally {
+        } finally {
             cr.setRt(responseTime);
             try {
                 pstmt.close();
@@ -422,7 +418,7 @@ public class APClient extends Client{
         return cr;
     }
 
-    public ClientResult execQ4(Connection conn){
+    public ClientResult execQ4(Connection conn) {
         ClientResult cr = new ClientResult();
         PreparedStatement pstmt = null;
         int custid;
@@ -430,8 +426,8 @@ public class APClient extends Client{
         try {
             pstmt = conn.prepareStatement(sqls.ap_q4());
             custid = rg.getRandomint(customer_no);
-            pstmt.setInt(1,custid);
-            pstmt.setInt(2,custid);
+            pstmt.setInt(1, custid);
+            pstmt.setInt(2, custid);
             long currentStarttTs = System.currentTimeMillis();
             pstmt.execute();
             long currentEndTs = System.currentTimeMillis();
@@ -446,7 +442,7 @@ public class APClient extends Client{
             cr.setResult(false);
             cr.setErrorMsg(e.getMessage());
             cr.setErrorCode(String.valueOf(e.getErrorCode()));
-        }  finally {
+        } finally {
             cr.setRt(responseTime);
             try {
                 pstmt.close();
@@ -457,15 +453,15 @@ public class APClient extends Client{
         return cr;
     }
 
-    public ClientResult execQ5(Connection conn){
+    public ClientResult execQ5(Connection conn) {
         ClientResult cr = new ClientResult();
         PreparedStatement pstmt = null;
         int companyid;
         long responseTime = 0L;
         try {
             pstmt = conn.prepareStatement(sqls.ap_q5());
-            companyid = rg.getRandomint(customer_no,customer_no+company_no);
-            pstmt.setInt(1,companyid);
+            companyid = rg.getRandomint(customer_no, customer_no + company_no);
+            pstmt.setInt(1, companyid);
 
             long currentStarttTs = System.currentTimeMillis();
             pstmt.execute();
@@ -481,7 +477,7 @@ public class APClient extends Client{
             cr.setResult(false);
             cr.setErrorMsg(e.getMessage());
             cr.setErrorCode(String.valueOf(e.getErrorCode()));
-        }  finally {
+        } finally {
             cr.setRt(responseTime);
             try {
                 pstmt.close();
@@ -492,7 +488,7 @@ public class APClient extends Client{
         return cr;
     }
 
-    public ClientResult execQ6(Connection conn){
+    public ClientResult execQ6(Connection conn) {
         ClientResult cr = new ClientResult();
         PreparedStatement pstmt = null;
         long responseTime = 0L;
@@ -512,7 +508,7 @@ public class APClient extends Client{
             cr.setResult(false);
             cr.setErrorMsg(e.getMessage());
             cr.setErrorCode(String.valueOf(e.getErrorCode()));
-        }  finally {
+        } finally {
             cr.setRt(responseTime);
             try {
                 pstmt.close();
@@ -523,7 +519,7 @@ public class APClient extends Client{
         return cr;
     }
 
-    public ClientResult execQ7(Connection conn){
+    public ClientResult execQ7(Connection conn) {
         ClientResult cr = new ClientResult();
         PreparedStatement pstmt = null;
         int companyid;
@@ -531,11 +527,11 @@ public class APClient extends Client{
         try {
             pstmt = conn.prepareStatement(sqls.ap_q7());
             //int cid = rg.getRandomint(10000);
-            companyid = rg.getRandomint(customer_no,customer_no+company_no);
-            pstmt.setInt(1,companyid);
-            pstmt.setInt(2,companyid);
-            pstmt.setInt(3,companyid);
-            pstmt.setInt(4,companyid);
+            companyid = rg.getRandomint(customer_no, customer_no + company_no);
+            pstmt.setInt(1, companyid);
+            pstmt.setInt(2, companyid);
+            pstmt.setInt(3, companyid);
+            pstmt.setInt(4, companyid);
 
             long currentStarttTs = System.currentTimeMillis();
             pstmt.execute();
@@ -551,7 +547,7 @@ public class APClient extends Client{
             cr.setResult(false);
             cr.setErrorMsg(e.getMessage());
             cr.setErrorCode(String.valueOf(e.getErrorCode()));
-        }  finally {
+        } finally {
             cr.setRt(responseTime);
             try {
                 pstmt.close();
@@ -562,7 +558,7 @@ public class APClient extends Client{
         return cr;
     }
 
-    public ClientResult execQ8(Connection conn){
+    public ClientResult execQ8(Connection conn) {
         ClientResult cr = new ClientResult();
         PreparedStatement pstmt = null;
         long responseTime = 0L;
@@ -582,7 +578,7 @@ public class APClient extends Client{
             cr.setResult(false);
             cr.setErrorMsg(e.getMessage());
             cr.setErrorCode(String.valueOf(e.getErrorCode()));
-        }  finally {
+        } finally {
             cr.setRt(responseTime);
             try {
                 pstmt.close();
@@ -593,7 +589,7 @@ public class APClient extends Client{
         return cr;
     }
 
-    public ClientResult execQ9(Connection conn){
+    public ClientResult execQ9(Connection conn) {
         ClientResult cr = new ClientResult();
         PreparedStatement pstmt = null;
         long responseTime = 0L;
@@ -613,7 +609,7 @@ public class APClient extends Client{
             cr.setResult(false);
             cr.setErrorMsg(e.getMessage());
             cr.setErrorCode(String.valueOf(e.getErrorCode()));
-        }  finally {
+        } finally {
             cr.setRt(responseTime);
             try {
                 pstmt.close();
@@ -624,7 +620,7 @@ public class APClient extends Client{
         return cr;
     }
 
-    public ClientResult execQ10(Connection conn){
+    public ClientResult execQ10(Connection conn) {
         ClientResult cr = new ClientResult();
         PreparedStatement pstmt = null;
         long responseTime = 0L;
@@ -644,7 +640,7 @@ public class APClient extends Client{
             cr.setResult(false);
             cr.setErrorMsg(e.getMessage());
             cr.setErrorCode(String.valueOf(e.getErrorCode()));
-        }  finally {
+        } finally {
             cr.setRt(responseTime);
             try {
                 pstmt.close();
@@ -655,7 +651,7 @@ public class APClient extends Client{
         return cr;
     }
 
-    public ClientResult execQ11(Connection conn){
+    public ClientResult execQ11(Connection conn) {
         ClientResult cr = new ClientResult();
         PreparedStatement pstmt = null;
         long responseTime = 0L;
@@ -675,7 +671,7 @@ public class APClient extends Client{
             cr.setResult(false);
             cr.setErrorMsg(e.getMessage());
             cr.setErrorCode(String.valueOf(e.getErrorCode()));
-        }  finally {
+        } finally {
             cr.setRt(responseTime);
             try {
                 pstmt.close();
@@ -686,7 +682,7 @@ public class APClient extends Client{
         return cr;
     }
 
-    public ClientResult execQ12(Connection conn){
+    public ClientResult execQ12(Connection conn) {
         ClientResult cr = new ClientResult();
         String Category = rg.getRandomCategory();
         PreparedStatement pstmt = null;
@@ -708,7 +704,7 @@ public class APClient extends Client{
             cr.setResult(false);
             cr.setErrorMsg(e.getMessage());
             cr.setErrorCode(String.valueOf(e.getErrorCode()));
-        }  finally {
+        } finally {
             cr.setRt(responseTime);
             try {
                 pstmt.close();
@@ -719,7 +715,7 @@ public class APClient extends Client{
         return cr;
     }
 
-    public ClientResult execQ13(Connection conn){
+    public ClientResult execQ13(Connection conn) {
         ClientResult cr = new ClientResult();
         PreparedStatement pstmt = null;
         int custid;
@@ -728,7 +724,7 @@ public class APClient extends Client{
             pstmt = conn.prepareStatement(sqls.ap_q13());
             custid = rg.getRandomint(customer_no);
             long currentStarttTs = System.currentTimeMillis();
-            pstmt.setInt(1,custid);
+            pstmt.setInt(1, custid);
             pstmt.execute();
             long currentEndTs = System.currentTimeMillis();
             responseTime = currentEndTs - currentStarttTs;
@@ -742,7 +738,7 @@ public class APClient extends Client{
             cr.setResult(false);
             cr.setErrorMsg(e.getMessage());
             cr.setErrorCode(String.valueOf(e.getErrorCode()));
-        }  finally {
+        } finally {
             cr.setRt(responseTime);
             try {
                 pstmt.close();
@@ -760,9 +756,9 @@ public class APClient extends Client{
         ClientResult ret = new ClientResult();
         long totalElapsedTime = 0L;
         try {
-            Class<APClient> apClass = (Class<APClient>)Class.forName("io.pixelsdb.workload.APClient");
-            if(type == 2){
-                for(int r = 1;r <= round ;r++) {
+            Class<APClient> apClass = (Class<APClient>) Class.forName("io.pixelsdb.workload.APClient");
+            if (type == 2) {
+                for (int r = 1; r <= round; r++) {
                     long roundElapsedTime = 0L;
                     for (int i = 1; i <= 13; i++) {
                         Method method = apClass.getMethod("execQ" + i, Connection.class);
@@ -772,24 +768,23 @@ public class APClient extends Client{
                         roundElapsedTime += cr.getRt();
                         apTotalTime += cr.getRt();
                     }
-                    logger.info( r + " round elapsed time is " + String.format("%d",roundElapsedTime) + "(ms) ,QPS is " + String.format("%.2f",12000.0/roundElapsedTime));
+                    logger.info(r + " round elapsed time is " + String.format("%d", roundElapsedTime) + "(ms) ,QPS is " + String.format("%.2f", 12000.0 / roundElapsedTime));
                 }
                 ret.setRt(totalElapsedTime);
                 ret.setApRound(round);
-                logger.info("total elapsed time is  " + String.format("%.2f",ret.getRt()) + "(ms)");
-            }
-            else if(type == 7){
+                logger.info("total elapsed time is  " + String.format("%.2f", ret.getRt()) + "(ms)");
+            } else if (type == 7) {
                 int round = 1;
-                while(!exitFlag){
+                while (!exitFlag) {
                     long roundElapsedTime = 0L;
-                    ArrayList<Integer> runList = getRandomList(1,13);
-                    StringBuilder sb = new StringBuilder("Current thread " + Thread.currentThread().getName() + " - Run List in current round "+ round+" : ");
-                    for(int idx:runList){
+                    ArrayList<Integer> runList = getRandomList(1, 13);
+                    StringBuilder sb = new StringBuilder("Current thread " + Thread.currentThread().getName() + " - Run List in current round " + round + " : ");
+                    for (int idx : runList) {
                         sb.append("Q").append(idx).append(" ");
                     }
                     logger.info(sb.toString());
                     int i = 0;
-                    for ( i = 0; i < 13; i++) {
+                    for (i = 0; i < 13; i++) {
                         Method method = apClass.getMethod("execQ" + runList.get(i), Connection.class);
                         ClientResult cr = (ClientResult) method.invoke(this, conn);
                         totalElapsedTime += cr.getRt();
@@ -798,20 +793,19 @@ public class APClient extends Client{
                     if (exitFlag) {
                         break;
                     }
-                    logger.info("Current thread " + Thread.currentThread().getName() + " - round " + round + " elapsed time is " + String.format("%d",roundElapsedTime) + "(ms)");
+                    logger.info("Current thread " + Thread.currentThread().getName() + " - round " + round + " elapsed time is " + String.format("%d", roundElapsedTime) + "(ms)");
                     logger.info("Current thread " + Thread.currentThread().getName() + " - round " + round + " is done");
                     round++;
                 }
                 ret.setApRound(round);
                 ret.setRt(totalElapsedTime);
-            }
-            else if(type== 0 || type == 4) {
-                while(!exitFlag){
+            } else if (type == 0 || type == 4) {
+                while (!exitFlag) {
                     int i = rg.getRandomint(1, 7);
-                    Method method = apClass.getMethod("execIQ" + i,Connection.class);
+                    Method method = apClass.getMethod("execIQ" + i, Connection.class);
                     ClientResult cr = (ClientResult) method.invoke(this, conn);
                     totalElapsedTime += cr.getRt();
-                    if(exitFlag)
+                    if (exitFlag)
                         break;
                 }
                 ret.setRt(totalElapsedTime);
@@ -828,7 +822,7 @@ public class APClient extends Client{
         } catch (Exception e) {
             e.printStackTrace();
         } finally {
-            if(conn!=null){
+            if (conn != null) {
                 try {
                     conn.close();
                 } catch (SQLException e) {
