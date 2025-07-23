@@ -13,6 +13,7 @@ import io.pixelsdb.benchmark.load.ConfigReader;
 import io.pixelsdb.benchmark.stats.Histogram;
 import io.pixelsdb.benchmark.stats.Result;
 import io.pixelsdb.benchmark.util.RandomGenerator;
+import io.pixelsdb.benchmark.util.TxRecorder;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -61,7 +62,7 @@ public abstract class Client {
     public static Client initTask(Properties cfg, String name, int taskType) {
         Client client = null;
         try {
-            client = (Client) Class.forName("io.pixelsdb.workload." + name).getDeclaredConstructor().newInstance();
+            client = (Client) Class.forName("io.pixelsdb.benchmark.workload." + name).getDeclaredConstructor().newInstance();
             client.setClientName(name);
             client.setTask_prop(cfg);
             client.setTaskType(taskType);
@@ -199,6 +200,9 @@ public abstract class Client {
             threads = intParameter("xtpclient") + 1;
         } else if (taskType == 1) {
             threads = intParameter("tpclient");
+        }  else if (taskType == 9) {
+            threads = intParameter("tpclient"); // TODO(AntiO2): add lakehouse thread?
+            TxRecorder.getInstance().init(threads);
         }
         CR = new ConfigReader(strParameter("sf", "1x"));
         String db = strParameter("db");
@@ -210,6 +214,8 @@ public abstract class Client {
                 threads = intParameter("apclient");
             } else if (taskType == 2) {
                 threads = 1;
+            } else if (taskType == 9) {
+                // TODO(AntiO2): add trino query
             } else {
                 threads = 0;
             }
@@ -237,29 +243,32 @@ public abstract class Client {
         int random_num3 = rg.getRandomint(customer_no, customer_no + company_no);
         setTestid3(random_num3);
 
-        try {
-            // load the blocking-related transfer accounts
-            String DataPath = "Data_" + ConfigLoader.prop.getProperty("sf");
-            FileInputStream fi1 = new FileInputStream(new File(DataPath + "/Related_transfer_bids"));
-            ObjectInputStream oi1 = new ObjectInputStream(fi1);
-            // Read objects
-            Related_Blocked_Transfer_ids = (List<Integer>) oi1.readObject();
-            oi1.close();
-            fi1.close();
+        if(taskType != 9) {
+            try {
+                // load the blocking-related transfer accounts
+                String DataPath = "Data_" + ConfigLoader.prop.getProperty("sf");
+                FileInputStream fi1 = new FileInputStream(new File(DataPath + "/Related_transfer_bids"));
+                ObjectInputStream oi1 = new ObjectInputStream(fi1);
+                // Read objects
+                Related_Blocked_Transfer_ids = (List<Integer>) oi1.readObject();
+                oi1.close();
+                fi1.close();
 
-            // load the blocking-related checking accounts
-            FileInputStream fi2 = new FileInputStream(new File(DataPath + "/Related_checking_bids"));
-            ObjectInputStream oi2 = new ObjectInputStream(fi2);
-            // Read objects
-            Related_Blocked_Checking_ids = (List<Integer>) oi2.readObject();
-            oi2.close();
-            fi2.close();
+                // load the blocking-related checking accounts
+                FileInputStream fi2 = new FileInputStream(new File(DataPath + "/Related_checking_bids"));
+                ObjectInputStream oi2 = new ObjectInputStream(fi2);
+                // Read objects
+                Related_Blocked_Checking_ids = (List<Integer>) oi2.readObject();
+                oi2.close();
+                fi2.close();
 
-        } catch (FileNotFoundException e) {
-            logger.error("File not found");
-        } catch (IOException | ClassNotFoundException e) {
-            logger.error("Error initializing stream");
+            } catch (FileNotFoundException e) {
+                logger.error("File not found");
+            } catch (IOException | ClassNotFoundException e) {
+                logger.error("Error initializing stream");
+            }
         }
+
 
         doInit();
     }
@@ -283,9 +292,12 @@ public abstract class Client {
         }
 
         if (clientName.equalsIgnoreCase("tpclient")) {
-            if (taskType == 0 || taskType == 4)
+            if (taskType == 0 || taskType == 4) {
                 ret.setXtpclient(threads);
-            else
+            } else if (taskType == 9) {
+                ret.setTpclient(threads);
+                ret.setApclient(0); // TODO
+            } else
                 ret.setTpclient(threads);
         }
 
@@ -303,6 +315,8 @@ public abstract class Client {
             testTime = intParameter("tpRunMins");
         } else if (taskType == 0 || taskType == 4) {
             testTime = intParameter("xpRunMins");
+        } else if (taskType == 9) {
+            testTime = intParameter("freshRunMins");
         }
         final int _duration = testTime;
         if (taskType == 2) {

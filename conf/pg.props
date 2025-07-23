@@ -22,6 +22,9 @@ apclient=1
 
 fresh_interval=20
 
+freshRunMins=1
+fresh_tp_interval=60
+
 apRunMins=1
 tpRunMins=1
 xpRunMins=1

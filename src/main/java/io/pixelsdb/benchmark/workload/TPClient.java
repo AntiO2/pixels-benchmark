@@ -8,6 +8,7 @@ package io.pixelsdb.benchmark.workload;
 
 import io.pixelsdb.benchmark.ConfigLoader;
 import io.pixelsdb.benchmark.dbconn.ConnectionMgr;
+import io.pixelsdb.benchmark.util.TxRecorder;
 
 import java.sql.*;
 import java.util.Date;
@@ -48,6 +49,10 @@ public class TPClient extends Client {
     int company_no = 0;
     int contention_num = 0;
 
+    ThreadLocal<Integer> cli_id = new ThreadLocal<Integer>();
+
+    TxRecorder txRecorder = TxRecorder.getInstance();
+    long fresh_sleep_time = 0;
     // set init parameter before run
     @Override
     public void doInit() {
@@ -99,6 +104,9 @@ public class TPClient extends Client {
         customer_no = customernumer.intValue() + 1;
         company_no = companynumber.intValue();
         contention_num = Integer.parseInt(ConfigLoader.prop.getProperty("contention_num", "100"));
+
+        int fresh_interval = intParameter("fresh_tp_interval", 0);
+        fresh_sleep_time = 1L * 60 * 1000 / fresh_interval;
     }
 
     public int Get_blocked_transfer_Id() {
@@ -258,41 +266,25 @@ public class TPClient extends Client {
         ResultSet rs = null;
         long responseTime = 0L;
         try {
-            String[] statements = sqls.tp_at00();
-            String sql0 = statements[0];
-            String sql1 = statements[1];
+            String updateFresh = sqls.fresh_update();
 
             long currentStarttTs = System.currentTimeMillis();
-            // transaction begins
             conn.setAutoCommit(false);
 
-            // get top 10 employees
-            pstmt = conn.prepareStatement(sql0);
-            pstmt.setInt(1, targetId);
-
-            rs = pstmt.executeQuery();
-            int stopId = rg.getRandomint(1, 10);
-            int idx = 1;
-            int custId = 0;
-            while (rs.next()) {
-                custId = rs.getInt(1);
-                idx++;
-                if (idx == stopId) {
-                    break;
-                }
-            }
-            // update ts
-            pstmt = conn.prepareStatement(sql1);
-            pstmt.setInt(1, custId);
+            pstmt = conn.prepareStatement(updateFresh);
+            int thread_cli_id = cli_id.get();
+            int txId = txRecorder.getCurrentTxid(thread_cli_id);
+            pstmt.setInt(1, txId);
+            pstmt.setInt(2, thread_cli_id);
             pstmt.executeUpdate();
-
-            delete_map2.put(custId, System.currentTimeMillis());
-
             pstmt.close();
             conn.commit();
             long currentEndTs = System.currentTimeMillis();
             responseTime = currentEndTs - currentStarttTs;
             cr.setRt(responseTime);
+
+            txRecorder.insert(thread_cli_id, currentEndTs);
+            txRecorder.incrementTxid(thread_cli_id);
         } catch (SQLException e) {
             e.printStackTrace();
             cr.setResult(false);
@@ -2274,10 +2266,30 @@ public class TPClient extends Client {
                         break;
                 }
                 ret.setRt(totalElapsedTime);
+            } else if (type == 9) {
+                String threadName = Thread.currentThread().getName();
+                if (threadName.startsWith("T")) {
+                    try {
+                        cli_id.set(Integer.parseInt(threadName.substring(1)) - 1);
+                    } catch (NumberFormatException e) {
+                        throw new IllegalArgumentException("Thread name format invalid: " + threadName, e);
+                    }
+                } else {
+                    throw new IllegalArgumentException("Thread name does not start with 'T': " + threadName);
+                }
+
+                while (!exitFlag) {
+                    cr = execFresh3(conn);
+                    totalElapsedTime += cr.getRt();
+                    Thread.sleep(fresh_sleep_time);
+                }
+                ret.setRt(totalElapsedTime);
             }
 
         } catch (ClassNotFoundException e) {
             e.printStackTrace();
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
         } finally {
             if (conn != null) {
                 try {

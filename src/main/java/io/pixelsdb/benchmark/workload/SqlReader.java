@@ -88,6 +88,7 @@ public class SqlReader {
             sqls.setFresh_iq(toml.getString("fresh.sql"));
             sqls.setFresh_iq1(toml.getString("fresh-1.sql"));
             sqls.setFresh_init(toml.getString("fresh-init.sql"));
+            sqls.setFresh_update(toml.getString("fresh-update.sql"));
 
         } catch (Exception e) {
             e.printStackTrace();

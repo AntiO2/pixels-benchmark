@@ -120,6 +120,13 @@ public class PixelsBench {
                     }
                     type = 8;
                     pixelsBench.runInitFreshness();
+                } else if (cmd.equalsIgnoreCase("runpixelsfresh")) {
+                    if(!pixelsBench.freshness) {
+                        logger.error("Try to run pixels freshness only, but freshness is not enabled");
+                        System.exit(-1);
+                    }
+                    type = 9;
+                    pixelsBench.runPixelsFreshness(type);
                 } else {
                     logger.error("Run task not found : " + cmd);
                     cmdProcessor.printHelp();
@@ -398,6 +405,55 @@ public class PixelsBench {
         logger.info("Freshness Workload is done.");
     }
 
+
+    public void runPixelsFreshness(int tt) {
+        logger.info("Begin Pixels Freshness Workload");
+        taskType = tt;
+        res.setStartTS(dateFormat.format(new Date()));
+        String tpClient = ConfigLoader.prop.getProperty("tpclient");
+
+        List<Client> tasks = new ArrayList<Client>();
+        if (Integer.parseInt(tpClient) > 0) {
+            Client job = Client.initTask(ConfigLoader.prop, "TPClient", taskType);
+            job.setRet(res);
+            job.setVerbose(verbose);
+            job.setSqls(sqls);
+            tasks.add(job);
+        } else {
+            logger.warn("There is no an available tp client");
+            return;
+        }
+        taskType = 9;
+
+        ExecutorService es = Executors.newFixedThreadPool(tasks.size());
+        List<Future> future = new ArrayList<Future>();
+        for (final Client j : tasks) {
+            future.add(es.submit(new Runnable() {
+                        public void run() {
+                            j.startTask();
+                        }
+                    })
+            );
+        }
+        for (int flength = 0; flength < future.size(); flength++) {
+            Future f = future.get(flength);
+            if (f != null && !f.isCancelled() && !f.isDone()) {
+                try {
+                    f.get();
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                } catch (ExecutionException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+
+        if (!es.isShutdown() || !es.isTerminated()) {
+            es.shutdownNow();
+        }
+        res.setEndTs(dateFormat.format(new Date()));
+        logger.info("Pixels Freshness Workload is done.");
+    }
 
     public void runInitFreshness() {
         Connection conn_tp = ConnectionMgr.getConnection(0);
