@@ -4,10 +4,10 @@ db=postgreSQL
 classname=org.postgresql.Driver
 classname_ap=org.postgresql.Driver
 
-username=postgres
-password=postgres
+username=pixels
+password=pixels_realtime_crud
 
-url=jdbc:postgresql://localhost:5432/hybench_sf1x
+url=jdbc:postgresql://localhost:5432/pixels_bench_sf1x
 
 at1_percent=35
 at2_percent=25
@@ -16,7 +16,7 @@ at4_percent=15
 at5_percent=7
 at6_percent=3
 
-tpclient=1
+tpclient=5
 apclient=1
 
 

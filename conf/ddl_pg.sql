@@ -1,3 +1,8 @@
+CREATE TABLE freshness (
+    f_tx_id int,
+    f_cli_id int
+);
+
 CREATE TABLE customer (
 custID int PRIMARY KEY,
 companyID int,

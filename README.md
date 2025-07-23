@@ -23,14 +23,24 @@ docker image `quay.io/debezium/postgres:16` is recommended.
 
 
 ## Step 1: Data Generation and Loading [PostgreSQL 16]
-```
+
+
+
+
+```bash
 psql -h localhost -U postgres -c 'create database pixels_bench_sf1x;'
 
-./pixels_bench -t sql -c conf/pg.props -f conf/ddl_pg.sql
+./pixels_bench -t sql -c conf/pg.props -f conf/ddl_pg.sql -r
 
 ./pixels_bench -t gendata -c conf/pg.props -f conf/stmt_postgres.toml
 
 psql -h localhost -U postgres -d pixels_bench_sf1x -f conf/load_data_pg.sql
+```
+
+Use `-r` option to enable freshness metric. In pixels bench, we need to init freshness table in a separate step
+
+```bash
+./pixels_bench -t runinitfresh  -c conf/pg.props -f conf/stmt_postgres.toml -r
 ```
 
 ## Step 2: Index Building [PostgreSQL 16]

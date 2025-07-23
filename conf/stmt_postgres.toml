@@ -417,3 +417,12 @@ sql="""select sa.accountID, sa.fresh_ts
 from savingaccount sa,company co,customer cu
 where sa.accountid=cu.custid and co.companyid=? and co.companyID = cu.companyID
  order by cu.created_date ASC limit 10;"""
+
+[fresh-init]
+sql="""insert into freshness
+    (f_tx_id, f_cli_id) VALUES(0,?)"""
+
+[fresh-update]
+sql = """update freshness
+SET f_tx_id = ?
+WHERE f_cli_id = ? """
