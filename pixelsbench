@@ -1,0 +1,7 @@
+#!/bin/bash
+
+[[ -z ${JAVA_HOME} ]] && { echo 'WARN: $JAVA_HOME not set'; }
+
+export PATH=$JAVA_HOME/bin:$PATH
+
+java -cp $PWD/lib/*:. io.pixelsdb.PixelsBench $*

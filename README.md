@@ -1,45 +1,28 @@
-# HyBench - A New Benchmark for HTAP Databases 
-
-Please refer to our [VLDB 2024 Research Paper](https://vldb.org/pvldb/volumes/17/paper/HyBench%3A%20A%20New%20Benchmark%20for%20HTAP%20Databases) for more details:
-
-```
-Chao Zhang, Guoliang Li, and Tao Lv. "HyBench: A New Benchmark for HTAP Databases." Proceedings of the VLDB Endowment 17.5 (2024): 939-951.
-```
-Please cite our paper as follows:
-
-@article{zhang2024hybench,
-  title={HyBench: A New Benchmark for HTAP Databases},\
-  author={Chao Zhang and Guoliang Li and Tao Lv},\
-  journal={Proceedings of the VLDB Endowment},\
-  volume={17},\
-  number={5},\
-  pages={939--951},\
-  year={2024},\
-  publisher={VLDB Endowment}\
-}
-
+## Pixels-Benchmark - A general method for testing CDC synchronization throughput and freshness.
 
 ## Software Environments
 ```
-MAVEN version > 3.6.3
+MAVEN version >= 3.6.3
 
-JAVA version > 17
+JAVA version >= 17
 
-Tested OS: |MacOS Ventura 13.2.1|Ubuntu 22.04|CentOS 7| Windows 10
+Tested OS: |Ubuntu 22.04|
 
-An example for JAVA installation in MacOS: brew install openjdk@17
 ```
-
 
 ## Benchmark Configuration
 
-Configure the parameters for PostgreSQL 14 including **username, password, username_ap, password_ap** in the following file (NB: configure the same URL for a standalone setting):
+Configure the parameters for PostgreSQL 16 including **username, password** in the following file:
 
 ```
-cd HyBench-2023
+cd pixels-benchmark
 vim ./conf/pg.props
 ```
-## Step 1: Data Generation and Loading [PostgreSQL 14]
+
+docker image `quay.io/debezium/postgres:16` is recommended.
+
+
+## Step 1: Data Generation and Loading [PostgreSQL 16]
 ```
 psql -h localhost -U postgres -c 'create database hybench_sf1x;'
 
@@ -63,10 +46,10 @@ bash hybench -t runall -c conf/pg.props -f conf/stmt_postgres.toml
 ```
 
 ## Performance Metrics
-![Model](https://github.com/Rucchao/HyBench-2023/blob/master/Metrics.png)
+![Model](./Metrics.png)
 
 ## Benchmarking Notes
-(1) Error: Could not find or load main class com.hybench.HyBench
+(1) Error: Could not find or load main class io.pixelsdb.HyBench
 ```
 Solution: modify the path to lib directory in the hybench file
 ```
@@ -78,7 +61,7 @@ Solution: when the Maven version is greater than 3.8, you need to remove the tag
 
 (3) With the OS in Windows, you may use the Java command to run HyBench: 
 ```
-Solution: java -cp "HyBench-1.0-SNAPSHOT.jar;lib/*" com.hybench.HyBench [-t][-c][-f]
+Solution: java -cp "HyBench-1.0-SNAPSHOT.jar;lib/*" io.pixelsdb.HyBench [-t][-c][-f]
 ```
 (4) File not Found for PG data loading
 ```
@@ -129,4 +112,9 @@ make sure the user has the write permission to the folder or use the sudo comman
 | apround        | 1                                         | AP round，at least 1 round should be evaluated                                                                | AP Power test                      |   |
 
 (9) Please refer to [parameters.toml](https://github.com/Rucchao/HyBench-2023/blob/master/src/main/resources/parameters.toml) for the parameters of data generation.
+
+---
+
+This repository is based on the [HyBench](https://github.com/Rucchao/HyBench-2024) benchmark
+and draws inspiration from the [HATtrick](https://github.com/UWHustle/HATtrick) approach.
 
