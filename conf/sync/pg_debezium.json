@@ -1,0 +1,24 @@
+{
+  "name": "pixels-postgres-sf-connector",
+  "config": {
+    "provide.transaction.metadata": true,
+    "connector.class": "io.debezium.connector.postgresql.PostgresConnector",
+    "tasks.max": "1",
+    "database.hostname": "pixels_postgres_source_db",
+    "database.port": "5432",
+    "database.user": "pixels",
+    "database.password": "pixels_realtime_crud",
+    "database.dbname" : "pixels_bench_sf1x",
+    "schema.include.list": "public",
+    "database.server.id": "1",
+    "topic.prefix": "postgresql.oltp_server",
+    "transforms": "topicRouting",
+    "transforms.topicRouting.type": "org.apache.kafka.connect.transforms.RegexRouter",
+    "transforms.topicRouting.regex": "postgresql.oltp_server\\.public\\.(.*)",
+    "transforms.topicRouting.replacement": "postgresql.oltp_server.pixels_bench_sf1x.$1",
+
+    "key.converter": "org.apache.kafka.connect.json.JsonConverter",
+    "value.converter": "org.apache.kafka.connect.json.JsonConverter",
+    "plugin.name": "pgoutput"
+  }
+}
