@@ -283,6 +283,7 @@ public class TPClient extends Client {
             responseTime = currentEndTs - currentStarttTs;
             cr.setRt(responseTime);
 
+            logger.info("Fresh TPy: Cli {}\tTxnID {}\tTs {}", thread_cli_id, txRecorder.getCurrentTxid(thread_cli_id), currentEndTs);
             txRecorder.insert(thread_cli_id, currentEndTs);
             txRecorder.incrementTxid(thread_cli_id);
         } catch (SQLException e) {

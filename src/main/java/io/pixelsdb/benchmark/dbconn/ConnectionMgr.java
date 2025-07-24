@@ -82,6 +82,11 @@ public class ConnectionMgr {
                 url = prop.getProperty("url_ap");
                 username = prop.getProperty("username_ap");
                 password = prop.getProperty("password_ap");
+            } else if (2 == type) {
+              Class.forName(prop.getProperty("trino_driver"));
+              url = prop.getProperty("trino_url");
+              username = prop.getProperty("trino_user");
+              password = "";
             } else
                 Class.forName(prop.getProperty("classname"));
             conn = DriverManager.getConnection(

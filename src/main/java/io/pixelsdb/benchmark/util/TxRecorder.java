@@ -63,4 +63,17 @@ public class TxRecorder {
     public void incrementTxid(int cliId) {
         currentTxIds[cliId]++;
     }
+
+    public long getFirstUnseenTxn(long startTime, int txnNum, int cliId) {
+        return containers.get(cliId).getFirstUnseenTxn(startTime, txnNum);
+    }
+
+    public List<Long> getFreshnessForAllClients(long startTime, int[] txnNums) {
+        List<Long> result = new ArrayList<>();
+        for (int i = 0; i < containers.size(); i++) {
+            long fresh = containers.get(i).getFirstUnseenTxn(startTime, txnNums[i]);
+            result.add(fresh);
+        }
+        return result;
+    }
 }

@@ -225,6 +225,11 @@ public class Result {
             case 8:
                 logger.info("Init freshness table, TP Client Num is " + getTpclient());
                 break;
+            case 9:
+                logger.info("TP Concurrency is " + getTpclient());
+                logger.info("Total amount of TP Transaction is " + getTpTotal());
+                logger.info("TPS is " + getTps());
+                logger.info("Freshness(ms) : " + getFresh());
         }
         logger.info("Query/Transaction response time(ms) histogram : ");
         if (type == 2 || type == 6 || type == 7) {

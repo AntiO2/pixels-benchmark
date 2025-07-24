@@ -69,6 +69,17 @@ public class Sqlstmts {
     private String fresh_init = null;
     private String fresh_update = null;
 
+    public String fresh_query() {
+        return fresh_query;
+    }
+
+    public void setFresh_query(String fresh_query) {
+        this.fresh_query = fresh_query;
+    }
+
+    private String fresh_query = null;
+
+
     public String fresh_update() {
         return fresh_update;
     }

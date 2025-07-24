@@ -435,6 +435,58 @@ public class PixelsBench {
                     })
             );
         }
+
+        Thread freshness = null;
+        final long startTs = System.currentTimeMillis();
+        final int _duration = Integer.parseInt(ConfigLoader.prop.getProperty("xpRunMins"));
+        final int _fresh_interval = Integer.parseInt(ConfigLoader.prop.getProperty("fresh_interval", String.valueOf(20)));
+        String db = ConfigLoader.prop.getProperty("db");
+        int dbType = Constant.getDbType(db);
+        freshness = new Thread() {
+                public void run() {
+                    Connection conn_tp = ConnectionMgr.getConnection(0);
+                    Connection conn_trino = ConnectionMgr.getConnection(2);
+                    double sum = 0;
+                    int cnt = 0;
+                    long duration = _duration * 60 * 1000L;
+                    long elpased_time = 0L;
+                    boolean hasGetFreshness = false;
+                    for (int i = 0; i < _fresh_interval; i++) {
+                        try {
+                            Thread.sleep((long) _duration * 60 * 1000 / _fresh_interval);
+                            elpased_time += (long) _duration * 60 * 1000 / _fresh_interval;
+                            PixelsFreshness fresh = new PixelsFreshness(conn_trino, sqls, startTs);
+                            if (fresh.calcFreshness() == 2147483647) {
+                                continue;
+                            }
+                            sum += fresh.calcFreshness();
+                            cnt++;
+                            res.setFresh(sum / cnt);
+                            hasGetFreshness = true;
+                        } catch (InterruptedException e) {
+                            logger.info("Freshness checker was stopped in force");
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                    }
+                    if (!hasGetFreshness) {
+                        res.setFresh(2147483647);
+                    }
+                    try {
+                        if (conn_trino != null) {
+                            conn_trino.close();
+                        }
+                        if (conn_tp != null) {
+                            conn_tp.close();
+                        }
+                    } catch (SQLException e) {
+                        e.printStackTrace();
+                    }
+            }
+        };
+        freshness.start();
+
+
         for (int flength = 0; flength < future.size(); flength++) {
             Future f = future.get(flength);
             if (f != null && !f.isCancelled() && !f.isDone()) {
@@ -446,6 +498,11 @@ public class PixelsBench {
                     e.printStackTrace();
                 }
             }
+        }
+
+
+        if (freshness != null) {
+            freshness.interrupt();
         }
 
         if (!es.isShutdown() || !es.isTerminated()) {
