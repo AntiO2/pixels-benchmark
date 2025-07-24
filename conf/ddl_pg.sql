@@ -1,6 +1,6 @@
 CREATE TABLE freshness (
     f_tx_id int,
-    f_cli_id int
+    f_cli_id int PRIMARY KEY
 );
 
 CREATE TABLE customer (

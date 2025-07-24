@@ -106,7 +106,7 @@ public class TPClient extends Client {
         contention_num = Integer.parseInt(ConfigLoader.prop.getProperty("contention_num", "100"));
 
         int fresh_interval = intParameter("fresh_tp_interval", 0);
-        fresh_sleep_time = 1L * 60 * 1000 / fresh_interval;
+        fresh_sleep_time = (long) 60 * 1000 / fresh_interval;
     }
 
     public int Get_blocked_transfer_Id() {

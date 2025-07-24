@@ -48,3 +48,4 @@ SELECT SETVAL('loantrans_id_seq', (SELECT max(id) FROM loantrans));
 ALTER TABLE loantrans ALTER COLUMN id SET DEFAULT nextval('loantrans_id_seq'::regclass);
 ALTER sequence loantrans_id_seq owner to postgres;
 ALTER SEQUENCE loantrans_id_seq OWNED BY loantrans.id;
+

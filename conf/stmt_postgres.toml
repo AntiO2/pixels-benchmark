@@ -426,3 +426,10 @@ sql="""insert into freshness
 sql = """update freshness
 SET f_tx_id = ?
 WHERE f_cli_id = ? """
+
+
+[fresh-query]
+sql = """select max(f_tx_id),f_cli_id
+from freshness
+group by f_cli_id
+order by f_cli_id;"""

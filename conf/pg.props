@@ -8,6 +8,8 @@ username=pixels
 password=pixels_realtime_crud
 
 url=jdbc:postgresql://localhost:5432/pixels_bench_sf1x
+trino_url=jdbc:trino://localhost:18081/paimon/pixels_bench_sf1x
+
 
 at1_percent=35
 at2_percent=25
