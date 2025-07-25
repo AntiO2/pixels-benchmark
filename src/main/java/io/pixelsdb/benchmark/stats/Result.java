@@ -226,9 +226,6 @@ public class Result {
                 logger.info("Init freshness table, TP Client Num is " + getTpclient());
                 break;
             case 9:
-                logger.info("TP Concurrency is " + getTpclient());
-                logger.info("Total amount of TP Transaction is " + getTpTotal());
-                logger.info("TPS is " + getTps());
                 logger.info("Freshness(ms) : " + getFresh());
         }
         logger.info("Query/Transaction response time(ms) histogram : ");
@@ -316,6 +313,16 @@ public class Result {
         if (type == 4) {
             logger.info("-----------Avg-Freshness-Score--------------------");
             logger.info("Freshness(ms) : " + getFresh());
+        }
+
+        if (type == 9) {
+            System.out.println("-----------Freshness--------------------");
+                System.out.printf("Freshness : max delay : %10.2f | min delay : %10.2f | avg delay : %10.2f | 95%% delay : %10.2f | 99%% delay : %10.2f \n",
+                        hist.getFreshness().getMax(),
+                        hist.getFreshness().getMin(),
+                        hist.getFreshness().getMean(),
+                        hist.getFreshness().getPercentile(95),
+                        hist.getFreshness().getPercentile(99));
         }
 
         logger.info("====================Thank you!========================");

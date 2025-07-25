@@ -14,7 +14,7 @@ public class Histogram {
     public SynchronizedDescriptiveStatistics[] xpstat_iq = new SynchronizedDescriptiveStatistics[6];
     public SynchronizedDescriptiveStatistics[] xpstat_at = new SynchronizedDescriptiveStatistics[6];
     public SynchronizedDescriptiveStatistics[] tpstat = new SynchronizedDescriptiveStatistics[18];
-
+    public SynchronizedDescriptiveStatistics   freshness;
     public Histogram() {
         for (int i = 0; i < 13; i++) {
             apstat[i] = new SynchronizedDescriptiveStatistics();
@@ -28,6 +28,7 @@ public class Histogram {
         for (int i = 0; i < 6; i++) {
             xpstat_at[i] = new SynchronizedDescriptiveStatistics();
         }
+        this.freshness = new SynchronizedDescriptiveStatistics();
     }
 
     public SynchronizedDescriptiveStatistics getAPItem(int index) {
@@ -46,4 +47,7 @@ public class Histogram {
         return xpstat_iq[index];
     }
 
+    public SynchronizedDescriptiveStatistics getFreshness() {
+        return freshness;
+    }
 }

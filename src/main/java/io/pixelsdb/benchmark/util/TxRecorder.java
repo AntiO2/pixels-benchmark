@@ -65,7 +65,11 @@ public class TxRecorder {
     }
 
     public long getFirstUnseenTxn(long startTime, int txnNum, int cliId) {
-        return containers.get(cliId).getFirstUnseenTxn(startTime, txnNum);
+        if(cliId >= containers.size()) {
+            return 2147483647;
+        } else {
+            return containers.get(cliId).getFirstUnseenTxn(startTime, txnNum);
+        }
     }
 
     public List<Long> getFreshnessForAllClients(long startTime, int[] txnNums) {

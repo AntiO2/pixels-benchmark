@@ -438,7 +438,8 @@ public class PixelsBench {
 
         Thread freshness = null;
         final long startTs = System.currentTimeMillis();
-        final int _duration = Integer.parseInt(ConfigLoader.prop.getProperty("xpRunMins"));
+        final int _duration = Integer.parseInt(ConfigLoader.prop.getProperty("pixelsFreshRunMins"));
+        final int _fresh_warmup = Integer.parseInt(ConfigLoader.prop.getProperty("pixelsFreshWarmupSeconds", String.valueOf(0)));
         final int _fresh_interval = Integer.parseInt(ConfigLoader.prop.getProperty("fresh_interval", String.valueOf(20)));
         String db = ConfigLoader.prop.getProperty("db");
         int dbType = Constant.getDbType(db);
@@ -451,15 +452,26 @@ public class PixelsBench {
                     long duration = _duration * 60 * 1000L;
                     long elpased_time = 0L;
                     boolean hasGetFreshness = false;
+
+                    try {
+                        logger.info("Begin Freshness Warmup, Sleep {} min", _fresh_warmup);
+                        Thread.sleep((long) _fresh_warmup * 1000);
+                    } catch (InterruptedException e) {
+                        logger.info("warm up was stopped in force");
+                        return;
+                    }
+
                     for (int i = 0; i < _fresh_interval; i++) {
                         try {
                             Thread.sleep((long) _duration * 60 * 1000 / _fresh_interval);
                             elpased_time += (long) _duration * 60 * 1000 / _fresh_interval;
                             PixelsFreshness fresh = new PixelsFreshness(conn_trino, sqls, startTs);
-                            if (fresh.calcFreshness() == 2147483647) {
+                            long freshness = fresh.calcFreshness();
+                            if (freshness == 2147483647) {
                                 continue;
                             }
-                            sum += fresh.calcFreshness();
+                            res.getHist().getFreshness().addValue(freshness);
+                            sum += freshness;
                             cnt++;
                             res.setFresh(sum / cnt);
                             hasGetFreshness = true;

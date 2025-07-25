@@ -316,7 +316,7 @@ public abstract class Client {
         } else if (taskType == 0 || taskType == 4) {
             testTime = intParameter("xpRunMins");
         } else if (taskType == 9) {
-            testTime = intParameter("freshRunMins");
+            testTime = intParameter("pixelsFreshRunMins");
         }
         final int _duration = testTime;
         if (taskType == 2) {

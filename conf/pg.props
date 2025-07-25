@@ -25,8 +25,10 @@ apclient=1
 
 fresh_interval=20
 
-freshRunMins=1
+freshRunMins=5
 fresh_tp_interval=60
+pixelsFreshRunMins=5
+pixelsFreshWarmupSeconds=10
 
 apRunMins=1
 tpRunMins=1
