@@ -36,11 +36,37 @@ import java.util.Properties;
  * @date: 2025/7/24 02:07
  */
 public class QueryTrinoTest {
-    private static final String JDBC_URL = "jdbc:trino://localhost:18081/paimon/test_simple";
-    private static final String TBL_NAME = "test_tbl";
 
     @Test
-    public void testTrinoQuery() {
+    public void testPaimonTrinoQuery() {
+        String JDBC_URL = "jdbc:trino://localhost:18081/paimon/test_simple";
+        String TBL_NAME = "test_tbl";
+        String query = "SELECT * FROM " + TBL_NAME;  // 可替换为 SELECT * FROM your_table LIMIT 10;
+
+        Properties properties = new Properties();
+        properties.setProperty("user", "test");
+
+        try (Connection conn = DriverManager.getConnection(JDBC_URL, properties)) {
+
+            PreparedStatement pstmt = conn.prepareStatement(query);
+
+            ResultSet rs = pstmt.executeQuery();
+
+            while (rs.next()) {
+                int result = rs.getInt(1);
+                System.out.println("Query result: " + result);
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            Assertions.fail("Query failed: " + e.getMessage());
+        }
+    }
+
+    @Test
+    public void testRemoteTrinoQuery() {
+        String JDBC_URL = "jdbc:trino://10.77.110.33:8080/iceberg/pixels";
+        String TBL_NAME = "example_table";
         String query = "SELECT * FROM " + TBL_NAME;  // 可替换为 SELECT * FROM your_table LIMIT 10;
 
         Properties properties = new Properties();
