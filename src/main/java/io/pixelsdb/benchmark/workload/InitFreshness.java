@@ -21,7 +21,6 @@ package io.pixelsdb.benchmark.workload;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
-import java.sql.ResultSet;
 import java.sql.SQLException;
 
 /**
@@ -67,5 +66,34 @@ public class InitFreshness {
             }
         }
         return cnt;
+    }
+
+    public boolean initCdcReplica()
+    {
+        boolean success = true;
+        PreparedStatement pstmt = null;
+        try {
+            long currentStarttTs = System.currentTimeMillis();
+            // transaction begins
+            String[] cdc_inits = sqls.cdc_init();
+
+            conn.setAutoCommit(false);
+            for(String cdc_init: cdc_inits)
+            {
+                pstmt = conn.prepareStatement(cdc_init);
+                boolean res = pstmt.execute();
+                success &= res;
+            }
+            conn.commit();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                pstmt.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+        return success;
     }
 }

@@ -101,3 +101,18 @@ check_env() {
 
   log_info "Finish env check"
 }
+
+load_props() {
+    local file="$1"
+    [[ ! -f "$file" ]] && { log_fatal_exit  "Properties file not found: ${file}"; }
+
+    while IFS='=' read -r key value; do
+        log_info "Read Props: ${key}=${value}"
+        key=$(echo "$key" | sed 's/^[ \t]*//;s/[ \t]*$//')
+        value=$(echo "$value" | sed 's/^[ \t]*//;s/[ \t]*$//')
+        [[ -z "$key" ]] && continue
+        [[ "$key" =~ ^# ]] && continue
+        [[ "$key" =~ ^\; ]] && continue
+        export "$key"="$value"
+    done < "$file"
+}

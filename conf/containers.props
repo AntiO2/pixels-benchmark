@@ -1,0 +1,2 @@
+benchmark_host=10.77.110.35
+debezium_conf=sync/pg_debezium.json

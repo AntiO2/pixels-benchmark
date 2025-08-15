@@ -7,6 +7,9 @@ package io.pixelsdb.benchmark.load;
  **/
 
 import com.moandjiezana.toml.Toml;
+import io.pixelsdb.benchmark.PixelsBench;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
@@ -15,6 +18,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 public class ConfigReader {
+    public static Logger logger = LogManager.getLogger(ConfigReader.class);
     static final ClassLoader loader = ConfigReader.class.getClassLoader();
     public long customer_number;
     public long company_number;
@@ -60,6 +64,7 @@ public class ConfigReader {
             BufferedReader Br = new BufferedReader(
                     new InputStreamReader(loader.getResourceAsStream(fileName)));
             Toml toml = new Toml().read(Br);
+            logger.info("scale_factor: {}", scale_factor);
             // general
             startYear = toml.getLong(scale_factor + ".startYear").intValue();
             midPoint = toml.getLong(scale_factor + ".midPoint").intValue();
@@ -72,8 +77,8 @@ public class ConfigReader {
             midPointDate = new SimpleDateFormat("yyyy-MM-dd").parse(midDate_str);
             endDate = new SimpleDateFormat("yyyy-MM-dd").parse(endDate_str);
             loanDate = new SimpleDateFormat("yyyy-MM-dd").parse(loanDate_str);
-            cust_rate = toml.getDouble(scale_factor + ".cust_rate").doubleValue();
-            prob_blocked = toml.getDouble(scale_factor + ".prob_blocked").doubleValue();
+            cust_rate = toml.getDouble(scale_factor + ".cust_rate");
+            prob_blocked = toml.getDouble(scale_factor + ".prob_blocked");
             savingaccount_datapath = toml.getString(scale_factor + ".savingaccount_datapath");
             checkingaccount_datapath = toml.getString(scale_factor + ".checkingaccount_datapath");
             transfer_number = toml.getLong(scale_factor + ".transfer_number");

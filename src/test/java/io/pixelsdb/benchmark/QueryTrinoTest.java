@@ -64,9 +64,9 @@ public class QueryTrinoTest {
     }
 
     @Test
-    public void testRemoteTrinoQuery() {
-        String JDBC_URL = "jdbc:trino://10.77.110.33:8080/iceberg/pixels";
-        String TBL_NAME = "example_table";
+    public void testRemotePixelsQuery() {
+        String JDBC_URL = "jdbc:trino://localhost:18081/pixels/pixels_bench_sf1x";
+        String TBL_NAME = "freshness";
         String query = "SELECT * FROM " + TBL_NAME;  // 可替换为 SELECT * FROM your_table LIMIT 10;
 
         Properties properties = new Properties();
@@ -79,7 +79,7 @@ public class QueryTrinoTest {
             ResultSet rs = pstmt.executeQuery();
 
             while (rs.next()) {
-                int result = rs.getInt(1);
+                int result = rs.getInt(2);
                 System.out.println("Query result: " + result);
             }
 
@@ -88,4 +88,5 @@ public class QueryTrinoTest {
             Assertions.fail("Query failed: " + e.getMessage());
         }
     }
+
 }

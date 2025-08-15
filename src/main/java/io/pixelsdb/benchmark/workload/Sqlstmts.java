@@ -69,6 +69,9 @@ public class Sqlstmts {
     private String fresh_init = null;
     private String fresh_update = null;
 
+    // cdc sql
+    private String[] cdc_init = null;
+
     public String fresh_query() {
         return fresh_query;
     }
@@ -518,4 +521,15 @@ public class Sqlstmts {
     public String fresh_init() {
         return fresh_init;
     }
+
+    public String[] cdc_init()
+    {
+        return cdc_init;
+    }
+
+    public void setCdc_init(String[] cdc_init)
+    {
+        this.cdc_init = cdc_init;
+    }
+
 }

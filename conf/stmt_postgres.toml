@@ -433,3 +433,16 @@ sql = """select max(f_tx_id) as f_tx_id, f_cli_id
 from pixels_freshness
 group by f_cli_id
 order by f_cli_id """
+
+[cdc-init]
+sql = [
+    "ALTER TABLE checking REPLICA IDENTITY FULL;",
+    "ALTER TABLE checkingaccount REPLICA IDENTITY FULL;",
+    "ALTER TABLE company REPLICA IDENTITY FULL;",
+    "ALTER TABLE customer REPLICA IDENTITY FULL;",
+    "ALTER TABLE freshness REPLICA IDENTITY FULL;",
+    "ALTER TABLE loanapps REPLICA IDENTITY FULL;",
+    "ALTER TABLE loantrans REPLICA IDENTITY FULL;",
+    "ALTER TABLE savingaccount REPLICA IDENTITY FULL;",
+    "ALTER TABLE transfer REPLICA IDENTITY FULL;"
+]

@@ -4,4 +4,8 @@
 
 export PATH=$JAVA_HOME/bin:$PATH
 
-java -cp $PWD/lib/*:. io.pixelsdb.PixelsBench $*
+SOURCE_PATH=`readlink -f $BASH_SOURCE` 2>/dev/null
+BENCHMARK_HOME=`dirname ${SOURCE_PATH}`
+
+mvn package -f ${BENCHMARK_HOME}/pom.xml
+java -cp ${BENCHMARK_HOME}/target/benchmark-1.0-SNAPSHOT.jar:${BENCHMARK_HOME}/target/lib/*:. io.pixelsdb.benchmark.PixelsBench $*

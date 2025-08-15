@@ -4,7 +4,7 @@ services:
     image: apicurio/apicurio-registry-mem:2.6.2.Final
     container_name: apicurio
     ports:
-      - "8080:8080"
+      - "28081:8080"
     networks:
       - pixels_network
 
@@ -54,7 +54,7 @@ services:
     image: obsidiandynamics/kafdrop:latest
     container_name: kafka_ui
     ports:
-      - "9000:9000"
+      - "19001:9000"
     environment:
       KAFKA_BROKERCONNECT: pixels_kafka:9092
       JVM_OPTS: "-Xms32M -Xmx64M"
@@ -62,6 +62,7 @@ services:
       - pixels_network
 
   pg_debezium:
+    container_name: pg_debezium
     image: debezium/connect:3.0.0.Final
     ports:
       - "8084:8083"
@@ -90,9 +91,24 @@ services:
     networks:
       - pixels_network
 
+  mysql:
+    image: mysql:8.0
+    container_name: pixels_mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: root123
+      MYSQL_DATABASE: pixels_test_db
+      MYSQL_USER: pixels
+      MYSQL_PASSWORD: pixels123
+    ports:
+      - "24306:3306"
+    volumes:
+      - mysql_data:/var/lib/mysql
+    networks:
+      - pixels_network
 
 volumes:
   postgres_data:
+  mysql_data:
 
 secrets:
   postgres-password:
