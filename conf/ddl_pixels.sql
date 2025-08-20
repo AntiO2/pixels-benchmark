@@ -1,7 +1,7 @@
 CREATE TABLE IF NOT EXISTS freshness(
-                                        f_tx_id integer,
-                                        f_cli_id integer
-) WITH (storage='file', paths='file:///tmp/data/pixels_bench_sf1x/freshness/'
+    f_tx_id int,
+    f_cli_id int
+) WITH (storage='file', paths='file:///tmp/data/pixels_bench_sf1x/freshness/',
     pk='f_cli_id');
 
 CREATE TABLE customer (
@@ -20,7 +20,11 @@ loan_credit int,
 Isblocked int,
 created_date Date,
 last_update_timestamp timestamp
-) WITH (storage='file', paths='file:///tmp/data/pixels_bench_sf1x/customer/' );
+) WITH (
+    storage='file',
+    paths='file:///tmp/data/pixels_bench_sf2x/customer/',
+    pk='custID',
+    pk_scheme='rocksdb' );
 
 CREATE TABLE company (
 companyID int,
@@ -46,8 +50,7 @@ CREATE TABLE savingAccount (
                                userID int,
                                balance real,
                                Isblocked int,
-                               timestamp timestamp,
-                               fresh_ts timestamp default current_timestamp
+                               timestamp timestamp
 )
     WITH (
         storage='file',
@@ -76,8 +79,7 @@ CREATE TABLE transfer (
                           targetID int,
                           amount real,
                           type char(10),
-                          timestamp timestamp,
-                          fresh_ts timestamp default current_timestamp
+                          timestamp timestamp
 )
     WITH (
         storage='file',
