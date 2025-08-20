@@ -1,41 +1,41 @@
 CREATE TABLE freshness (
-    f_tx_id int,
     f_cli_id int PRIMARY KEY
+    f_tx_id int
 );
 
 CREATE TABLE customer (
-custID int PRIMARY KEY,
-companyID int,
-gender char(6),
-name char(15),
-age int,
-phone char(11),
-province char(15),
-city char(15),
-loan_balance real,
-saving_credit int,
-checking_credit int,
-loan_credit int,
-Isblocked int,
-created_date Date,
-last_update_timestamp timestamp
+    custID int PRIMARY KEY,
+    companyID int,
+    gender char(6),
+    name char(15),
+    age int,
+    phone char(11),
+    province char(15),
+    city char(15),
+    loan_balance real,
+    saving_credit int,
+    checking_credit int,
+    loan_credit int,
+    Isblocked int,
+    created_date Date,
+    last_update_timestamp timestamp
 );
 
 CREATE TABLE company (
 companyID int PRIMARY KEY,
-name varchar,
-category varchar,
-staff_size int,
-loan_balance real,
-phone char(11),
-province char(15),
-city char(15),
-saving_credit int,
-checking_credit int,
-loan_credit int,
-Isblocked int,
-created_date Date,
-last_update_timestamp timestamp
+    name varchar,
+    category varchar,
+    staff_size int,
+    loan_balance real,
+    phone char(11),
+    province char(15),
+    city char(15),
+    saving_credit int,
+    checking_credit int,
+    loan_credit int,
+    Isblocked int,
+    created_date Date,
+    last_update_timestamp timestamp
 );
 
 
@@ -44,16 +44,15 @@ CREATE TABLE savingAccount (
  userID int,
  balance real,
  Isblocked int,
- timestamp timestamp,
- fresh_ts timestamp  default current_timestamp
+ timestamp timestamp
 );
 
 CREATE TABLE checkingAccount (
-accountID int PRIMARY KEY,
-userID int,
-balance real,
-Isblocked int,
-timestamp timestamp
+    accountID int PRIMARY KEY,
+    userID int,
+    balance real,
+    Isblocked int,
+    timestamp timestamp
 );
 
 CREATE TABLE transfer (
@@ -62,8 +61,7 @@ CREATE TABLE transfer (
   targetID int,
   amount real,
   type char(10),
-  timestamp timestamp,
-  fresh_ts timestamp  default current_timestamp
+  timestamp timestamp
 );
 
 CREATE TABLE checking (
