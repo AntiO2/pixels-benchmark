@@ -32,10 +32,11 @@ import java.util.concurrent.Future;
 public class PixelsBench
 {
     public static Logger logger = LogManager.getLogger(PixelsBench.class);
+    public static PixelsBench pixelsBench = new PixelsBench();
+    public boolean freshness = false;
     int taskType = 0;
     Result res = new Result();
     boolean verbose = true;
-    boolean freshness = false;
     Sqlstmts sqls = null;
     SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 
@@ -45,7 +46,6 @@ public class PixelsBench
         File file = new File("conf/log4j2.properties");
         context.setConfigLocation(file.toURI());
         ConfigLoader config = new ConfigLoader();
-        PixelsBench pixelsBench = new PixelsBench();
 
         logger.info("Start Pixels Benchmark");
         CommandProcessor cmdProcessor = new CommandProcessor(args);
@@ -84,7 +84,14 @@ public class PixelsBench
                 if (argsList.containsKey("f"))
                 {
                     ExecSQL execSQL = new ExecSQL(argsList.get("f"));
-                    execSQL.execute();
+                    if (pixelsBench.freshness)
+                    {
+                        execSQL.execute(2);
+                    } else
+                    {
+                        execSQL.execute();
+                    }
+
                 } else
                 {
                     logger.error("Maybe missing sql file argument -f ,please try to use help to check usage.");
@@ -134,11 +141,11 @@ public class PixelsBench
                     pixelsBench.runFreshness(4);
                 } else if (cmd.equalsIgnoreCase("runinitfresh"))
                 {
-                    if (!pixelsBench.freshness)
-                    {
-                        logger.error("Try to init freshness table, but freshness is not enabled");
-                        System.exit(-1);
-                    }
+                    // if (!pixelsBench.freshness)
+                    // {
+                    //     logger.error("Try to init freshness table, but freshness is not enabled");
+                    //     System.exit(-1);
+                    // }
                     type = 8;
                     pixelsBench.runInitFreshness();
                 } else if (cmd.equalsIgnoreCase("runpixelsfresh"))
@@ -208,6 +215,16 @@ public class PixelsBench
             logger.warn("There is no an available tp client");
             return;
         }
+
+        if (pixelsBench.freshness)
+        {
+            Client job = Client.initTask(ConfigLoader.prop, "PixelsFreshness", taskType);
+            job.setRet(res);
+            job.setVerbose(verbose);
+            job.setSqls(sqls);
+            tasks.add(job);
+        }
+
         ExecutorService es = Executors.newFixedThreadPool(tasks.size());
         List<Future> future = new ArrayList<Future>();
         for (final Client j : tasks)
@@ -485,12 +502,10 @@ public class PixelsBench
 
     public void runFreshness(int tt)
     {
-
         logger.info("Begin Freshness Workload");
         runXP(tt);
         logger.info("Freshness Workload is done.");
     }
-
 
     public void runPixelsFreshness(int tt)
     {
@@ -512,6 +527,15 @@ public class PixelsBench
             logger.warn("There is no an available tp client");
             return;
         }
+
+        {
+            Client job = Client.initTask(ConfigLoader.prop, "PixelsFreshness", taskType);
+            job.setRet(res);
+            job.setVerbose(verbose);
+            job.setSqls(sqls);
+            tasks.add(job);
+        }
+
         taskType = 9;
 
         ExecutorService es = Executors.newFixedThreadPool(tasks.size());
@@ -527,84 +551,6 @@ public class PixelsBench
                     })
             );
         }
-
-        Thread freshness = null;
-        final long startTs = System.currentTimeMillis();
-        final int _duration = Integer.parseInt(ConfigLoader.prop.getProperty("pixelsFreshRunMins"));
-        final int _fresh_warmup = Integer.parseInt(ConfigLoader.prop.getProperty("pixelsFreshWarmupSeconds", String.valueOf(0)));
-        final int _fresh_interval = Integer.parseInt(ConfigLoader.prop.getProperty("fresh_interval", String.valueOf(20)));
-        String db = ConfigLoader.prop.getProperty("db");
-        int dbType = Constant.getDbType(db);
-        freshness = new Thread()
-        {
-            public void run()
-            {
-                Connection conn_tp = ConnectionMgr.getConnection(0);
-                Connection conn_trino = ConnectionMgr.getConnection(2);
-                double sum = 0;
-                int cnt = 0;
-                long duration = _duration * 60 * 1000L;
-                long elpased_time = 0L;
-                boolean hasGetFreshness = false;
-
-                try
-                {
-                    logger.info("Begin Freshness Warmup, Sleep {} seconds", _fresh_warmup);
-                    Thread.sleep((long) _fresh_warmup * 1000);
-                } catch (InterruptedException e)
-                {
-                    logger.info("warm up was stopped in force");
-                    return;
-                }
-
-                for (int i = 0; i < _fresh_interval; i++)
-                {
-                    try
-                    {
-                        Thread.sleep((long) _duration * 60 * 1000 / _fresh_interval);
-                        elpased_time += (long) _duration * 60 * 1000 / _fresh_interval;
-                        PixelsFreshness fresh = new PixelsFreshness(conn_trino, sqls, startTs);
-                        long freshness = fresh.calcFreshness();
-                        if (freshness == 2147483647)
-                        {
-                            continue;
-                        }
-                        res.getHist().getFreshness().addValue(freshness);
-                        sum += freshness;
-                        cnt++;
-                        res.setFresh(sum / cnt);
-                        hasGetFreshness = true;
-                    } catch (InterruptedException e)
-                    {
-                        logger.info("Freshness checker was stopped in force");
-                        break;
-                    } catch (Exception e)
-                    {
-                        e.printStackTrace();
-                    }
-                }
-                if (!hasGetFreshness)
-                {
-                    res.setFresh(2147483647);
-                }
-                try
-                {
-                    if (conn_trino != null)
-                    {
-                        conn_trino.close();
-                    }
-                    if (conn_tp != null)
-                    {
-                        conn_tp.close();
-                    }
-                } catch (SQLException e)
-                {
-                    e.printStackTrace();
-                }
-            }
-        };
-        freshness.start();
-
 
         for (int flength = 0; flength < future.size(); flength++)
         {
@@ -622,12 +568,6 @@ public class PixelsBench
                     e.printStackTrace();
                 }
             }
-        }
-
-
-        if (freshness != null)
-        {
-            freshness.interrupt();
         }
 
         if (!es.isShutdown() || !es.isTerminated())

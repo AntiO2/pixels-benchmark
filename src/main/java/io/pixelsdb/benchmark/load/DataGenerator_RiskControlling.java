@@ -13,14 +13,17 @@ import io.pixelsdb.benchmark.util.RandomGenerator;
 import java.io.*;
 import java.util.*;
 
-public class DataGenerator_RiskControlling {
+public class DataGenerator_RiskControlling
+{
     private String sf = "1x";
 
-    public DataGenerator_RiskControlling(String sf) {
+    public DataGenerator_RiskControlling(String sf)
+    {
         this.sf = sf;
     }
 
-    public Integer[] reservoir_sampling(String filename, Integer[] list) throws IOException {
+    public Integer[] reservoir_sampling(String filename, Integer[] list) throws IOException
+    {
         File f = new File(filename);
         BufferedReader b = new BufferedReader(new FileReader(f));
 
@@ -28,7 +31,8 @@ public class DataGenerator_RiskControlling {
         int c = 0, r;
         Random rg = new Random();
 
-        while ((l = b.readLine()) != null) {
+        while ((l = b.readLine()) != null)
+        {
             if (c < list.length)
                 r = c++;
             else
@@ -41,7 +45,8 @@ public class DataGenerator_RiskControlling {
         return list;
     }
 
-    public void dataGenerator() {
+    public void dataGenerator()
+    {
         System.out.println("This is a data generator of PixelsBench, Version 0.1");
         System.out.println("----------------");
         System.out.println("----------------");
@@ -100,7 +105,8 @@ public class DataGenerator_RiskControlling {
         FileWriter blocked_checking_fileWriter = null;
         BufferedWriter blocked_checking_bufferedWriter = null;
 
-        for (int i = 0; i < blocked_num; i++) {
+        for (int i = 0; i < blocked_num; i++)
+        {
             int id = RG.getRandomint(account_bound);
             Blocked_ids.add(id);
         }
@@ -108,7 +114,8 @@ public class DataGenerator_RiskControlling {
         File directory = new File(DataPath);
         if (!directory.exists())
             directory.mkdirs();
-        try {
+        try
+        {
             cust_fileWriter = new FileWriter(DataPath + cust_writePath, false);
             cust_bufferedWriter = new BufferedWriter(cust_fileWriter);
             savingAccount_fileWriter = new FileWriter(DataPath + savingAccount_writePath, true);
@@ -125,7 +132,8 @@ public class DataGenerator_RiskControlling {
 
 
             // generate the Customers with accounts
-            for (int i = 1; i <= CR.customer_number; i++) {
+            for (int i = 1; i <= CR.customer_number; i++)
+            {
                 // generate the gender
                 String gender = RG.getRandomString(DS.gender);
                 StringBuilder Namebuilder = new StringBuilder();
@@ -171,7 +179,8 @@ public class DataGenerator_RiskControlling {
             }
             cust_bufferedWriter.flush();
             cust_bufferedWriter.close();
-        } catch (IOException e) {
+        } catch (IOException e)
+        {
             e.printStackTrace();
         }
         // Generate the Company
@@ -179,10 +188,12 @@ public class DataGenerator_RiskControlling {
         int lower_company = first_company.intValue();
         Long company_number = CR.company_number;
         int upper_company = company_number.intValue() + first_company.intValue();
-        try {
+        try
+        {
             company_fileWriter = new FileWriter(DataPath + company_writePath, false);
             company_bufferedWriter = new BufferedWriter(company_fileWriter);
-            for (int i = lower_company; i < upper_company; i++) {
+            for (int i = lower_company; i < upper_company; i++)
+            {
                 // generate the category
                 String category = RG.getRandomCategory();
                 // generate the name
@@ -224,27 +235,32 @@ public class DataGenerator_RiskControlling {
             checkingAccount_bufferedWriter.flush();
             checkingAccount_bufferedWriter.close();
 
-        } catch (IOException e) {
+        } catch (IOException e)
+        {
             e.printStackTrace();
         }
         // generate the transfers
         Long transfer_cust_number = Math.round(CR.transfer_number * CR.cust_rate);
         Long transfer_number = CR.transfer_number;
 
-        try {
+        try
+        {
             transfer_fileWriter = new FileWriter(DataPath + transfer_writePath, false);
             transfer_bufferedWriter = new BufferedWriter(transfer_fileWriter);
-            for (long i = 1; i <= transfer_cust_number; i++) {
+            for (long i = 1; i <= transfer_cust_number; i++)
+            {
                 // get the random source id and target id
                 int src = 0;
                 int tar = 0;
-                while (src == tar) {
+                while (src == tar)
+                {
                     src = RG.getRandomint(1, customer_size);
                     tar = RG.getRandomint(1, customer_size + company_size);
                 }
 
                 // add the related ids into the blocked set
-                if (Blocked_ids.contains(tar)) {
+                if (Blocked_ids.contains(tar))
+                {
                     blocked_transfer_bufferedWriter.write(String.valueOf(src));
                     blocked_transfer_bufferedWriter.write(NEW_LINE_SEPARATOR);
                 }
@@ -265,17 +281,20 @@ public class DataGenerator_RiskControlling {
 
             long lowbound_company = transfer_cust_number + 1;
             long upperbound_company = transfer_number;
-            for (long i = lowbound_company; i <= upperbound_company; i++) {
+            for (long i = lowbound_company; i <= upperbound_company; i++)
+            {
                 // get the random source id and target id
                 int src = 0;
                 int tar = 0;
-                while (src == tar) {
+                while (src == tar)
+                {
                     src = RG.getRandomint(customer_size + 1, customer_size + company_size);
                     tar = RG.getRandomint(1, customer_size + company_size);
                 }
 
                 // add the related ids into the blocked set
-                if (Blocked_ids.contains(tar)) {
+                if (Blocked_ids.contains(tar))
+                {
                     blocked_transfer_bufferedWriter.write(String.valueOf(src));
                     blocked_transfer_bufferedWriter.write(NEW_LINE_SEPARATOR);
                 }
@@ -298,27 +317,32 @@ public class DataGenerator_RiskControlling {
 
             blocked_transfer_bufferedWriter.flush();
             blocked_transfer_bufferedWriter.close();
-        } catch (IOException e) {
+        } catch (IOException e)
+        {
             e.printStackTrace();
         }
 
         // generate the checks
         int checks_cust_number = Double.valueOf(CR.checking_number * (1 - CR.cust_rate)).intValue();
         Long checks_number = CR.checking_number;
-        try {
+        try
+        {
             checking_fileWriter = new FileWriter(DataPath + checking_writePath, false);
             checking_bufferedWriter = new BufferedWriter(checking_fileWriter);
-            for (int i = 1; i <= checks_cust_number; i++) {
+            for (int i = 1; i <= checks_cust_number; i++)
+            {
                 // get the random source id and target id
                 int src = 0;
                 int tar = 0;
-                while (src == tar) {
+                while (src == tar)
+                {
                     src = RG.getRandomint(1, customer_size);
                     tar = RG.getRandomint(1, customer_size + company_size);
                 }
 
                 // add the related ids into the blocked set
-                if (Blocked_ids.contains(tar)) {
+                if (Blocked_ids.contains(tar))
+                {
                     blocked_checking_bufferedWriter.write(String.valueOf(src));
                     blocked_checking_bufferedWriter.write(NEW_LINE_SEPARATOR);
                 }
@@ -334,17 +358,20 @@ public class DataGenerator_RiskControlling {
             int lb_checks = checks_cust_number + 1;
             Long ub = checks_number;
             int ub_checks = ub.intValue();
-            for (int i = lb_checks; i <= ub_checks; i++) {
+            for (int i = lb_checks; i <= ub_checks; i++)
+            {
                 // get the random source id and target id
                 int src = 0;
                 int tar = 0;
-                while (src == tar) {
+                while (src == tar)
+                {
                     src = RG.getRandomint(customer_size + 1, customer_size + company_size);
                     tar = RG.getRandomint(1, customer_size + company_size);
                 }
 
                 // add the related ids into the blocked set
-                if (Blocked_ids.contains(tar)) {
+                if (Blocked_ids.contains(tar))
+                {
                     blocked_checking_bufferedWriter.write(String.valueOf(src));
                     blocked_checking_bufferedWriter.write(NEW_LINE_SEPARATOR);
                 }
@@ -360,7 +387,8 @@ public class DataGenerator_RiskControlling {
 
             blocked_checking_bufferedWriter.flush();
             blocked_checking_bufferedWriter.close();
-        } catch (IOException e) {
+        } catch (IOException e)
+        {
             e.printStackTrace();
         }
 
@@ -373,13 +401,15 @@ public class DataGenerator_RiskControlling {
         Date loanDate = CR.loanDate;
         Date startDate = CR.startDate;
         Date endDate = CR.endDate;
-        try {
+        try
+        {
             loanapps_fileWriter = new FileWriter(DataPath + loanapps_writePath, false);
             loanapps_bufferedWriter = new BufferedWriter(loanapps_fileWriter);
             loantrans_fileWriter = new FileWriter(DataPath + loantrans_writePath, false);
             loantrans_bufferedWriter = new BufferedWriter(loantrans_fileWriter);
             // generate the customer loan applications and transactions
-            for (int i = 1; i <= loansapps_cust_number; i++) {
+            for (int i = 1; i <= loansapps_cust_number; i++)
+            {
                 Date contractTimestamp = null;
                 int custID = RG.getRandomint(1, lower_company - 1);
                 double amount = RG.getRandomDouble(CR.customer_loanbalance * CR.loan_rate);
@@ -400,7 +430,8 @@ public class DataGenerator_RiskControlling {
             }
 
             // generate the company loan applications and transactions
-            for (int i = loansapps_company_number_lb; i < loansapps_company_number_ub; i++) {
+            for (int i = loansapps_company_number_lb; i < loansapps_company_number_ub; i++)
+            {
                 Date contractTimestamp = null;
                 Long cid = RG.getRandomLong(1 + CR.customer_number, CR.customer_number + CR.company_number);
                 int companyId = cid.intValue();
@@ -423,22 +454,26 @@ public class DataGenerator_RiskControlling {
             loanapps_bufferedWriter.close();
             loantrans_bufferedWriter.flush();
             loantrans_bufferedWriter.close();
-        } catch (IOException e) {
+        } catch (IOException e)
+        {
             e.printStackTrace();
         }
 
         // parameter curation
-        try {
+        try
+        {
             Integer contention_num = Integer.parseInt(ConfigLoader.prop.getProperty("contention_num", "100"));
             Integer[] list1 = new Integer[contention_num];
             Related_Blocked_Transfer_ids = Arrays.asList(reservoir_sampling(DataPath + "blocked_transfer.csv", list1));
             Integer[] list2 = new Integer[contention_num];
             Related_Blocked_Checking_ids = Arrays.asList(reservoir_sampling(DataPath + "blocked_checking.csv", list2));
-        } catch (IOException e) {
+        } catch (IOException e)
+        {
             e.printStackTrace();
         }
         // write the anomalies
-        try {
+        try
+        {
 
             FileOutputStream f = new FileOutputStream(new File(DataPath + "Related_transfer_bids"));
             ObjectOutputStream o = new ObjectOutputStream(f);
@@ -451,9 +486,11 @@ public class DataGenerator_RiskControlling {
             o.close();
             f.close();
 
-        } catch (FileNotFoundException e) {
+        } catch (FileNotFoundException e)
+        {
             System.out.println("File not found");
-        } catch (IOException e) {
+        } catch (IOException e)
+        {
             System.out.println("Error initializing stream");
         }
 //        // write the anomalies

@@ -29,9 +29,11 @@ import java.util.StringJoiner;
 public record Freshness(
         int f_tx_id,
         int f_cli_id
-) {
+)
+{
     @Override
-    public String toString() {
+    public String toString()
+    {
         return new StringJoiner(",")
                 .add(Integer.toString(f_tx_id))
                 .add(Integer.toString(f_cli_id))

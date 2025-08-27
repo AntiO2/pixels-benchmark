@@ -8,6 +8,8 @@ package io.pixelsdb.benchmark.pojo;
  * @description for customer table
  **/
 
+import io.pixelsdb.benchmark.load.DateUtility;
+
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -30,9 +32,11 @@ public record Customer
          int isblocked,
          Date createdDate,
          Date LastUpdateDate
-        ) {
+        )
+{
     @Override
-    public String toString() {
+    public String toString()
+    {
         StringJoiner joiner = new StringJoiner(",");
         joiner.add(Integer.toString(custID))
                 .add(Integer.toString(companyID))
@@ -47,12 +51,13 @@ public record Customer
                 .add(Long.toString(CheckingCredit))
                 .add(Long.toString(LoanCredit))
                 .add(String.valueOf(isblocked))
-                .add(convertDateToString(createdDate))
+                .add(DateUtility.convertDateToDayString(createdDate))
                 .add(convertDateToString(LastUpdateDate));
         return joiner.toString();
     }
 
-    public String convertDateToString(Date date) {
+    public String convertDateToString(Date date)
+    {
         // "yyyy-MM-dd"
         DateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS");
         String dateToString = df.format(date);

@@ -13,19 +13,23 @@ import java.io.FileReader;
 import java.util.List;
 
 
-public class SqlReader {
+public class SqlReader
+{
     String filePath = null;
     Sqlstmts sqls = null;
 
 
-    public SqlReader(String filePath) {
+    public SqlReader(String filePath)
+    {
         this.filePath = filePath;
     }
 
     // read sqls from sql files
-    public Sqlstmts loader() {
+    public Sqlstmts loader()
+    {
         sqls = new Sqlstmts();
-        try {
+        try
+        {
             BufferedReader Br = new BufferedReader(new FileReader(filePath));
             Toml toml = new Toml().read(Br);
 
@@ -92,21 +96,25 @@ public class SqlReader {
             sqls.setFresh_query(toml.getString("fresh-query.sql"));
 
             sqls.setCdc_init(getSqlArrayFromList(toml.getList("cdc-init.sql")));
-        } catch (Exception e) {
+        } catch (Exception e)
+        {
             e.printStackTrace();
         }
         return sqls;
     }
 
-    public String[] getSqlArrayFromList(List<String> sqlList) {
+    public String[] getSqlArrayFromList(List<String> sqlList)
+    {
         String[] sqls = new String[sqlList.size()];
-        for (int i = 0; i < sqlList.size(); i++) {
+        for (int i = 0; i < sqlList.size(); i++)
+        {
             sqls[i] = sqlList.get(i);
         }
         return sqls;
     }
 
-    public Sqlstmts getSqls() {
+    public Sqlstmts getSqls()
+    {
         return this.sqls;
     }
 }

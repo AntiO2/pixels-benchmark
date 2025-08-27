@@ -21,9 +21,11 @@ public record LoanApps
          // boolean Inprocess,
          Date app_timestamp
          //Date last_update_timestamp
-        ) {
+        )
+{
     @Override
-    public String toString() {
+    public String toString()
+    {
         StringJoiner joiner = new StringJoiner(",");
         joiner.add(Integer.toString(id))
                 .add(Integer.toString(applicantID))
@@ -35,7 +37,8 @@ public record LoanApps
         return joiner.toString();
     }
 
-    public String convertDateToString(java.util.Date date) {
+    public String convertDateToString(java.util.Date date)
+    {
         // "yyyy-MM-dd HH:mm:ss.SSS"
         DateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS");
         String dateToString = df.format(date);

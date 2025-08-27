@@ -27,12 +27,14 @@ import java.util.concurrent.atomic.AtomicReference;
  * @author: AntiO2
  * @date: 2025/7/23 13:39
  */
-public class TxNode {
+public class TxNode
+{
     public int data;
     public long commitTime;
     public AtomicReference<TxNode> next;
 
-    public TxNode(int data, long commitTime) {
+    public TxNode(int data, long commitTime)
+    {
         this.data = data;
         this.commitTime = commitTime;
         this.next = new AtomicReference<>(null);

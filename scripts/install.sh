@@ -1,5 +1,7 @@
 #!/bin/bash
 
+ICEBERG_DIR=~/projects/flink-iceberg-minio-trino
+
 usage() {
   cat <<EOF
 
@@ -61,7 +63,6 @@ BASH_PATH=`readlink -f $0`
 SCRIPT_DIR=`dirname ${BASH_PATH}`
 
 
-
 source ${SCRIPT_DIR}/common_func.sh
 
 check_env
@@ -75,6 +76,7 @@ fi
 if [[ x${init_containers} == x"on" ]]; then
     log_info "Init Container"
     docker compose -f ${CONFIG_DIR}/docker-compose.yml up -d
+    docker compose -f ${ICEBERG_DIR}/docker-compose.yml up -d
     check_fatal_exit "docker-compose up failed."
 fi
 
@@ -84,20 +86,20 @@ fi
 
 log_info "Containers Started"
 
-
 log_info "Start Register Debezium Connectors"
 
-if [[ x$pg_cdc} == x"on" ]]; then
+if [[ x${pg_cdc} == x"on" ]]; then
   log_info "Start Register PostgreSQL Debezium Connector"
-  [[ -f ${CONFIG_DIR}/sync/pg_debezium.json ]] || { log_fatal_exit "Can't get postgres debezium connector config"; }
-  wait_for_url http://localhost:8084/connectors 20
+  [[ -f ${CONFIG_DIR}/sync/pg_debezium.json ]] || {   log_info "test"; log_fatal_exit "Can't get postgres debezium connector config"; }
+
+  wait_for_url http://${benchmark_host}:8084/connectors 20
   check_fatal_exit "Postgres Source Kafka Connector Server Fail"
   # register PostgreSQL connector
-  try_command curl -f -X POST -H "Content-Type: application/json" -d @${CONFIG_DIR}/register-postgres.json http://localhost:8084/connectors -w '\n'
+  try_command curl -f -X POST -H "Content-Type: application/json" -d @${CONFIG_DIR}/${debezium_conf} http://${benchmark_host}:8084/connectors -w '\n'
   check_fatal_exit "Register PostgreSQL Source Connector Fail"
 fi
 
-log_info "Visit http://localhost:9000 to check kafka status"
+log_info "Visit http://localhost:19001 to check kafka status"
 log_info "Visit http://localhost:3000 to check Grafana Dashboard"
 
 

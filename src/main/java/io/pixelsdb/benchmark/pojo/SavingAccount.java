@@ -19,9 +19,11 @@ public record SavingAccount
          int isBlocked,
          Date timestamp,
          Date fresh_ts
-        ) {
+        )
+{
     @Override
-    public String toString() {
+    public String toString()
+    {
         StringJoiner joiner = new StringJoiner(",");
         joiner.add(Integer.toString(accountID))
                 .add(Integer.toString(userID))
@@ -32,7 +34,8 @@ public record SavingAccount
         return joiner.toString();
     }
 
-    public String convertDateToString(java.util.Date date) {
+    public String convertDateToString(java.util.Date date)
+    {
         // "yyyy-MM-dd HH:mm:ss.SSS"
         DateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS");
         String dateToString = df.format(date);

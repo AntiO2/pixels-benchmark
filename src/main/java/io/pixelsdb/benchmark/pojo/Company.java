@@ -6,6 +6,8 @@ package io.pixelsdb.benchmark.pojo;
  * @description for company table
  **/
 
+import io.pixelsdb.benchmark.load.DateUtility;
+
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -28,9 +30,11 @@ public record Company
          int isblocked,
          Date createdDate,
          Date LastUpdateTime
-        ) {
+        )
+{
     @Override
-    public String toString() {
+    public String toString()
+    {
         StringJoiner joiner = new StringJoiner(",");
         joiner.add(Integer.toString(companyID))
                 .add(name)
@@ -44,13 +48,14 @@ public record Company
                 .add(Long.toString(CheckingCredit))
                 .add(Long.toString(LoanCredit))
                 .add(Integer.toString(isblocked))
-                .add(convertDateToString(createdDate))
+                .add(DateUtility.convertDateToDayString(createdDate))
                 .add(convertDateToString(LastUpdateTime));
 
         return joiner.toString();
     }
 
-    public String convertDateToString(Date date) {
+    public String convertDateToString(Date date)
+    {
         // "yyyy-MM-dd"
         DateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS");
         String dateToString = df.format(date);

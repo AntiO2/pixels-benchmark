@@ -10,7 +10,8 @@ import org.apache.logging.log4j.Logger;
  * @description record test result and print summary after all workloads are done.
  **/
 
-public class Result {
+public class Result
+{
     public static Logger logger = LogManager.getLogger(Result.class);
     private String dbType = null;
     private long tpTotal;
@@ -35,136 +36,169 @@ public class Result {
     private int apRound;
 
 
-    public Result() {
+    public Result()
+    {
         hist = new Histogram();
     }
 
-    public int getApRound() {
+    public int getApRound()
+    {
         return this.apRound;
     }
 
-    public void setApRound(int round) {
+    public void setApRound(int round)
+    {
         this.apRound = round;
     }
 
-    public String getRiskRate() {
+    public String getRiskRate()
+    {
         return this.riskRate;
     }
 
-    public void setRiskRate(String riskRate) {
+    public void setRiskRate(String riskRate)
+    {
         this.riskRate = riskRate;
     }
 
-    public Histogram getHist() {
+    public Histogram getHist()
+    {
         return hist;
     }
 
-    public void setHist(Histogram hist) {
+    public void setHist(Histogram hist)
+    {
         this.hist = hist;
     }
 
-    public int getApclient() {
+    public int getApclient()
+    {
         return apclient;
     }
 
-    public void setApclient(int apclient) {
+    public void setApclient(int apclient)
+    {
         this.apclient = apclient;
     }
 
-    public int getTpclient() {
+    public int getTpclient()
+    {
         return tpclient;
     }
 
-    public void setTpclient(int tpclient) {
+    public void setTpclient(int tpclient)
+    {
         this.tpclient = tpclient;
     }
 
-    public int getXapclient() {
+    public int getXapclient()
+    {
         return xapclient;
     }
 
-    public void setXapclient(int xapclient) {
+    public void setXapclient(int xapclient)
+    {
         this.xapclient = xapclient;
     }
 
-    public int getXtpclient() {
+    public int getXtpclient()
+    {
         return xtpclient;
     }
 
-    public void setXtpclient(int xtpclient) {
+    public void setXtpclient(int xtpclient)
+    {
         this.xtpclient = xtpclient;
     }
 
-    public String getDbType() {
+    public String getDbType()
+    {
         return dbType;
     }
 
-    public void setDbType(String dbType) {
+    public void setDbType(String dbType)
+    {
         this.dbType = dbType;
     }
 
-    public long getTpTotal() {
+    public long getTpTotal()
+    {
         return tpTotal;
     }
 
-    public void setTpTotal(long tpTotal) {
+    public void setTpTotal(long tpTotal)
+    {
         this.tpTotal = tpTotal;
     }
 
-    public long getApTotal() {
+    public long getApTotal()
+    {
         return apTotal;
     }
 
-    public void setApTotal(long apTotal) {
+    public void setApTotal(long apTotal)
+    {
         this.apTotal = apTotal;
     }
 
-    public double getTps() {
+    public double getTps()
+    {
         return tps;
     }
 
-    public void setTps(double tps) {
+    public void setTps(double tps)
+    {
         this.tps = tps;
     }
 
-    public double getQps() {
+    public double getQps()
+    {
         return qps;
     }
 
-    public void setQps(double qps) {
+    public void setQps(double qps)
+    {
         this.qps = qps;
     }
 
-    public String getStartTS() {
+    public String getStartTS()
+    {
         return startTS;
     }
 
-    public void setStartTS(String startTS) {
+    public void setStartTS(String startTS)
+    {
         this.startTS = startTS;
     }
 
-    public String getEndTs() {
+    public String getEndTs()
+    {
         return endTs;
     }
 
-    public void setEndTs(String endTs) {
+    public void setEndTs(String endTs)
+    {
         this.endTs = endTs;
     }
 
-    public double getFresh() {
+    public double getFresh()
+    {
         return freshness;
     }
 
-    public void setFresh(double freshness) {
+    public void setFresh(double freshness)
+    {
         this.freshness = freshness;
     }
 
-    public void printResult(int type) {
+    public void printResult(int type)
+    {
         logger.info("====================Test Summary========================");
         logger.info("Test starts at " + getStartTS());
         logger.info("Test ends at " + getEndTs());
         logger.info("Risk Rate is " + getRiskRate());
-        switch (type) {
+        switch (type)
+        {
             case 0:
                 logger.info("XP-IQ Concurrency is " + getXapclient());
                 logger.info("XP-AT Concurrency is " + getXtpclient());
@@ -229,9 +263,11 @@ public class Result {
                 logger.info("Freshness(ms) : " + getFresh());
         }
         logger.info("Query/Transaction response time(ms) histogram : ");
-        if (type == 2 || type == 6 || type == 7) {
+        if (type == 2 || type == 6 || type == 7)
+        {
             System.out.println("------------AP-------------------");
-            for (int apidx = 0; apidx < 13; apidx++) {
+            for (int apidx = 0; apidx < 13; apidx++)
+            {
                 System.out.printf("AP Query %2d : max rt : %10.2f | min rt : %10.2f | avg rt : %10.2f | 95%% rt : %10.2f | 99%% rt : %10.2f \n",
                         (apidx + 1),
                         hist.getAPItem(apidx).getMax(),
@@ -242,9 +278,11 @@ public class Result {
             }
         }
 
-        if (type == 1 || type == 6) {
+        if (type == 1 || type == 6)
+        {
             System.out.println("------------TP-------------------");
-            for (int tpidx = 0; tpidx < 18; tpidx++) {
+            for (int tpidx = 0; tpidx < 18; tpidx++)
+            {
                 System.out.printf("TP Transaction %2d : max rt : %10.2f | min rt : %10.2f | avg rt : %10.2f | 95%% rt : %10.2f | 99%% rt : %10.2f \n",
                         (tpidx + 1),
                         hist.getTPItem(tpidx).getMax(),
@@ -255,9 +293,11 @@ public class Result {
             }
         }
 
-        if (type == 0 || type == 4 || type == 6) {
+        if (type == 0 || type == 4 || type == 6)
+        {
             System.out.println("-----------XP-IQ--------------------");
-            for (int xpidx = 0; xpidx < 6; xpidx++) {
+            for (int xpidx = 0; xpidx < 6; xpidx++)
+            {
                 System.out.printf("Interative Query %d : max rt : %10.2f | min rt : %10.2f | avg rt : %10.2f | 95%% rt : %10.2f | 99%% rt : %10.2f \n",
                         (xpidx + 1),
                         hist.getXPIQItem(xpidx).getMax(),
@@ -268,9 +308,11 @@ public class Result {
             }
         }
 
-        if (type == 0 || type == 4 || type == 6) {
+        if (type == 0 || type == 4 || type == 6)
+        {
             System.out.println("-----------XP-AT--------------------");
-            for (int tpidx = 0; tpidx < 6; tpidx++) {
+            for (int tpidx = 0; tpidx < 6; tpidx++)
+            {
                 System.out.printf("Analytical Transaction AT%d : max rt : %10.2f | min rt : %10.2f | avg rt : %10.2f | 95%% rt : %10.2f | 99%% rt : %10.2f \n",
                         (tpidx + 1),
                         hist.getXPATItem(tpidx).getMax(),
@@ -281,7 +323,8 @@ public class Result {
             }
         }
 
-        if (type == 3) {
+        if (type == 3)
+        {
             logger.info("-----------HTAP-Summary--------------------");
             logger.info("-----------AP-Part--------------------");
             logger.info("QPS : " + qps);
@@ -295,7 +338,8 @@ public class Result {
 
         }
 
-        if (type == 6) {
+        if (type == 6)
+        {
             logger.info("-----------HTAP-Summary--------------------");
             logger.info("-----------AP-Part--------------------");
             logger.info("QPS : " + qps);
@@ -310,70 +354,84 @@ public class Result {
             logger.info("Geometric Mean : " + Math.pow(qps * tps * (xpqps + xptps), 1 / 3.0) / (1 + getFresh() / 1000));
         }
 
-        if (type == 4) {
+        if (type == 4)
+        {
             logger.info("-----------Avg-Freshness-Score--------------------");
             logger.info("Freshness(ms) : " + getFresh());
         }
 
-        if (type == 9) {
+        if (type == 9)
+        {
             System.out.println("-----------Freshness--------------------");
-                System.out.printf("Freshness : max delay : %10.2f | min delay : %10.2f | avg delay : %10.2f | 95%% delay : %10.2f | 99%% delay : %10.2f \n",
-                        hist.getFreshness().getMax(),
-                        hist.getFreshness().getMin(),
-                        hist.getFreshness().getMean(),
-                        hist.getFreshness().getPercentile(95),
-                        hist.getFreshness().getPercentile(99));
+            System.out.printf("Freshness : max delay : %10.2f | min delay : %10.2f | avg delay : %10.2f | 95%% delay : %10.2f | 99%% delay : %10.2f \n",
+                    hist.getFreshness().getMax(),
+                    hist.getFreshness().getMin(),
+                    hist.getFreshness().getMean(),
+                    hist.getFreshness().getPercentile(95),
+                    hist.getFreshness().getPercentile(99));
         }
 
         logger.info("====================Thank you!========================");
     }
 
 
-    public double getXptps() {
+    public double getXptps()
+    {
         return xptps;
     }
 
-    public void setXptps(double xptps) {
+    public void setXptps(double xptps)
+    {
         this.xptps = xptps;
     }
 
-    public double getXpqps() {
+    public double getXpqps()
+    {
         return xpqps;
     }
 
-    public void setXpqps(double xpqps) {
+    public void setXpqps(double xpqps)
+    {
         this.xpqps = xpqps;
     }
 
-    public double getAtps() {
+    public double getAtps()
+    {
         return atps;
     }
 
-    public void setAtps(double atps) {
+    public void setAtps(double atps)
+    {
         this.atps = atps;
     }
 
-    public double getIqps() {
+    public double getIqps()
+    {
         return iqps;
     }
 
-    public void setIqps(double iqps) {
+    public void setIqps(double iqps)
+    {
         this.iqps = iqps;
     }
 
-    public long getAtTotal() {
+    public long getAtTotal()
+    {
         return atTotal;
     }
 
-    public void setAtTotal(long atTotal) {
+    public void setAtTotal(long atTotal)
+    {
         this.atTotal = atTotal;
     }
 
-    public long getIqTotal() {
+    public long getIqTotal()
+    {
         return iqTotal;
     }
 
-    public void setIqTotal(long iqTotal) {
+    public void setIqTotal(long iqTotal)
+    {
         this.iqTotal = iqTotal;
     }
 }

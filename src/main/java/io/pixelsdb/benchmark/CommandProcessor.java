@@ -12,17 +12,20 @@ import org.apache.logging.log4j.Logger;
 
 import java.util.HashMap;
 
-public class CommandProcessor {
+public class CommandProcessor
+{
     Logger logger = LogManager.getLogger(CommandProcessor.class);
     Options cmdOptions = null;
     String[] cmdLines = null;
 
-    public CommandProcessor(String[] args) {
+    public CommandProcessor(String[] args)
+    {
         this.cmdLines = args;
     }
 
     // option builder. add new option if needed.
-    public void optionBuilder(Options options) {
+    public void optionBuilder(Options options)
+    {
         options.addOption("h", "help", false, "Print PixelsBench usage information");
 
         Option testType = Option.builder("t")
@@ -63,15 +66,18 @@ public class CommandProcessor {
     }
 
     // Parse command Line
-    public HashMap<String, String> commandPaser(String[] cmdLine) {
+    public HashMap<String, String> commandPaser(String[] cmdLine)
+    {
         HashMap<String, String> argsList = new HashMap<String, String>();
         CommandLineParser parser = new DefaultParser();
         cmdOptions = new Options();
         optionBuilder(cmdOptions);
         CommandLine argsLine = null;
-        try {
+        try
+        {
             argsLine = parser.parse(cmdOptions, cmdLine);
-        } catch (ParseException e) {
+        } catch (ParseException e)
+        {
             e.printStackTrace();
         }
         processArgs(argsList, argsLine);
@@ -79,35 +85,43 @@ public class CommandProcessor {
     }
 
     // Read command line.
-    public void processArgs(HashMap<String, String> argsList, CommandLine cmdLine) {
-        if (cmdLine.hasOption('h')) {
+    public void processArgs(HashMap<String, String> argsList, CommandLine cmdLine)
+    {
+        if (cmdLine.hasOption('h'))
+        {
             printHelp();
             System.exit(0);
         }
 
-        if (cmdLine.hasOption("testType")) {
+        if (cmdLine.hasOption("testType"))
+        {
             argsList.put("t", cmdLine.getOptionValue("t"));
         }
 
-        if (cmdLine.hasOption("c")) {
+        if (cmdLine.hasOption("c"))
+        {
             argsList.put("c", cmdLine.getOptionValue("c"));
         }
 
-        if (cmdLine.hasOption("f")) {
+        if (cmdLine.hasOption("f"))
+        {
             argsList.put("f", cmdLine.getOptionValue("f"));
         }
 
-        if (cmdLine.hasOption("s")) {
+        if (cmdLine.hasOption("s"))
+        {
             argsList.put("s", "true");
         }
 
-        if (cmdLine.hasOption("r")) {
+        if (cmdLine.hasOption("r"))
+        {
             argsList.put("r", "true");
         }
     }
 
     // help info
-    public void printHelp() {
+    public void printHelp()
+    {
         HelpFormatter formatter = new HelpFormatter();
         formatter.printHelp("pixels_bench " + " [options]", cmdOptions);
         System.out.println("Example:");

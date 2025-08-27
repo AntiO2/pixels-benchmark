@@ -22,59 +22,64 @@ package io.pixelsdb.benchmark.util;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * @package: io.pixelsdb.benchmark.util
- * @className: TxRecorder
- * @author: AntiO2
- * @date: 2025/7/23 13:36
- */
-import java.util.ArrayList;
-import java.util.List;
-
-public class TxRecorder {
+public class TxRecorder
+{
     private static final TxRecorder INSTANCE = new TxRecorder();
 
     private final List<TxLinkedList> containers = new ArrayList<>();
     private int[] currentTxIds;
 
-    private TxRecorder() {}
+    private TxRecorder()
+    {
+    }
 
-    public static TxRecorder getInstance() {
+    public static TxRecorder getInstance()
+    {
         return INSTANCE;
     }
 
-    public synchronized void init(int clientCount) {
+    public synchronized void init(int clientCount)
+    {
         containers.clear();
-        for (int i = 0; i < clientCount; i++) {
+        for (int i = 0; i < clientCount; i++)
+        {
             containers.add(new TxLinkedList());
         }
         currentTxIds = new int[clientCount];
     }
 
-    public void insert(int cliId, long currentStartTs) {
+    public void insert(int cliId, long currentStartTs)
+    {
         int txid = currentTxIds[cliId];
         containers.get(cliId).insert(txid, currentStartTs);
     }
 
-    public int getCurrentTxid(int cliId) {
+    public int getCurrentTxid(int cliId)
+    {
         return currentTxIds[cliId];
     }
 
-    public void incrementTxid(int cliId) {
+    public void incrementTxid(int cliId)
+    {
         currentTxIds[cliId]++;
     }
 
-    public long getFirstUnseenTxn(long startTime, int txnNum, int cliId) {
-        if(cliId >= containers.size()) {
+    public long getFirstUnseenTxn(long startTime, int txnNum, int cliId)
+    {
+        if (cliId >= containers.size())
+        {
             return 2147483647;
-        } else {
+        } else
+        {
             return containers.get(cliId).getFirstUnseenTxn(startTime, txnNum);
         }
     }
 
-    public List<Long> getFreshnessForAllClients(long startTime, int[] txnNums) {
+    public List<Long> getFreshnessForAllClients(long startTime, int[] txnNums)
+    {
         List<Long> result = new ArrayList<>();
-        for (int i = 0; i < containers.size(); i++) {
+        for (int i = 0; i < containers.size(); i++)
+        {
             long fresh = containers.get(i).getFirstUnseenTxn(startTime, txnNums[i]);
             result.add(fresh);
         }

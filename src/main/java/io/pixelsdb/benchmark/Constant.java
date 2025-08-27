@@ -7,21 +7,27 @@ package io.pixelsdb.benchmark;
  * @description Define different database constant value.
  **/
 
-public class Constant {
+public class Constant
+{
     final public static int DB_MYSQL = 3;
     final public static int DB_ORACLE = 4;
     final public static int DB_PG = 5;
     final public static int DB_UNKNOW = 0;
 
-    public static int getDbType(String db) {
+    public static int getDbType(String db)
+    {
 
-        if (db.equalsIgnoreCase("postgreSQL")) {
+        if (db.equalsIgnoreCase("postgreSQL"))
+        {
             return Constant.DB_PG;
-        } else if (db.equalsIgnoreCase("mysql")) {
+        } else if (db.equalsIgnoreCase("mysql"))
+        {
             return Constant.DB_MYSQL;
-        } else if (db.equalsIgnoreCase("oracle")) {
+        } else if (db.equalsIgnoreCase("oracle"))
+        {
             return Constant.DB_ORACLE;
-        } else {
+        } else
+        {
             return Constant.DB_UNKNOW;
         }
     }

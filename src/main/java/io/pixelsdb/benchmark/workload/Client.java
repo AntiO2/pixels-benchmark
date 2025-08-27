@@ -9,6 +9,7 @@ package io.pixelsdb.benchmark.workload;
 
 import io.pixelsdb.benchmark.ConfigLoader;
 import io.pixelsdb.benchmark.Constant;
+import io.pixelsdb.benchmark.PixelsBench;
 import io.pixelsdb.benchmark.load.ConfigReader;
 import io.pixelsdb.benchmark.stats.Histogram;
 import io.pixelsdb.benchmark.stats.Result;
@@ -24,7 +25,8 @@ import java.util.concurrent.*;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 
-public abstract class Client {
+public abstract class Client
+{
     public static Logger logger = LogManager.getLogger(Client.class);
     static long tpTotalCount = 0L;
     static long apTotalCount = 0L;
@@ -56,172 +58,225 @@ public abstract class Client {
     RandomGenerator rg = new RandomGenerator();
     double risk_rate = 0;
     ExecutorService es = null;//Executors.newFixedThreadPool(5);
+    boolean freshness = false;
     private int testDuration = 0;
     private String clientName = "";
 
-    public static Client initTask(Properties cfg, String name, int taskType) {
+    public static Client initTask(Properties cfg, String name, int taskType)
+    {
         Client client = null;
-        try {
+        try
+        {
             client = (Client) Class.forName("io.pixelsdb.benchmark.workload." + name).getDeclaredConstructor().newInstance();
             client.setClientName(name);
             client.setTask_prop(cfg);
             client.setTaskType(taskType);
             client.doInit_wrapper(name);
-        } catch (InstantiationException e) {
+        } catch (InstantiationException e)
+        {
             e.printStackTrace();
-        } catch (IllegalAccessException e) {
+        } catch (IllegalAccessException e)
+        {
             e.printStackTrace();
-        } catch (InvocationTargetException e) {
+        } catch (InvocationTargetException e)
+        {
             e.printStackTrace();
-        } catch (NoSuchMethodException e) {
+        } catch (NoSuchMethodException e)
+        {
             e.printStackTrace();
-        } catch (ClassNotFoundException e) {
+        } catch (ClassNotFoundException e)
+        {
             e.printStackTrace();
         }
         return client;
     }
 
-    public void setTestid1(int random_num) {
+    public void setTestid1(int random_num)
+    {
         testid1 = random_num;
     }
 
-    public void setTestid2(int random_num) {
+    public void setTestid2(int random_num)
+    {
         testid2 = random_num;
     }
 
-    public void setTestid3(int random_num) {
+    public void setTestid3(int random_num)
+    {
         testid3 = random_num;
     }
 
-    public boolean isVerbose() {
+    public boolean isVerbose()
+    {
         return verbose;
     }
 
-    public void setVerbose(boolean verbose) {
+    public void setVerbose(boolean verbose)
+    {
         this.verbose = verbose;
     }
 
-    public void setSqls(Sqlstmts sqls) {
+    public void setSqls(Sqlstmts sqls)
+    {
         this.sqls = sqls;
     }
 
-    public Result getRet() {
+    public Result getRet()
+    {
         return ret;
     }
 
-    public void setRet(Result ret) {
+    public void setRet(Result ret)
+    {
         this.ret = ret;
     }
 
-    public void setDbType(int dbType) {
+    public void setDbType(int dbType)
+    {
         this.dbType = dbType;
     }
 
-    public int getTestTime() {
+    public int getTestTime()
+    {
         return testDuration;
     }
 
-    public void setTestTime(int time) {
+    public void setTestTime(int time)
+    {
         testDuration = time;
     }
 
-    public int getTaskType() {
+    public int getTaskType()
+    {
         return taskType;
     }
 
-    public void setTaskType(int type) {
+    public void setTaskType(int type)
+    {
         this.taskType = type;
     }
 
-    public String getClientName() {
+    public String getClientName()
+    {
         return this.clientName;
     }
 
-    public void setClientName(String name) {
+    public void setClientName(String name)
+    {
         this.clientName = name;
     }
 
-    protected void setTask_prop(Properties prop) {
+    protected void setTask_prop(Properties prop)
+    {
         this.prop = prop;
     }
 
     // parameter handler including string value , int value and bool value
-    protected String strParameter(String paraName) {
+    protected String strParameter(String paraName)
+    {
         return prop.containsKey(paraName) ? prop
                 .getProperty(paraName) : null;
     }
 
-    protected String strParameter(String paraName, String defaultValue) {
+    protected String strParameter(String paraName, String defaultValue)
+    {
         return prop.containsKey(paraName) ? prop
                 .getProperty(paraName) : defaultValue;
     }
 
-    protected int intParameter(String paraName, int defaultValue) {
+    protected int intParameter(String paraName, int defaultValue)
+    {
         String v = prop
                 .getProperty(paraName, String.valueOf(defaultValue));
         return Integer.parseInt(v);
     }
 
-    protected int intParameter(String paraName) {
+    protected int intParameter(String paraName)
+    {
 
         return intParameter(paraName, 0);
     }
 
-    protected boolean boolParameter(String paraName, boolean defaultValue) {
-        if (prop.containsKey(paraName)) {
+    protected boolean boolParameter(String paraName, boolean defaultValue)
+    {
+        if (prop.containsKey(paraName))
+        {
             return "true".equalsIgnoreCase(prop.getProperty(paraName));
         }
         return defaultValue;
     }
 
-    protected boolean boolParameter(String paraName) {
+    protected boolean boolParameter(String paraName)
+    {
         return boolParameter(paraName, false);
     }
 
     // get db type, only mysql/oracle/pg supported
-    public int getDbType(String db) {
+    public int getDbType(String db)
+    {
 
-        if (db.equalsIgnoreCase("postgreSQL")) {
+        if (db.equalsIgnoreCase("postgreSQL"))
+        {
             return Constant.DB_PG;
-        } else if (db.equalsIgnoreCase("mysql")) {
+        } else if (db.equalsIgnoreCase("mysql"))
+        {
             return Constant.DB_MYSQL;
-        } else if (db.equalsIgnoreCase("oracle")) {
+        } else if (db.equalsIgnoreCase("oracle"))
+        {
             return Constant.DB_ORACLE;
-        } else {
+        } else
+        {
             return Constant.DB_UNKNOW;
         }
     }
 
     // get data size and create thread pool according to client number
-    public void doInit_wrapper(String clientName) {
-        if (taskType == 0) {
+    public void doInit_wrapper(String clientName)
+    {
+        if (taskType == 0)
+        {
             threads = intParameter("xtpclient");
-        } else if (taskType == 4) {
+        } else if (taskType == 4)
+        {
             threads = intParameter("xtpclient") + 1;
-        } else if (taskType == 1) {
+        } else if (taskType == 1)
+        {
             threads = intParameter("tpclient");
-        }  else if (taskType == 9) {
+        } else if (taskType == 9)
+        {
             threads = intParameter("tpclient"); // TODO(AntiO2): add lakehouse thread?
             TxRecorder.getInstance().init(threads);
         }
         CR = new ConfigReader(strParameter("sf", "1x"));
         String db = strParameter("db");
         setDbType(getDbType(db));
-        if (clientName.equals("APClient")) {
-            if (taskType == 0 || taskType == 4) {
+        if (clientName.equals("APClient"))
+        {
+            if (taskType == 0 || taskType == 4)
+            {
                 threads = intParameter("xapclient");
-            } else if (taskType == 7) {
+            } else if (taskType == 7)
+            {
                 threads = intParameter("apclient");
-            } else if (taskType == 2) {
+            } else if (taskType == 2)
+            {
                 threads = 1;
-            } else if (taskType == 9) {
+            } else if (taskType == 9)
+            {
                 // TODO(AntiO2): add trino query
-            } else {
+            } else
+            {
                 threads = 0;
             }
         }
 
-        if (threads > 0) {
+        if (clientName.equals("PixelsFreshness"))
+        {
+            threads = 1;
+        }
+
+        if (threads > 0)
+        {
             es = Executors.newFixedThreadPool(threads);
             cs = new ExecutorCompletionService<ClientResult>(es);
         }
@@ -243,8 +298,10 @@ public abstract class Client {
         int random_num3 = rg.getRandomint(customer_no, customer_no + company_no);
         setTestid3(random_num3);
 
-        if(taskType != 9) {
-            try {
+        if (taskType != 9)
+        {
+            try
+            {
                 // load the blocking-related transfer accounts
                 String DataPath = "Data_" + ConfigLoader.prop.getProperty("sf");
                 FileInputStream fi1 = new FileInputStream(new File(DataPath + "/Related_transfer_bids"));
@@ -262,39 +319,48 @@ public abstract class Client {
                 oi2.close();
                 fi2.close();
 
-            } catch (FileNotFoundException e) {
+            } catch (FileNotFoundException e)
+            {
                 logger.error("File not found");
-            } catch (IOException | ClassNotFoundException e) {
+            } catch (IOException | ClassNotFoundException e)
+            {
                 logger.error("Error initializing stream");
             }
         }
 
+        freshness = PixelsBench.pixelsBench.freshness;
 
         doInit();
     }
 
     // client work from here. A new thread named timer to output response time histogram every 1/10 duration
-    public void startTask() {
+    public void startTask()
+    {
         int testTime = 0;
         ClientResult _res = null;
         Thread timer = null;
         String db = strParameter("db");
         setDbType(getDbType(db));
-        if (ret != null) {
+        if (ret != null)
+        {
             hist = ret.getHist();
         }
 
-        if (clientName.equalsIgnoreCase("APClient")) {
+        if (clientName.equalsIgnoreCase("APClient"))
+        {
             if (taskType == 0 || taskType == 4)
                 ret.setXapclient(threads);
             else
                 ret.setApclient(threads);
         }
 
-        if (clientName.equalsIgnoreCase("tpclient")) {
-            if (taskType == 0 || taskType == 4) {
+        if (clientName.equalsIgnoreCase("tpclient"))
+        {
+            if (taskType == 0 || taskType == 4)
+            {
                 ret.setXtpclient(threads);
-            } else if (taskType == 9) {
+            } else if (taskType == 9)
+            {
                 ret.setTpclient(threads);
                 ret.setApclient(0); // TODO
             } else
@@ -309,35 +375,58 @@ public abstract class Client {
 
         round = intParameter("apround", 1);
 
-        if (taskType == 7) {
+
+        // set up test run time
+        if (taskType == 7)
+        {
             testTime = intParameter("apRunMins");
-        } else if (taskType == 1) {
+        } else if (taskType == 1)
+        {
             testTime = intParameter("tpRunMins");
-        } else if (taskType == 0 || taskType == 4) {
+        } else if (taskType == 0 || taskType == 4)
+        {
             testTime = intParameter("xpRunMins");
-        } else if (taskType == 9) {
+        } else if (taskType == 9)
+        {
             testTime = intParameter("pixelsFreshRunMins");
         }
+
+        if (clientName.equalsIgnoreCase("PixelsFreshness"))
+        {
+
+        }
+
+
         final int _duration = testTime;
-        if (taskType == 2) {
+        if (taskType == 2)
+        {
             logger.info("Begin to run :" + clientName + ", Test is " + round + " round");
-        } else {
+        } else
+        {
             logger.info("Begin to run :" + clientName + ", Test Duration is " + _duration + " mins");
         }
 
         setTestTime(testTime);
-        if (_duration > 0) {
-            timer = new Thread() {
-                public void run() {
-                    try {
+        if (_duration > 0)
+        {
+            timer = new Thread()
+            {
+                public void run()
+                {
+                    try
+                    {
                         long duration = _duration * 60 * 1000L;
                         long elpased_time = 0L;
-                        for (int i = 0; i < 10; i++) {
+                        for (int i = 0; i < 10; i++)
+                        {
                             Thread.sleep(_duration * 60 * 100L);
                             elpased_time += _duration * 60 * 100L;
-                            if (verbose) {
-                                if (clientName.equalsIgnoreCase("APClient")) {
-                                    for (int apidx = 0; apidx < 13; apidx++) {
+                            if (verbose)
+                            {
+                                if (clientName.equalsIgnoreCase("APClient"))
+                                {
+                                    for (int apidx = 0; apidx < 13; apidx++)
+                                    {
                                         if (hist.getAPItem(apidx).getN() == 0)
                                             continue;
                                         logger.info("Query " + (apidx + 1)
@@ -352,8 +441,10 @@ public abstract class Client {
                                     else
                                         logger.info("Current " + (i + 1) + "/10 time AP QPS is " + String.format("%.2f", apTotalCount / (elpased_time / 1000.0)));
                                 }
-                                if (clientName.equalsIgnoreCase("TPClient")) {
-                                    for (int tpidx = 0; tpidx < 18; tpidx++) {
+                                if (clientName.equalsIgnoreCase("TPClient"))
+                                {
+                                    for (int tpidx = 0; tpidx < 18; tpidx++)
+                                    {
                                         if (hist.getTPItem(tpidx).getN() == 0)
                                             continue;
                                         logger.info("Transaction " + (tpidx + 1)
@@ -374,9 +465,11 @@ public abstract class Client {
 
                         stopTask();
 
-                    } catch (InterruptedException e) {
+                    } catch (InterruptedException e)
+                    {
                         logger.warn("Test Duration Timer was stopped in force");
-                    } catch (Exception e) {
+                    } catch (Exception e)
+                    {
                         e.printStackTrace();
                     }
                 }
@@ -387,70 +480,88 @@ public abstract class Client {
         int _num_thread = threads;
 
         fs = new Future[_num_thread];
-        for (int i = 1; i <= _num_thread; i++) {
+        for (int i = 1; i <= _num_thread; i++)
+        {
             final String threadId = "T" + i;
-            Callable<ClientResult> r = new Callable<ClientResult>() {
+            Callable<ClientResult> r = new Callable<ClientResult>()
+            {
 
-                public ClientResult call() throws Exception {
+                public ClientResult call() throws Exception
+                {
                     // TODO Auto-generated method stub
                     Thread.currentThread().setName(threadId);
                     ClientResult result = execute();
                     return result;
                 }
             };
-            try {
+            try
+            {
                 fs[i - 1] = cs.submit(r);
-            } catch (Exception e) {
+            } catch (Exception e)
+            {
                 logger.error("create thread failed ", e);
             }
 
         }
 
         double maxElapsedTime = 0L;
-        for (int i = 0; i < _num_thread; i++) {
-            try {
+        for (int i = 0; i < _num_thread; i++)
+        {
+            try
+            {
                 fs[i] = cs.take();
-                if (fs[i] != null && !fs[i].isCancelled() && fs[i].isDone()) {
+                if (fs[i] != null && !fs[i].isCancelled() && fs[i].isDone())
+                {
                     _res = fs[i].get();
                     if (_res.getRt() > maxElapsedTime)
                         maxElapsedTime = _res.getRt();
                 }
-            } catch (Exception e) {
+            } catch (Exception e)
+            {
                 logger.error("Waiting for load worker", e);
             }
         }
 
-        if (clientName.equalsIgnoreCase("APClient")) {
-            if (taskType == 2) {
+        if (clientName.equalsIgnoreCase("APClient"))
+        {
+            if (taskType == 2)
+            {
                 ret.setApRound(round);
                 ret.setApTotal(apTotalCount);
                 ret.setQps(Double.valueOf(String.format("%.2f", apTotalCount / (apTotalTime / 1000.0))));
-            } else if (taskType == 0 || taskType == 4) {
+            } else if (taskType == 0 || taskType == 4)
+            {
                 ret.setIqTotal(iqTotalCount);
                 ret.setXpqps(Double.valueOf(String.format("%.2f", iqTotalCount / (testDuration * 60.0))));
-            } else if (taskType == 7) {
+            } else if (taskType == 7)
+            {
                 ret.setApTotal(apTotalCount);
                 ret.setApRound(_res.getApRound());
                 ret.setQps(Double.valueOf(String.format("%.2f", apTotalCount / (maxElapsedTime / 1000.0))));
             }
         }
 
-        if (clientName.equalsIgnoreCase("TPClient")) {
+        if (clientName.equalsIgnoreCase("TPClient"))
+        {
 
-            if (taskType == 1) {
+            if (taskType == 1)
+            {
                 ret.setTpTotal(tpTotalCount);
                 ret.setTps(Double.valueOf(String.format("%.2f", tpTotalCount / (testDuration * 60.0))));
-            } else if (taskType == 0 || taskType == 4) {
+            } else if (taskType == 0 || taskType == 4)
+            {
                 ret.setAtTotal(atTotalCount);
                 ret.setXptps(Double.valueOf(String.format("%.2f", atTotalCount / (testDuration * 60.0))));
             }
         }
 
-        if (timer != null) {
+        if (timer != null)
+        {
             timer.interrupt();
         }
 
-        if (!es.isShutdown() || !es.isTerminated()) {
+        if (!es.isShutdown() || !es.isTerminated())
+        {
             es.shutdownNow();
         }
         logger.info("Finished to execute " + clientName);
@@ -460,25 +571,32 @@ public abstract class Client {
 
     public abstract ClientResult execute();
 
-    public void stopTask() {
+    public void stopTask()
+    {
         exitFlag = true;
         int p = 0;
-        if (taskType != 7) {
-            if (fs != null) {
-                for (Future ft : fs) {
+        if (taskType != 7)
+        {
+            if (fs != null)
+            {
+                for (Future ft : fs)
+                {
                     ft.cancel(true);
                 }
             }
         }
     }
 
-    public ArrayList<Integer> getRandomList(int minValue, int maxValue) {
+    public ArrayList<Integer> getRandomList(int minValue, int maxValue)
+    {
         ArrayList<Integer> rList = new ArrayList<Integer>();
         LinkedList<Integer> source = new LinkedList<Integer>();
-        for (int i = minValue; i <= maxValue; i++) {
+        for (int i = minValue; i <= maxValue; i++)
+        {
             source.add(i);
         }
-        while (source.size() > 0) {
+        while (source.size() > 0)
+        {
             int idx = ThreadLocalRandom.current().nextInt(source.size());
             rList.add(source.get(idx));
             source.remove(idx);

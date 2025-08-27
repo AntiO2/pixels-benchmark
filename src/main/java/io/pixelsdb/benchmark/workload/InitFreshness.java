@@ -29,26 +29,32 @@ import java.sql.SQLException;
  * @author: AntiO2
  * @date: 2025/7/23 12:28
  */
-public class InitFreshness {
+public class InitFreshness
+{
 
     private final Sqlstmts sqls;
     private final Connection conn;
     private final int tpClient;
-    public InitFreshness(Connection connTp, Sqlstmts sqls, int tpClientNum) {
+
+    public InitFreshness(Connection connTp, Sqlstmts sqls, int tpClientNum)
+    {
         this.sqls = sqls;
         this.conn = connTp;
         this.tpClient = tpClientNum;
     }
 
 
-    public int populateFreshness() {
+    public int populateFreshness()
+    {
         int cnt = 0;
         PreparedStatement pstmt = null;
-        try {
+        try
+        {
             long currentStarttTs = System.currentTimeMillis();
             // transaction begins
             conn.setAutoCommit(false);
-            for(int cli_id = 0; cli_id < tpClient; cli_id++) {
+            for (int cli_id = 0; cli_id < tpClient; cli_id++)
+            {
                 pstmt = conn.prepareStatement(sqls.fresh_init());
                 pstmt.setInt(1, cli_id);
                 int i = pstmt.executeUpdate();
@@ -56,12 +62,16 @@ public class InitFreshness {
             }
 
             conn.commit();
-        } catch (SQLException e) {
+        } catch (SQLException e)
+        {
             e.printStackTrace();
-        } finally {
-            try {
+        } finally
+        {
+            try
+            {
                 pstmt.close();
-            } catch (SQLException e) {
+            } catch (SQLException e)
+            {
                 e.printStackTrace();
             }
         }
@@ -72,25 +82,30 @@ public class InitFreshness {
     {
         boolean success = true;
         PreparedStatement pstmt = null;
-        try {
+        try
+        {
             long currentStarttTs = System.currentTimeMillis();
             // transaction begins
             String[] cdc_inits = sqls.cdc_init();
 
             conn.setAutoCommit(false);
-            for(String cdc_init: cdc_inits)
+            for (String cdc_init : cdc_inits)
             {
                 pstmt = conn.prepareStatement(cdc_init);
                 boolean res = pstmt.execute();
                 success &= res;
             }
             conn.commit();
-        } catch (SQLException e) {
+        } catch (SQLException e)
+        {
             e.printStackTrace();
-        } finally {
-            try {
+        } finally
+        {
+            try
+            {
                 pstmt.close();
-            } catch (SQLException e) {
+            } catch (SQLException e)
+            {
                 e.printStackTrace();
             }
         }

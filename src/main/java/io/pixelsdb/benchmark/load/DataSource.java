@@ -11,7 +11,8 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.*;
 
-public class DataSource {
+public class DataSource
+{
     static final ClassLoader loader = DataSource.class.getClassLoader();
     private static final String FirstName_female = "FirstName_Female";
     private static final String FirstName_male = "FirstName_Male";
@@ -26,46 +27,57 @@ public class DataSource {
     public HashMap<String, List<String>> Province_Cities_Map = new HashMap<>();
     public String[] gender = {"female", "male"};
 
-    public DataSource() {
+    public DataSource()
+    {
         load(FirstName_female, FirstName_female_list);
         load(FirstName_male, FirstName_male_list);
         load(LastName, LastName_list);
         loadLocation(Province2City);
     }
 
-    private void load(String fileName, List<String> lst) {
-        try {
+    private void load(String fileName, List<String> lst)
+    {
+        try
+        {
             BufferedReader Br = new BufferedReader(
                     new InputStreamReader(loader.getResourceAsStream(fileName)));
             String line;
-            while ((line = Br.readLine()) != null) {
+            while ((line = Br.readLine()) != null)
+            {
                 lst.add(line.trim());
             }
-        } catch (IOException e) {
+        } catch (IOException e)
+        {
             e.printStackTrace();
         }
     }
 
-    private void loadLocation(String fileName) {
-        try {
+    private void loadLocation(String fileName)
+    {
+        try
+        {
             BufferedReader Br = new BufferedReader(
                     new InputStreamReader(loader.getResourceAsStream(fileName)));
             String line;
-            while ((line = Br.readLine()) != null) {
+            while ((line = Br.readLine()) != null)
+            {
                 String Province = line.split("\\s+")[0];
                 String City = line.split("\\s+")[1];
-                if (!ProvinceSet.contains(Province)) {
+                if (!ProvinceSet.contains(Province))
+                {
                     ProvinceSet.add(Province);
                     List<String> city_list = new ArrayList<String>();
                     city_list.add(City);
                     Province_Cities_Map.put(Province, city_list);
-                } else {
+                } else
+                {
                     List<String> city_list = Province_Cities_Map.get(Province);
                     city_list.add(City);
                     Province_Cities_Map.put(Province, city_list);
                 }
             }
-        } catch (IOException e) {
+        } catch (IOException e)
+        {
             e.printStackTrace();
         }
     }

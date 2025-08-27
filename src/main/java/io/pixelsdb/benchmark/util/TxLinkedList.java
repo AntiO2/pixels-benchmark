@@ -25,12 +25,14 @@ package io.pixelsdb.benchmark.util;
  * @author: AntiO2
  * @date: 2025/7/23 13:40
  */
-public class TxLinkedList {
+public class TxLinkedList
+{
     private final TxNode head;
     private final TxNode tail;
     private long firstUnseen = 0;
 
-    public TxLinkedList() {
+    public TxLinkedList()
+    {
         int dh = 500;
         long cth = Long.MAX_VALUE;
         int dt = -1;
@@ -40,29 +42,35 @@ public class TxLinkedList {
         head.next.set(tail);
     }
 
-    public void insert(int d, long ct) {
+    public void insert(int d, long ct)
+    {
         TxNode newTxNode = new TxNode(d, ct);
-        while (true) {
+        while (true)
+        {
             TxNode[] leftRight = search(ct, d);
             TxNode left = leftRight[0];
             TxNode right = leftRight[1];
 
             newTxNode.next.set(right);
-            if (left.next.compareAndSet(right, newTxNode)) {
+            if (left.next.compareAndSet(right, newTxNode))
+            {
                 break;
             }
         }
     }
 
-    private TxNode[] search(long ct, int d) {
+    private TxNode[] search(long ct, int d)
+    {
         TxNode left = null, right;
         TxNode leftNext = null;
 
-        while (true) {
+        while (true)
+        {
             TxNode t = head;
             TxNode tNext = t.next.get();
 
-            while (t.commitTime > ct) {
+            while (t.commitTime > ct)
+            {
                 left = t;
                 leftNext = tNext;
                 t = tNext;
@@ -70,16 +78,19 @@ public class TxLinkedList {
                 tNext = t.next.get();
             }
             right = t;
-            if (leftNext == right) {
+            if (leftNext == right)
+            {
                 return new TxNode[]{left, right};
             }
         }
     }
 
-    public void printList(int client) {
+    public void printList(int client)
+    {
         TxNode t = head;
         TxNode tNext = head.next.get();
-        while (true) {
+        while (true)
+        {
             System.out.println("client: " + client + " txnNum: " + t.data + ", Commit Time: " + t.commitTime);
             if (t == tail) break;
             t = tNext;
@@ -87,7 +98,8 @@ public class TxLinkedList {
         }
     }
 
-    public long getFirstUnseenTxn(long startTime, int txnNum) {
+    public long getFirstUnseenTxn(long startTime, int txnNum)
+    {
         TxNode t = head;
         TxNode tNext = head.next.get();
         int foundUnseen = 0;
@@ -95,47 +107,60 @@ public class TxLinkedList {
         int tn = -1;
         int option = 0;
 
-        while (true) {
-            if (t == tail || (t == head && tNext == tail)) {
+        while (true)
+        {
+            if (t == tail || (t == head && tNext == tail))
+            {
                 if (foundUnseen == 1) break;
-                else {
+                else
+                {
                     firstUnseen = 0;
                     break;
                 }
-            } else if (t == head) {
+            } else if (t == head)
+            {
                 t = tNext;
                 tNext = t.next.get();
-            } else if (t.commitTime >= startTime) {
-                if (t.data == txnNum) {
+            } else if (t.commitTime >= startTime)
+            {
+                if (t.data == txnNum)
+                {
                     firstUnseen = 0;
                     option = 1;
                     ct = t.commitTime;
                     tn = t.data;
                     break;
-                } else {
+                } else
+                {
                     t = tNext;
                     tNext = t.next.get();
                 }
-            } else if (t.commitTime < startTime) {
-                if (t.data > txnNum) {
+            } else if (t.commitTime < startTime)
+            {
+                if (t.data > txnNum)
+                {
                     firstUnseen = (startTime - t.commitTime);
                     ct = t.commitTime;
                     tn = t.data;
                     t = tNext;
                     tNext = t.next.get();
                     foundUnseen = 1;
-                } else if (t.data == txnNum) {
-                    if (foundUnseen == 1) {
+                } else if (t.data == txnNum)
+                {
+                    if (foundUnseen == 1)
+                    {
                         option = 2;
                         break;
-                    } else {
+                    } else
+                    {
                         firstUnseen = 0;
                         ct = t.commitTime;
                         tn = t.data;
                         option = 3;
                         break;
                     }
-                } else if (t.data < txnNum) {
+                } else if (t.data < txnNum)
+                {
                     firstUnseen = 0;
                     ct = t.commitTime;
                     tn = t.data;

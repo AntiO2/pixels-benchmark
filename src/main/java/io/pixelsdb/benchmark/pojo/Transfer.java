@@ -20,8 +20,10 @@ public record Transfer
          String type,
          Date timestamp,
          Date fresh_ts
-        ) {
-    public String toString() {
+        )
+{
+    public String toString()
+    {
         StringJoiner joiner = new StringJoiner(",");
         joiner.add(Long.toString(id))
                 .add(Integer.toString(sourceID))
@@ -33,7 +35,8 @@ public record Transfer
         return joiner.toString();
     }
 
-    public String convertDateToString(java.util.Date date) {
+    public String convertDateToString(java.util.Date date)
+    {
         // "yyyy-MM-dd HH:mm:ss.SSS"
         DateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS");
         String dateToString = df.format(date);

@@ -19,7 +19,7 @@ at4_percent=15
 at5_percent=7
 at6_percent=3
 
-tpclient=5
+tpclient=64
 apclient=1
 
 

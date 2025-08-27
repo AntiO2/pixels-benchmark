@@ -4,14 +4,47 @@ dbgen_path=${DEVELOP_DIR}/example/tpch-dbgen
 tpcc_config=${DEVELOP_DIR}/example/tpcc_config
 benchmark_tool=${DEVELOP_DIR}/example/benchmarksql
 
-function  build_generator() {
-  [[ -d ${dbgen_path} ]] || { log_fatal_exit "Failed to clone tpch_data into ${dbgen_path}. Please update submodule manually"; }
+function link_data_for_pixels() {
+    SCALE=${1:-"1"}
+    log_info "Scale ${SCALE}"
+    local data_path=${PROJECT_DIR}/Data_${SCALE}x
+    local target_root="${PROJECT_DIR}/Data_pixels"
 
-  WORK_PATH=`pwd`
-  cd ${dbgen_path}
-  make -j${nproc}
-  check_fatal_exit "Failed to build tpch-dbgen_path"
-  cd ${WORK_PATH}
+    log_info "raw data path is ${data_path}"
+    mkdir -p "${target_root}"
+
+    for f in "${data_path}"/*.csv; do
+        local base=$(basename "$f" .csv)
+        local subdir="${target_root}/${base}"
+        local link="${subdir}/$(basename "$f")"
+
+        # ensure subdir exists
+        mkdir -p "${subdir}"
+
+        # remove old symlink if exists
+        if [ -L "${link}" ] || [ -e "${link}" ]; then
+            rm -f "${link}"
+        fi
+
+        # create new symlink
+        ln -s "${f}" "${link}"
+        log_info "Linked ${link} -> ${f} "
+    done
+}
+
+function count_csv_lines() {
+    SCALE=${1:-"1"}
+    local data_path="${PROJECT_DIR}/Data_${SCALE}x"
+
+    log_info "Counting lines in CSV files under ${data_path}"
+
+    for f in "${data_path}"/*.csv; do
+        if [ -f "$f" ]; then
+            local lines
+            lines=$(wc -l < "$f")
+            echo "$(basename "$f"): $lines"
+        fi
+    done
 }
 
 

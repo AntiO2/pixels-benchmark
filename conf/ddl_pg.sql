@@ -1,5 +1,5 @@
 CREATE TABLE freshness (
-    f_cli_id int PRIMARY KEY
+    f_cli_id int PRIMARY KEY,
     f_tx_id int
 );
 

@@ -29,16 +29,17 @@ import java.sql.ResultSet;
 import java.util.Properties;
 
 /**
- *
  * @package: io.pixelsdb.benchmark
  * @className: QueryTrinoTest
  * @author: AntiO2
  * @date: 2025/7/24 02:07
  */
-public class QueryTrinoTest {
+public class QueryTrinoTest
+{
 
     @Test
-    public void testPaimonTrinoQuery() {
+    public void testPaimonTrinoQuery()
+    {
         String JDBC_URL = "jdbc:trino://localhost:18081/paimon/test_simple";
         String TBL_NAME = "test_tbl";
         String query = "SELECT * FROM " + TBL_NAME;  // 可替换为 SELECT * FROM your_table LIMIT 10;
@@ -46,25 +47,29 @@ public class QueryTrinoTest {
         Properties properties = new Properties();
         properties.setProperty("user", "test");
 
-        try (Connection conn = DriverManager.getConnection(JDBC_URL, properties)) {
+        try (Connection conn = DriverManager.getConnection(JDBC_URL, properties))
+        {
 
             PreparedStatement pstmt = conn.prepareStatement(query);
 
             ResultSet rs = pstmt.executeQuery();
 
-            while (rs.next()) {
+            while (rs.next())
+            {
                 int result = rs.getInt(1);
                 System.out.println("Query result: " + result);
             }
 
-        } catch (Exception e) {
+        } catch (Exception e)
+        {
             e.printStackTrace();
             Assertions.fail("Query failed: " + e.getMessage());
         }
     }
 
     @Test
-    public void testRemotePixelsQuery() {
+    public void testRemotePixelsQuery()
+    {
         String JDBC_URL = "jdbc:trino://localhost:18081/pixels/pixels_bench_sf1x";
         String TBL_NAME = "freshness";
         String query = "SELECT * FROM " + TBL_NAME;  // 可替换为 SELECT * FROM your_table LIMIT 10;
@@ -72,18 +77,21 @@ public class QueryTrinoTest {
         Properties properties = new Properties();
         properties.setProperty("user", "test");
 
-        try (Connection conn = DriverManager.getConnection(JDBC_URL, properties)) {
+        try (Connection conn = DriverManager.getConnection(JDBC_URL, properties))
+        {
 
             PreparedStatement pstmt = conn.prepareStatement(query);
 
             ResultSet rs = pstmt.executeQuery();
 
-            while (rs.next()) {
+            while (rs.next())
+            {
                 int result = rs.getInt(2);
                 System.out.println("Query result: " + result);
             }
 
-        } catch (Exception e) {
+        } catch (Exception e)
+        {
             e.printStackTrace();
             Assertions.fail("Query failed: " + e.getMessage());
         }

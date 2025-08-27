@@ -12,7 +12,8 @@ import java.util.*;
 import java.util.concurrent.ThreadLocalRandom;
 import java.util.concurrent.TimeUnit;
 
-public class RandomGenerator {
+public class RandomGenerator
+{
     private static final Random rand = new Random();
     public int[] loan_duration = {30, 60, 90, 180, 365};
     String[] prefix_3 = {
@@ -44,11 +45,13 @@ public class RandomGenerator {
             "Shaanxi", "Jiangxi", "Chongqing", "Liaoning", "Yunnan", "Guangxi", "Hong_Kong", "Shanxi", "Inner_Mongolia", "Guizhou", "Xinjiang", "Tianjin", "Heilongjiang",
             "Jilin", "Gansu", "Hainan", "Ningxia", "Qinghai", "Tibet", "Macau", "Taiwan"};
 
-    public RandomGenerator() {
+    public RandomGenerator()
+    {
 
     }
 
-    public static double round(double value, int places) {
+    public static double round(double value, int places)
+    {
         if (places < 0) throw new IllegalArgumentException();
 
         BigDecimal bd = BigDecimal.valueOf(value);
@@ -56,16 +59,20 @@ public class RandomGenerator {
         return bd.doubleValue();
     }
 
-    public static int binary_search(Random rand, PowerCDF power, int size) {
+    public static int binary_search(Random rand, PowerCDF power, int size)
+    {
         double randomDis = rand.nextDouble();
         int lowerBound = 0;
         int upperBound = size;
         int midPoint = (upperBound + lowerBound) / 2;
 
-        while (upperBound > (lowerBound + 1)) {
-            if (power.getPowerDist().cdf(midPoint) > randomDis) {
+        while (upperBound > (lowerBound + 1))
+        {
+            if (power.getPowerDist().cdf(midPoint) > randomDis)
+            {
                 upperBound = midPoint;
-            } else {
+            } else
+            {
                 lowerBound = midPoint;
             }
             midPoint = (upperBound + lowerBound) / 2;
@@ -73,39 +80,48 @@ public class RandomGenerator {
         return midPoint;
     }
 
-    public String getRandomLoanStatus() {
+    public String getRandomLoanStatus()
+    {
         return loan_status.values()[rand.nextInt(loan_status.values().length)].toString();
     }
 
-    public int getRandomLoanDuration() {
+    public int getRandomLoanDuration()
+    {
         return loan_duration[rand.nextInt(loan_duration.length)];
     }
 
-    public String getRandomCustTransferType() {
+    public String getRandomCustTransferType()
+    {
         return transfer_cust_type.values()[rand.nextInt(transfer_cust_type.values().length)].toString();
     }
 
-    public String getRandomCompanyTransferType() {
+    public String getRandomCompanyTransferType()
+    {
         return transfer_company_type.values()[rand.nextInt(transfer_company_type.values().length)].toString();
     }
 
-    public String getRandomCustCheckType() {
+    public String getRandomCustCheckType()
+    {
         return transfer_cust_type.values()[rand.nextInt(check_cust_type.values().length)].toString();
     }
 
-    public String getRandomCompanyCheckType() {
+    public String getRandomCompanyCheckType()
+    {
         return transfer_company_type.values()[rand.nextInt(check_company_type.values().length)].toString();
     }
 
-    public String getRandomItem(List<String> lst) {
+    public String getRandomItem(List<String> lst)
+    {
         return lst.get(rand.nextInt(lst.size()));
     }
 
-    public int[] getRandomEdge(int range1, int range2) {
+    public int[] getRandomEdge(int range1, int range2)
+    {
         int[] edge = {0, 1};
         int src = rand.nextInt(range1);
         int tar = rand.nextInt(range2);
-        while (src != tar) {
+        while (src != tar)
+        {
             edge[0] = src;
             edge[1] = tar;
             return edge;
@@ -113,44 +129,54 @@ public class RandomGenerator {
         return null;
     }
 
-    public long getRandomLong(long lower, long upper, long source) {
+    public long getRandomLong(long lower, long upper, long source)
+    {
         long target = ThreadLocalRandom.current().nextLong(lower, upper);
-        while (source == target) {
+        while (source == target)
+        {
             target = ThreadLocalRandom.current().nextLong(lower, upper);
         }
         return target;
     }
 
-    public String getRandomItemFromset(Set<String> set) {
+    public String getRandomItemFromset(Set<String> set)
+    {
         Iterator<String> iter = set.iterator();
-        for (int i = 0; i < rand.nextInt(set.size()); i++) {
+        for (int i = 0; i < rand.nextInt(set.size()); i++)
+        {
             iter.next();
         }
         return iter.next();
     }
 
-    public String getRandomProvince() {
+    public String getRandomProvince()
+    {
         return getRandomString(Provinces_municipalities);
     }
 
-    public String getRandomString(String[] slst) {
+    public String getRandomString(String[] slst)
+    {
         return slst[rand.nextInt(slst.length)];
     }
 
-    public int getRandomint(int bound) {
+    public int getRandomint(int bound)
+    {
         return rand.nextInt(bound);
     }
 
-    public int getRandomint(int lower, int upper) {
+    public int getRandomint(int lower, int upper)
+    {
         return ThreadLocalRandom.current().nextInt(lower, upper);
     }
 
-    public double getRandomDouble(Double bound) {
+    public double getRandomDouble(Double bound)
+    {
         Double num = ThreadLocalRandom.current().nextDouble(bound);
         return round(num, 2);
     }
 
-    public double getRandomDouble() {
+    public double getRandomDouble()
+    {
         Double num = ThreadLocalRandom.current().nextDouble();
         return round(num, 2);
     }
@@ -160,30 +186,36 @@ public class RandomGenerator {
 //        return getRandomItem(citylist);
 //    }
 
-    public long getRandomLong(long lower, long upper) {
+    public long getRandomLong(long lower, long upper)
+    {
         return ThreadLocalRandom.current().nextLong(lower, upper);
     }
 
-    public long getRandomLong(long upper) {
+    public long getRandomLong(long upper)
+    {
         return ThreadLocalRandom.current().nextLong(upper);
     }
 
-    public String getRandomPhone() {
+    public String getRandomPhone()
+    {
         StringBuilder builder = new StringBuilder();
         builder.append(prefix_3[rand.nextInt(prefix_3.length)]);
         //last_8 digit
-        for (int i = 0; i < 8; i++) {
+        for (int i = 0; i < 8; i++)
+        {
             int d = rand.nextInt(10);
             builder.append(d);
         }
         return builder.toString();
     }
 
-    public String getRandomCategory() {
+    public String getRandomCategory()
+    {
         return CompanyCategories[rand.nextInt(CompanyCategories.length)];
     }
 
-    public Date getRandomDate(int startYear, int endYear) {
+    public Date getRandomDate(int startYear, int endYear)
+    {
         long aDay = TimeUnit.DAYS.toMillis(1);
         long now = new Date().getTime();
         Date start = new Date(now - aDay * 365 * (endYear - startYear + 1));
@@ -198,7 +230,8 @@ public class RandomGenerator {
         return new Date(randomMillisSinceEpoch);
     }
 
-    public Date getRandomTimestamp(int startYear, int endYear) {
+    public Date getRandomTimestamp(int startYear, int endYear)
+    {
         long aDay = TimeUnit.DAYS.toMillis(1);
         long now = new Date().getTime();
         Date start = new Date(now - aDay * 365 * (endYear - startYear + 1));
@@ -213,7 +246,8 @@ public class RandomGenerator {
         return new Date(randomMillisSinceEpoch);
     }
 
-    public Date getRandomTimestamp(Date start, Date end) {
+    public Date getRandomTimestamp(Date start, Date end)
+    {
 //        long aDay = TimeUnit.DAYS.toMillis(1);
 //        long now = new Date().getTime();
 //        Date start;
@@ -230,7 +264,8 @@ public class RandomGenerator {
         return new Date(randomMillisSinceEpoch);
     }
 
-    public Date getRandomTimestamp(long start, long end) {
+    public Date getRandomTimestamp(long start, long end)
+    {
 //        long aDay = TimeUnit.DAYS.toMillis(1);
 //        long now = new Date().getTime();
 //        Date start;
@@ -244,25 +279,33 @@ public class RandomGenerator {
         return new Date(randomMillisSinceEpoch);
     }
 
-    public int getPowerIndex(int size, PowerCDF power) {
+    public int getPowerIndex(int size, PowerCDF power)
+    {
         int idx = binary_search(rand, power, size);
         return idx;
     }
 
-    public enum transfer_cust_type {transfer, red_packet, donate, invest}
+    public enum transfer_cust_type
+    {transfer, red_packet, donate, invest}
 
-    public enum transfer_company_type {business, salary, service, invest}
+    public enum transfer_company_type
+    {business, salary, service, invest}
 
-    public enum check_cust_type {check, others}
+    public enum check_cust_type
+    {check, others}
 
-    public enum check_company_type {business, service, invest}
+    public enum check_company_type
+    {business, service, invest}
 
-    public enum loan_type {company_business, personal_business}
+    public enum loan_type
+    {company_business, personal_business}
 
     // four more status in process: lent, repaid, checked, and overdued
-    public enum loan_status {under_review, reject, accept}
+    public enum loan_status
+    {under_review, reject, accept}
 
-    public enum loan_trans_status {checked, lent, repaid}
+    public enum loan_trans_status
+    {checked, lent, repaid}
 
 //    public Date getRandomTimestamp(Date min_date) {
 //        long now = new Date().getTime();

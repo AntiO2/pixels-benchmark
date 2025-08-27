@@ -7,7 +7,6 @@ package io.pixelsdb.benchmark.load;
  **/
 
 import com.moandjiezana.toml.Toml;
-import io.pixelsdb.benchmark.PixelsBench;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -17,9 +16,10 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-public class ConfigReader {
-    public static Logger logger = LogManager.getLogger(ConfigReader.class);
+public class ConfigReader
+{
     static final ClassLoader loader = ConfigReader.class.getClassLoader();
+    public static Logger logger = LogManager.getLogger(ConfigReader.class);
     public long customer_number;
     public long company_number;
     public int customer_age_lower;
@@ -55,12 +55,15 @@ public class ConfigReader {
     public double loan_rate;
     public double prob_blocked;
 
-    public ConfigReader(String scale_factor) {
+    public ConfigReader(String scale_factor)
+    {
         load("parameters.toml", scale_factor);
     }
 
-    private void load(String fileName, String scale_factor) {
-        try {
+    private void load(String fileName, String scale_factor)
+    {
+        try
+        {
             BufferedReader Br = new BufferedReader(
                     new InputStreamReader(loader.getResourceAsStream(fileName)));
             Toml toml = new Toml().read(Br);
@@ -108,7 +111,8 @@ public class ConfigReader {
             // loantrans
             loantrans_number = toml.getLong(scale_factor + ".loantrans_number").intValue();
             loantrans_datapath = toml.getString(scale_factor + ".loantrans_datapath");
-        } catch (ParseException e) {
+        } catch (ParseException e)
+        {
             e.printStackTrace();
         }
     }
