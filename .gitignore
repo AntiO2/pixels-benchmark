@@ -91,3 +91,6 @@ nb-configuration.xml
 
 
 develop/
+
+# Generated data
+/Data_*
