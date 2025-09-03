@@ -29,8 +29,7 @@ public record SavingAccount
                 .add(Integer.toString(userID))
                 .add(Double.toString(balance))
                 .add(Integer.toString(isBlocked))
-                .add(convertDateToString(timestamp))
-                .add("");
+                .add(convertDateToString(timestamp));
         return joiner.toString();
     }
 

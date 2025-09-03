@@ -199,7 +199,7 @@ sql = [
     "SELECT balance FROM savingAccount WHERE accountID = ?",
     "UPDATE savingAccount SET balance = balance - ? where accountID = ?",
     "UPDATE savingAccount SET balance = balance + ? where accountID = ?",
-    "INSERT INTO transfer VALUES (DEFAULT, ?,?,?,?,?,?)"
+    "INSERT INTO transfer VALUES (DEFAULT, ?,?,?,?,?)"
 ]
 
 [TP-10]
@@ -430,7 +430,7 @@ WHERE f_cli_id = ? """
 
 [fresh-query]
 sql = """select max(f_tx_id) as f_tx_id, f_cli_id
-from pixels_freshness
+from freshness
 group by f_cli_id
 order by f_cli_id """
 

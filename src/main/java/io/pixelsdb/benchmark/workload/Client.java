@@ -242,6 +242,7 @@ public abstract class Client
         } else if (taskType == 1)
         {
             threads = intParameter("tpclient");
+            TxRecorder.getInstance().init(threads);
         } else if (taskType == 9)
         {
             threads = intParameter("tpclient"); // TODO(AntiO2): add lakehouse thread?

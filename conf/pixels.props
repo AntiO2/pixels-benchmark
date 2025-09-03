@@ -4,10 +4,10 @@ db=postgreSQL
 classname=org.postgresql.Driver
 classname_ap=org.postgresql.Driver
 
+url=jdbc:postgresql://localhost:5432/pixels_bench_sf1x
 username=pixels
 password=pixels_realtime_crud
 
-url=jdbc:postgresql://localhost:5432/pixels_bench_sf1x
 trino_url=jdbc:trino://localhost:18081/pixels/pixels_bench_sf1x
 trino_user=pixels
 trino_driver=io.trino.jdbc.TrinoDriver
@@ -19,7 +19,7 @@ at4_percent=15
 at5_percent=7
 at6_percent=3
 
-tpclient=64
+tpclient=1
 apclient=1
 
 

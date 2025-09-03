@@ -30,8 +30,7 @@ public record Transfer
                 .add(Integer.toString(targetID))
                 .add(Double.toString(amount))
                 .add(type)
-                .add(convertDateToString(timestamp))
-                .add("");
+                .add(convertDateToString(timestamp));
         return joiner.toString();
     }
 

@@ -1544,10 +1544,10 @@ public class TPClient extends Client
                 pstmt[3].setDouble(3, amount);
                 pstmt[3].setString(4, type);
                 pstmt[3].setTimestamp(5, ts);
-                if (dbType == 5)
-                {
-                    pstmt[3].setTimestamp(6, null);
-                }
+//                if (dbType == 5)
+//                {
+//                    pstmt[3].setTimestamp(6, null);
+//                }
                 pstmt[3].executeUpdate();
                 if (freshness)
                 {
@@ -1569,6 +1569,13 @@ public class TPClient extends Client
             cr.setRt(responseTime);
         } catch (SQLException e)
         {
+            try
+            {
+                conn.rollback();
+            } catch (SQLException ex)
+            {
+                throw new RuntimeException(ex);
+            }
             e.printStackTrace();
             cr.setResult(false);
             cr.setErrorMsg(e.getMessage());
@@ -1664,6 +1671,13 @@ public class TPClient extends Client
             }
         } catch (SQLException e)
         {
+            try
+            {
+                conn.rollback();
+            } catch (SQLException ex)
+            {
+                throw new RuntimeException(ex);
+            }
             e.printStackTrace();
             cr.setResult(false);
             cr.setErrorMsg(e.getMessage());
@@ -1783,6 +1797,13 @@ public class TPClient extends Client
 
         } catch (SQLException e)
         {
+            try
+            {
+                conn.rollback();
+            } catch (SQLException ex)
+            {
+                throw new RuntimeException(ex);
+            }
             e.printStackTrace();
             cr.setResult(false);
             cr.setErrorMsg(e.getMessage());
@@ -1918,6 +1939,13 @@ public class TPClient extends Client
             }
         } catch (SQLException e)
         {
+            try
+            {
+                conn.rollback();
+            } catch (SQLException ex)
+            {
+                throw new RuntimeException(ex);
+            }
             e.printStackTrace();
             cr.setResult(false);
             cr.setErrorMsg(e.getMessage());
@@ -2053,6 +2081,13 @@ public class TPClient extends Client
             }
         } catch (SQLException e)
         {
+            try
+            {
+                conn.rollback();
+            } catch (SQLException ex)
+            {
+                throw new RuntimeException(ex);
+            }
             e.printStackTrace();
             cr.setResult(false);
             cr.setErrorMsg(e.getMessage());
@@ -2151,6 +2186,13 @@ public class TPClient extends Client
             }
         } catch (SQLException e)
         {
+            try
+            {
+                conn.rollback();
+            } catch (SQLException ex)
+            {
+                throw new RuntimeException(ex);
+            }
             e.printStackTrace();
             cr.setResult(false);
             cr.setErrorMsg(e.getMessage());
@@ -2238,6 +2280,13 @@ public class TPClient extends Client
             }
         } catch (SQLException e)
         {
+            try
+            {
+                conn.rollback();
+            } catch (SQLException ex)
+            {
+                throw new RuntimeException(ex);
+            }
             e.printStackTrace();
             cr.setResult(false);
             cr.setErrorMsg(e.getMessage());
@@ -2348,6 +2397,13 @@ public class TPClient extends Client
             }
         } catch (SQLException e)
         {
+            try
+            {
+                conn.rollback();
+            } catch (SQLException ex)
+            {
+                throw new RuntimeException(ex);
+            }
             e.printStackTrace();
             cr.setResult(false);
             cr.setErrorMsg(e.getMessage());
@@ -2473,6 +2529,13 @@ public class TPClient extends Client
             cr.setRt(responseTime);
         } catch (SQLException e)
         {
+            try
+            {
+                conn.rollback();
+            } catch (SQLException ex)
+            {
+                throw new RuntimeException(ex);
+            }
             e.printStackTrace();
             cr.setResult(false);
             cr.setErrorMsg(e.getMessage());
@@ -2595,6 +2658,13 @@ public class TPClient extends Client
             cr.setRt(responseTime);
         } catch (SQLException e)
         {
+            try
+            {
+                conn.rollback();
+            } catch (SQLException ex)
+            {
+                throw new RuntimeException(ex);
+            }
             e.printStackTrace();
             cr.setResult(false);
             cr.setErrorMsg(e.getMessage());
@@ -2620,6 +2690,7 @@ public class TPClient extends Client
     public ClientResult execute()
     {
         int type = getTaskType();
+        type = 10; // debug
         ClientResult ret = new ClientResult();
         ClientResult cr = null;
         Connection conn = ConnectionMgr.getConnection();
@@ -2779,6 +2850,27 @@ public class TPClient extends Client
                     Thread.sleep(fresh_sleep_time);
                 }
                 ret.setRt(totalElapsedTime);
+            } else if (type == 10)
+            {
+                // for test proposal
+//                execTxn1(conn);
+//                execTxn2(conn);
+//                execTxn3(conn);
+//                execTxn4(conn);
+//                execTxn5(conn);
+//                execTxn6(conn);
+//                execTxn7(conn);
+//                execTxn8(conn);
+//                execTxn9(conn);
+//                execTxn10(conn);
+//                execTxn11(conn);
+//                execTxn12(conn);
+//                execTxn13(conn);
+//                execTxn14(conn);
+//                execTxn15(conn);
+//                execTxn16(conn);
+//                execTxn17(conn);
+//                execTxn18(conn);
             }
 
         } catch (ClassNotFoundException e)
