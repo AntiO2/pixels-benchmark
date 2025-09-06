@@ -2690,7 +2690,7 @@ public class TPClient extends Client
     public ClientResult execute()
     {
         int type = getTaskType();
-        type = 10; // debug
+        // type = 10; // debug
         ClientResult ret = new ClientResult();
         ClientResult cr = null;
         Connection conn = ConnectionMgr.getConnection();

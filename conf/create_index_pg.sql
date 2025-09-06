@@ -1,3 +1,14 @@
+ALTER TABLE freshness ADD PRIMARY KEY (f_cli_id);
+ALTER TABLE customer ADD PRIMARY KEY (custID);
+ALTER TABLE company ADD PRIMARY KEY (companyID);
+ALTER TABLE savingAccount ADD PRIMARY KEY (accountID);
+ALTER TABLE checkingAccount ADD PRIMARY KEY (accountID);
+ALTER TABLE transfer ADD PRIMARY KEY (id);
+ALTER TABLE checking ADD PRIMARY KEY (id);
+ALTER TABLE loanapps ADD PRIMARY KEY (id);
+ALTER TABLE loantrans ADD PRIMARY KEY (id);
+
+
 create index IF NOT EXISTS  idx_loanapps_1 on loanapps ( applicantid );
 
 create index IF NOT EXISTS  idx_loanapps_2 on loanapps ( timestamp );
@@ -25,35 +36,4 @@ create index IF NOT EXISTS  idx_sa_1 on savingaccount ( userid );
 create index IF NOT EXISTS  idx_ca_1 on checkingaccount ( userid );
 
 
--- transfer
-CREATE SEQUENCE IF NOT EXISTS transfer_id_seq;
-SELECT SETVAL('transfer_id_seq', (SELECT max(id) FROM transfer));
-ALTER TABLE transfer OWNER TO pixels;
-ALTER SEQUENCE transfer_id_seq OWNER TO pixels;
-ALTER TABLE transfer ALTER COLUMN id SET DEFAULT nextval('transfer_id_seq'::regclass);
-ALTER SEQUENCE transfer_id_seq OWNED BY transfer.id;
-
--- checking
-CREATE SEQUENCE IF NOT EXISTS checking_id_seq;
-SELECT SETVAL('checking_id_seq', (SELECT max(id) FROM checking));
-ALTER TABLE checking OWNER TO pixels;
-ALTER SEQUENCE checking_id_seq OWNER TO pixels;
-ALTER TABLE checking ALTER COLUMN id SET DEFAULT nextval('checking_id_seq'::regclass);
-ALTER SEQUENCE checking_id_seq OWNED BY checking.id;
-
--- loanapps
-CREATE SEQUENCE IF NOT EXISTS loanapps_id_seq;
-SELECT SETVAL('loanapps_id_seq', (SELECT max(id) FROM loanapps));
-ALTER TABLE loanapps OWNER TO pixels;
-ALTER SEQUENCE loanapps_id_seq OWNER TO pixels;
-ALTER TABLE loanapps ALTER COLUMN id SET DEFAULT nextval('loanapps_id_seq'::regclass);
-ALTER SEQUENCE loanapps_id_seq OWNED BY loanapps.id;
-
--- loantrans
-CREATE SEQUENCE IF NOT EXISTS loantrans_id_seq;
-SELECT SETVAL('loantrans_id_seq', (SELECT max(id) FROM loantrans));
-ALTER TABLE loantrans OWNER TO pixels;
-ALTER SEQUENCE loantrans_id_seq OWNER TO pixels;
-ALTER TABLE loantrans ALTER COLUMN id SET DEFAULT nextval('loantrans_id_seq'::regclass);
-ALTER SEQUENCE loantrans_id_seq OWNED BY loantrans.id;
 

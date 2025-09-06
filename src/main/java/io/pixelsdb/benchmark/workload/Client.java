@@ -7,6 +7,31 @@ package io.pixelsdb.benchmark.workload;
  **/
 
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.lang.reflect.InvocationTargetException;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Properties;
+import java.util.concurrent.ArrayBlockingQueue;
+import java.util.concurrent.Callable;
+import java.util.concurrent.CompletionService;
+import java.util.concurrent.ExecutorCompletionService;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
+import java.util.concurrent.ThreadLocalRandom;
+import java.util.concurrent.locks.Lock;
+import java.util.concurrent.locks.ReentrantLock;
+
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 import io.pixelsdb.benchmark.ConfigLoader;
 import io.pixelsdb.benchmark.Constant;
 import io.pixelsdb.benchmark.PixelsBench;
@@ -15,15 +40,6 @@ import io.pixelsdb.benchmark.stats.Histogram;
 import io.pixelsdb.benchmark.stats.Result;
 import io.pixelsdb.benchmark.util.RandomGenerator;
 import io.pixelsdb.benchmark.util.TxRecorder;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-
-import java.io.*;
-import java.lang.reflect.InvocationTargetException;
-import java.util.*;
-import java.util.concurrent.*;
-import java.util.concurrent.locks.Lock;
-import java.util.concurrent.locks.ReentrantLock;
 
 public abstract class Client
 {
@@ -566,6 +582,7 @@ public abstract class Client
             es.shutdownNow();
         }
         logger.info("Finished to execute " + clientName);
+        ret.setTestDuration(getTestTime());
     }
 
     public abstract void doInit();

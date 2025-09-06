@@ -123,3 +123,60 @@ function start_tpcc_test() {
     check_fatal_exit "Run TPC-C Benchmark for $db_type failed"
     cd ${WORK_PATH}
 }
+
+function load_pg_data() {
+  local DATA_DIR=${1:-${PROJECT_DIR}/Data_1x}
+  log_info "load data in ${DATA_DIR}"
+
+  [[ -z "$PGUSER" ]] && { log_fatal "PGUSER not set"; }
+  [[ -z "$PGDATABASE" ]] && { log_fatal "PGDATABASE not set"; }
+  [[ -z "$PGPASSWORD" ]] && { log_fatal "PGPASSWORD not set"; }
+
+  psql -c "\copy customer from '${DATA_DIR}/customer.csv' CSV DELIMITER ',';" &
+  psql -c "\copy company from '${DATA_DIR}/company.csv' CSV DELIMITER ',';" &
+  psql -c "\copy transfer from '${DATA_DIR}/transfer.csv' CSV DELIMITER ',';" &
+  psql -c "\copy checking from '${DATA_DIR}/checking.csv' CSV DELIMITER ',';" &
+  psql -c "\copy checkingAccount from '${DATA_DIR}/checkingAccount.csv' CSV DELIMITER ',';" &
+  psql -c "\copy savingAccount from '${DATA_DIR}/savingAccount.csv' CSV DELIMITER ',';" &
+  psql -c "\copy loanApps from '${DATA_DIR}/loanApps.csv' CSV DELIMITER ',';" &
+  psql -c "\copy loanTrans from '${DATA_DIR}/loanTrans.csv' CSV DELIMITER ',';" &
+
+  # 等待所有后台任务完成
+  wait
+
+  log_info "All data loading jobs finished."
+}
+
+function load_pg_index() {
+  local SQL_FILE=${CONFIG_DIR}/create_index_pg.sql
+  log_info "Exec ${SQL_FILE}"
+  [[ -z "$PGUSER" ]] && { log_fatal "PGUSER not set"; }
+  [[ -z "$PGDATABASE" ]] && { log_fatal "PGDATABASE not set"; }
+  [[ -z "$PGPASSWORD" ]] && { log_fatal "PGPASSWORD not set"; }
+
+  while IFS= read -r cmd; do
+      # 当已经有N个命令在执行时，等待直到其中一个执行完毕
+      # jobs -p -r
+      while (( $(jobs -p -r | wc -l) >= 8 )); do
+          sleep 0.1
+      done
+      {
+        log_info "EXEC SQL: ${cmd}"
+        psql -c "${cmd}"
+      } &
+  done < ${SQL_FILE}
+  wait
+}
+
+function load_pg_seq() {
+  local SQL_FILE=${CONFIG_DIR}/create_index_pg.sql
+  log_info "Exec ${SQL_FILE}"
+  [[ -z "$PGUSER" ]] && { log_fatal "PGUSER not set"; }
+  [[ -z "$PGDATABASE" ]] && { log_fatal "PGDATABASE not set"; }
+  [[ -z "$PGPASSWORD" ]] && { log_fatal "PGPASSWORD not set"; }
+
+  psql -f ${CONFIG_DIR}/create_sequence_pg.sql
+  wait
+}
+
+

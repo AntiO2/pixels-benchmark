@@ -8,7 +8,7 @@ url=jdbc:postgresql://localhost:5432/pixels_bench_sf1x
 username=pixels
 password=pixels_realtime_crud
 
-trino_url=jdbc:trino://localhost:18081/pixels/pixels_bench_sf1x
+trino_url=jdbc:trino://pixels-coordinator:8080/pixels/pixels_bench_sf1x
 trino_user=pixels
 trino_driver=io.trino.jdbc.TrinoDriver
 
@@ -19,7 +19,7 @@ at4_percent=15
 at5_percent=7
 at6_percent=3
 
-tpclient=1
+tpclient=128
 apclient=1
 
 
@@ -47,3 +47,22 @@ apround=1
 xtpclient=1
 xapclient=1
 
+
+tp1_percent=7
+tp2_percent=7
+tp3_percent=7
+tp4_percent=7
+tp5_percent=4
+tp6_percent=4
+tp7_percent=4
+tp8_percent=7
+tp9_percent=6
+tp10_percent=1
+tp11_percent=9
+tp12_percent=9
+tp13_percent=1
+tp14_percent=1
+tp15_percent=1
+tp16_percent=1
+tp17_percent=12
+tp18_percent=12
