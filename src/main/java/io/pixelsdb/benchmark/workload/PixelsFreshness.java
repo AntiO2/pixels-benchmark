@@ -107,7 +107,8 @@ public class PixelsFreshness extends Client
             long elpased_time = 0L;
             boolean hasGetFreshness = false;
             final long startTs = System.currentTimeMillis();
-            long sleepTimeSeconds = (getTestTime() * 60.0 - _fresh_warmup) / _fresh_interval;
+            long sleepTimeSeconds = (long) ((getTestTime() * 60.0 - _fresh_warmup) / _fresh_interval);
+            logger.info("Sleep Time Seconds {}", sleepTimeSeconds);
             for (int i = 0; i < _fresh_interval; i++)
             {
                 try
@@ -142,6 +143,7 @@ public class PixelsFreshness extends Client
             {
                 if (conn_trino != null)
                 {
+                    logger.info("Close Trino Connection");
                     conn_trino.close();
                 }
             } catch (SQLException e)
