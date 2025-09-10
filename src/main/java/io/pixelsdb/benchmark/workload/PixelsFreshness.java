@@ -51,7 +51,7 @@ public class PixelsFreshness extends Client
         String query = sqls.fresh_query();
 
         long maxFreshness = 0;
-
+        conn_trino.setAutoCommit(true);
         try
         {
             PreparedStatement stmt = conn_trino.prepareStatement(query);
@@ -65,6 +65,7 @@ public class PixelsFreshness extends Client
                 logger.info("Fresh Query: Cli {}\tTxnID {}\tFresh {}", clientId, txnId, fresh);
                 maxFreshness = Math.max(maxFreshness, fresh);
             }
+            rs.close();
             stmt.close();
 
         } catch (SQLException e)
