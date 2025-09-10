@@ -51,9 +51,10 @@ public class PixelsFreshness extends Client
         String query = sqls.fresh_query();
 
         long maxFreshness = 0;
-        conn_trino.setAutoCommit(true);
+
         try
         {
+            conn_trino.setAutoCommit(true);
             PreparedStatement stmt = conn_trino.prepareStatement(query);
             long start_ts = System.currentTimeMillis();
             ResultSet rs = stmt.executeQuery();
