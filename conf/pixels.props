@@ -8,7 +8,7 @@ url=jdbc:postgresql://localhost:5432/pixels_bench_sf1x
 username=pixels
 password=pixels_realtime_crud
 
-trino_url=jdbc:trino://pixels-coordinator:8080/pixels/pixels_bench_sf1x
+trino_url=jdbc:trino://realtime-pixels-coordinator:8080/pixels/pixels_bench_sf1x
 trino_user=pixels
 trino_driver=io.trino.jdbc.TrinoDriver
 
