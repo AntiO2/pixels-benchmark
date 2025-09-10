@@ -2,7 +2,7 @@ CREATE TABLE IF NOT EXISTS freshness (
                                          f_tx_id int,
                                          f_cli_id int
 ) WITH (
-      storage='file',
+      storage='s3',
       paths='s3://home-zinuo/hybench/sf1/freshness/',
       pk='f_cli_id'
       );
@@ -24,7 +24,7 @@ CREATE TABLE IF NOT EXISTS customer (
     created_date Date,
     last_update_timestamp timestamp
     ) WITH (
-          storage='file',
+          storage='s3',
           paths='s3://home-zinuo/hybench/sf1/customer/',
           pk='custID',
           pk_scheme='rocksdb'
@@ -46,7 +46,7 @@ CREATE TABLE IF NOT EXISTS company (
     created_date Date,
     last_update_timestamp timestamp
     ) WITH (
-          storage='file',
+          storage='s3',
           paths='s3://home-zinuo/hybench/sf1/company/',
           pk='companyID',
           pk_scheme='rocksdb'
@@ -59,7 +59,7 @@ CREATE TABLE IF NOT EXISTS savingAccount (
                                              Isblocked int,
                                              timestamp timestamp
 ) WITH (
-      storage='file',
+      storage='s3',
       paths='s3://home-zinuo/hybench/sf1/savingAccount/',
       pk='accountID',
       pk_scheme='rocksdb'
@@ -72,7 +72,7 @@ CREATE TABLE IF NOT EXISTS checkingAccount (
                                                Isblocked int,
                                                timestamp timestamp
 ) WITH (
-      storage='file',
+      storage='s3',
       paths='s3://home-zinuo/hybench/sf1/checkingAccount/',
       pk='accountID',
       pk_scheme='rocksdb'
@@ -86,7 +86,7 @@ CREATE TABLE IF NOT EXISTS transfer (
                                         type char(10),
     timestamp timestamp
     ) WITH (
-          storage='file',
+          storage='s3',
           paths='s3://home-zinuo/hybench/sf1/transfer/',
           pk='id',
           pk_scheme='rocksdb'
@@ -100,7 +100,7 @@ CREATE TABLE IF NOT EXISTS checking (
                                         type char(10),
     timestamp timestamp
     ) WITH (
-          storage='file',
+          storage='s3',
           paths='s3://home-zinuo/hybench/sf1/checking/',
           pk='id',
           pk_scheme='rocksdb'
@@ -113,7 +113,7 @@ CREATE TABLE IF NOT EXISTS loanapps (
                                         duration int,
                                         status char(12)
     ) WITH (
-          storage='file',
+          storage='s3',
           paths='s3://home-zinuo/hybench/sf1/loanapps/',
           pk='id',
           pk_scheme='rocksdb'
@@ -130,7 +130,7 @@ CREATE TABLE IF NOT EXISTS loantrans (
     contract_timestamp timestamp,
     delinquency int
     ) WITH (
-          storage='file',
+          storage='s3',
           paths='s3://home-zinuo/hybench/sf1/loantrans/',
           pk='id',
           pk_scheme='rocksdb'
