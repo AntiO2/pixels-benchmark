@@ -107,11 +107,12 @@ public class PixelsFreshness extends Client
             long elpased_time = 0L;
             boolean hasGetFreshness = false;
             final long startTs = System.currentTimeMillis();
+            long sleepTimeSeconds = (getTestTime() * 60.0 - _fresh_warmup) / _fresh_interval;
             for (int i = 0; i < _fresh_interval; i++)
             {
                 try
                 {
-                    Thread.sleep(_fresh_interval);
+                    Thread.sleep(sleepTimeSeconds * 1000);
                     elpased_time += _fresh_interval;
                     long freshness = calcFreshness();
                     if (freshness == INVALID_FRESHNESS)
