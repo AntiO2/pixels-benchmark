@@ -65,6 +65,7 @@ public class PixelsFreshness extends Client
                 logger.info("Fresh Query: Cli {}\tTxnID {}\tFresh {}", clientId, txnId, fresh);
                 maxFreshness = Math.max(maxFreshness, fresh);
             }
+            stmt.close();
 
         } catch (SQLException e)
         {
