@@ -4,7 +4,7 @@ db=postgreSQL
 classname=org.postgresql.Driver
 classname_ap=org.postgresql.Driver
 
-url=jdbc:postgresql://localhost:5432/pixels_bench_sf1x
+url=jdbc:postgresql://realtime-pg-2:5432/pixels_bench_sf1x
 username=pixels
 password=pixels_realtime_crud
 
@@ -19,16 +19,20 @@ at4_percent=15
 at5_percent=7
 at6_percent=3
 
-tpclient=32
+tpclient=5
 apclient=1
+tp_pasue_milliseconds=0
 
 
 
 
-freshRunMins=2
+
+
+
+freshRunMins=1
 fresh_tp_interval=60
 
-fresh_interval=120
+fresh_interval=20
 pixelsFreshRunMins=1
 pixelsFreshWarmupSeconds=1
 

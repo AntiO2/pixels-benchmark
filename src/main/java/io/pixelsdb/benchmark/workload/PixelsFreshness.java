@@ -44,7 +44,6 @@ public class PixelsFreshness extends Client
     long startTime;
     long curfreshness = 0;
     private TxRecorder txRecorder;
-    private Connection conn_trino;
 
     public Long calcFreshness()
     {
@@ -52,7 +51,7 @@ public class PixelsFreshness extends Client
 
         long maxFreshness = 0;
 
-        try
+        try(Connection conn_trino = ConnectionMgr.getConnection(2))
         {
             conn_trino.setAutoCommit(true);
             PreparedStatement stmt = conn_trino.prepareStatement(query);
@@ -74,7 +73,6 @@ public class PixelsFreshness extends Client
             logger.error("Error executing freshness query", e);
             return INVALID_FRESHNESS;
         }
-
         this.curfreshness = maxFreshness;
         return maxFreshness;
     }
@@ -83,7 +81,6 @@ public class PixelsFreshness extends Client
     public void doInit()
     {
         this.startTime = System.currentTimeMillis();
-        this.conn_trino = ConnectionMgr.getConnection(2);
         this.txRecorder = TxRecorder.getInstance();
     }
 

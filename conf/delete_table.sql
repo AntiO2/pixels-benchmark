@@ -1,0 +1,9 @@
+DELETE FROM freshness;
+DELETE FROM customer;
+DELETE FROM company;
+DELETE FROM savingAccount;
+DELETE FROM checkingAccount;
+DELETE FROM transfer;
+DELETE FROM checking;
+DELETE FROM loanapps;
+DELETE FROM loantrans;

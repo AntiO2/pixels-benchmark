@@ -381,16 +381,14 @@ public class Result {
             logger.info("Freshness(ms) : " + getFresh());
         }
 
-        if (type == 9) {
-            System.out.println("-----------Freshness--------------------");
-            System.out.printf(
-                    "Freshness : max delay : %10.2f | min delay : %10.2f | avg delay : %10.2f | 95%% delay : %10.2f | 99%% delay : %10.2f \n",
-                    hist.getFreshness().getMax(),
-                    hist.getFreshness().getMin(),
-                    hist.getFreshness().getMean(),
-                    hist.getFreshness().getPercentile(95),
-                    hist.getFreshness().getPercentile(99));
-        }
+        System.out.println("-----------Freshness--------------------");
+        System.out.printf(
+                "Freshness : max delay : %10.2f | min delay : %10.2f | avg delay : %10.2f | 95%% delay : %10.2f | 99%% delay : %10.2f \n",
+                hist.getFreshness().getMax(),
+                hist.getFreshness().getMin(),
+                hist.getFreshness().getMean(),
+                hist.getFreshness().getPercentile(95),
+                hist.getFreshness().getPercentile(99));
 
         logger.info("====================Thank you!========================");
     }

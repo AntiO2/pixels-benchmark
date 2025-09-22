@@ -54,7 +54,7 @@ public class TPClient extends Client
 
     TxRecorder txRecorder = TxRecorder.getInstance();
     long fresh_sleep_time = 0;
-
+    int tp_pasue_milliseconds = 0;
     // set init parameter before run
     @Override
     public void doInit()
@@ -86,6 +86,8 @@ public class TPClient extends Client
         tp16_percent = intParameter("tp16_percent", 4);
         tp17_percent = intParameter("tp17_percent", 12);
         tp18_percent = intParameter("tp18_percent", 12);
+
+        tp_pasue_milliseconds = intParameter("tp_pasue_milliseconds", 0);
 
         if ((at1_percent + at2_percent + at3_percent + at4_percent + at5_percent + at6_percent) != 100)
         {
@@ -2797,6 +2799,7 @@ public class TPClient extends Client
                     totalElapsedTime += cr.getRt();
                     if (exitFlag)
                         break;
+                    Thread.sleep(tp_pasue_milliseconds);
                 }
                 ret.setRt(totalElapsedTime);
             } else if (type == 0 || type == 4)
