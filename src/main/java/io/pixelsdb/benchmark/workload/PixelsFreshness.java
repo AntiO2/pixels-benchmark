@@ -139,17 +139,6 @@ public class PixelsFreshness extends Client
             {
                 ret.setFresh(2147483647);
             }
-            try
-            {
-                if (conn_trino != null)
-                {
-                    logger.info("Close Trino Connection");
-                    conn_trino.close();
-                }
-            } catch (SQLException e)
-            {
-                e.printStackTrace();
-            }
         }
         return clientResult;
     }
