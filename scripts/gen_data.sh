@@ -131,7 +131,7 @@ function load_pg_data() {
   [[ -z "$PGUSER" ]] && { log_fatal "PGUSER not set"; }
   [[ -z "$PGDATABASE" ]] && { log_fatal "PGDATABASE not set"; }
   [[ -z "$PGPASSWORD" ]] && { log_fatal "PGPASSWORD not set"; }
-
+  [[ -z "$PGHOST" ]] && { export PGHOST="localhost"; }
   psql -c "\copy customer from '${DATA_DIR}/customer.csv' CSV DELIMITER ',';" &
   psql -c "\copy company from '${DATA_DIR}/company.csv' CSV DELIMITER ',';" &
   psql -c "\copy transfer from '${DATA_DIR}/transfer.csv' CSV DELIMITER ',';" &

@@ -74,6 +74,7 @@ public class PixelsBench
         if (argsList.containsKey("r"))
         {
             pixelsBench.freshness = true;
+            pixelsBench.getRes().setEnableFreshness(true);
         }
 
         if (argsList.containsKey("t"))

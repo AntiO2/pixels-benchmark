@@ -35,6 +35,7 @@ public class Result {
     private String riskRate;
     private int apRound;
     private int testDuration;
+    private boolean enableFreshness;
 
     public Result() {
         hist = new Histogram();
@@ -162,6 +163,16 @@ public class Result {
 
     public void setTestDuration(int testDuration) {
         this.testDuration = testDuration;
+    }
+
+    public boolean isEnableFreshness()
+    {
+        return enableFreshness;
+    }
+
+    public void setEnableFreshness(boolean enableFreshness)
+    {
+        this.enableFreshness = enableFreshness;
     }
 
     public void printResult(int type) {
@@ -299,6 +310,10 @@ public class Result {
 
                 totalReads += count * readOpsPerTxn[tpidx];
                 totalWrites += count * writeOpsPerTxn[tpidx];
+                if(enableFreshness)
+                {
+                    totalWrites += count;
+                }
                 System.out.printf(
                         "TP Transaction %2d : count: %d|max rt : %10.2f | min rt : %10.2f | avg rt : %10.2f | 95%% rt : %10.2f | 99%% rt : %10.2f \n",
                         (tpidx + 1),
@@ -381,14 +396,18 @@ public class Result {
             logger.info("Freshness(ms) : " + getFresh());
         }
 
-        System.out.println("-----------Freshness--------------------");
-        System.out.printf(
-                "Freshness : max delay : %10.2f | min delay : %10.2f | avg delay : %10.2f | 95%% delay : %10.2f | 99%% delay : %10.2f \n",
-                hist.getFreshness().getMax(),
-                hist.getFreshness().getMin(),
-                hist.getFreshness().getMean(),
-                hist.getFreshness().getPercentile(95),
-                hist.getFreshness().getPercentile(99));
+        if(enableFreshness)
+        {
+            System.out.println("-----------Freshness--------------------");
+            System.out.printf(
+                    "Freshness : max delay : %10.2f | min delay : %10.2f | avg delay : %10.2f | 95%% delay : %10.2f | 99%% delay : %10.2f \n",
+                    hist.getFreshness().getMax(),
+                    hist.getFreshness().getMin(),
+                    hist.getFreshness().getMean(),
+                    hist.getFreshness().getPercentile(95),
+                    hist.getFreshness().getPercentile(99));
+        }
+
 
         logger.info("====================Thank you!========================");
     }
