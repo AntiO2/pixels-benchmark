@@ -53,7 +53,7 @@ public class TPClient extends Client
     ThreadLocal<Integer> cli_id = new ThreadLocal<Integer>();
 
     TxRecorder txRecorder = TxRecorder.getInstance();
-    long fresh_sleep_time = 0;
+    int fresh_tp_interval = 0;
     int tp_pasue_milliseconds = 0;
     // set init parameter before run
     @Override
@@ -112,8 +112,7 @@ public class TPClient extends Client
         company_no = companynumber.intValue();
         contention_num = Integer.parseInt(ConfigLoader.prop.getProperty("contention_num", "100"));
 
-        int fresh_interval = intParameter("fresh_tp_interval", 0);
-        fresh_sleep_time = (long) 60 * 1000 / fresh_interval;
+        fresh_tp_interval = intParameter("fresh_tp_interval", 0);
     }
 
     public int Get_blocked_transfer_Id()
@@ -2850,7 +2849,7 @@ public class TPClient extends Client
                 {
                     cr = execFresh3(conn);
                     totalElapsedTime += cr.getRt();
-                    Thread.sleep(fresh_sleep_time);
+                    Thread.sleep(fresh_tp_interval);
                 }
                 ret.setRt(totalElapsedTime);
             } else if (type == 10)

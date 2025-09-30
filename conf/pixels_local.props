@@ -19,7 +19,7 @@ at4_percent=15
 at5_percent=7
 at6_percent=3
 
-tpclient=5
+tpclient=16
 apclient=1
 tp_pasue_milliseconds=0
 
@@ -50,7 +50,7 @@ tp18_percent=0
 
 
 freshRunMins=1
-fresh_tp_interval=60
+fresh_tp_interval=0
 
 fresh_interval=20
 pixelsFreshRunMins=1
