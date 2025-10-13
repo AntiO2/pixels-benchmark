@@ -8,7 +8,7 @@ url=jdbc:postgresql://localhost:5432/pixels_bench_sf1x
 username=pixels
 password=password
 
-trino_url=jdbc:trino://localhost:18081/pixels/pixels_bench_sf1x
+trino_url=jdbc:trino://localhost:18080/pixels/pixels_bench_sf1x
 trino_user=pixels
 trino_driver=io.trino.jdbc.TrinoDriver
 
@@ -49,6 +49,7 @@ tp18_percent=0
 
 
 
+
 freshRunMins=1
 fresh_tp_interval=0
 
@@ -57,7 +58,7 @@ pixelsFreshRunMins=1
 pixelsFreshWarmupSeconds=1
 
 apRunMins=1
-tpRunMins=1
+tpRunMins=10
 xpRunMins=1
 
 risk_rate=0.1

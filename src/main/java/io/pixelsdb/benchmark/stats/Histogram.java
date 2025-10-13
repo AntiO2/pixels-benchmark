@@ -14,7 +14,7 @@ public class Histogram
     public SynchronizedDescriptiveStatistics[] apstat = new SynchronizedDescriptiveStatistics[13];
     public SynchronizedDescriptiveStatistics[] xpstat_iq = new SynchronizedDescriptiveStatistics[6];
     public SynchronizedDescriptiveStatistics[] xpstat_at = new SynchronizedDescriptiveStatistics[6];
-    public SynchronizedDescriptiveStatistics[] tpstat = new SynchronizedDescriptiveStatistics[18];
+    public SynchronizedDescriptiveStatistics[] tpstat = new SynchronizedDescriptiveStatistics[19]; // the last item is freshness update
     public SynchronizedDescriptiveStatistics freshness;
 
     public Histogram()
@@ -23,7 +23,7 @@ public class Histogram
         {
             apstat[i] = new SynchronizedDescriptiveStatistics();
         }
-        for (int i = 0; i < 18; i++)
+        for (int i = 0; i < 19; i++)
         {
             tpstat[i] = new SynchronizedDescriptiveStatistics();
         }

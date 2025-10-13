@@ -299,8 +299,9 @@ public class TPClient extends Client
             long currentEndTs = System.currentTimeMillis();
             responseTime = currentEndTs - currentStarttTs;
             cr.setRt(responseTime);
-            logger.info("Fresh TPy: Cli {}\tTxnID {}\tTs {}", thread_cli_id, txRecorder.getCurrentTxid(thread_cli_id), currentEndTs);
             recordFreshnessInfo(thread_cli_id, currentEndTs);
+            hist.getTPItem(18).addValue(responseTime);
+            tpTotalCount++;
         } catch (SQLException e)
         {
             e.printStackTrace();

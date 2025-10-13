@@ -151,11 +151,6 @@ public class PixelsBench
                     pixelsBench.runInitFreshness();
                 } else if (cmd.equalsIgnoreCase("runpixelsfresh"))
                 {
-                    if (!pixelsBench.freshness)
-                    {
-                        logger.error("Try to run pixels freshness only, but freshness is not enabled");
-                        System.exit(-1);
-                    }
                     type = 9;
                     pixelsBench.runPixelsFreshness(type);
                 } else
@@ -528,7 +523,7 @@ public class PixelsBench
             logger.warn("There is no an available tp client");
             return;
         }
-
+        if (pixelsBench.freshness)
         {
             Client job = Client.initTask(ConfigLoader.prop, "PixelsFreshness", taskType);
             job.setRet(res);

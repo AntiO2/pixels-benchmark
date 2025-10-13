@@ -259,7 +259,7 @@ public class Result {
             }
         }
 
-        if (type == 1 || type == 6) {
+        if (type == 1 || type == 6 || type == 9) {
             int[] readOpsPerTxn = {
                     1, // TP1
                     1, // TP2
@@ -278,7 +278,8 @@ public class Result {
                     1, // TP15
                     2, // TP16
                     2, // TP17
-                    2 // TP18
+                    2, // TP18
+                    0 // freshness
             };
 
             int[] writeOpsPerTxn = {
@@ -299,7 +300,8 @@ public class Result {
                     1, // TP15
                     2, // TP16
                     2, // TP17
-                    2 // TP18
+                    2, // TP18
+                    1 // freshness
             };
 
             long totalReads = 0;
@@ -324,6 +326,9 @@ public class Result {
                         hist.getTPItem(tpidx).getPercentile(95),
                         hist.getTPItem(tpidx).getPercentile(99));
             }
+
+            totalWrites += hist.getTPItem(18).getN(); // freshness;
+
             System.out.printf("Total READ Op  = %d\n", totalReads);
             System.out.printf("Total WRITE Op = %d\n", totalWrites);
 

@@ -88,19 +88,8 @@ public abstract class Client
             client.setTask_prop(cfg);
             client.setTaskType(taskType);
             client.doInit_wrapper(name);
-        } catch (InstantiationException e)
-        {
-            e.printStackTrace();
-        } catch (IllegalAccessException e)
-        {
-            e.printStackTrace();
-        } catch (InvocationTargetException e)
-        {
-            e.printStackTrace();
-        } catch (NoSuchMethodException e)
-        {
-            e.printStackTrace();
-        } catch (ClassNotFoundException e)
+        } catch (InstantiationException | IllegalAccessException | InvocationTargetException | NoSuchMethodException |
+                 ClassNotFoundException e)
         {
             e.printStackTrace();
         }
