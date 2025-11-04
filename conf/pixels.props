@@ -4,11 +4,11 @@ db=postgreSQL
 classname=org.postgresql.Driver
 classname_ap=org.postgresql.Driver
 
-url=jdbc:postgresql://realtime-pg-2:5432/pixels_bench_sf1x
+url=jdbc:postgresql://realtime-pg-2:5432/pixels_bench_sf10x
 username=pixels
 password=pixels_realtime_crud
 
-trino_url=jdbc:trino://realtime-pixels-coordinator:8080/pixels/pixels_bench_sf1x
+trino_url=jdbc:trino://realtime-pixels-coordinator:8080/pixels/pixels_bench_sf10x
 trino_user=pixels
 trino_driver=io.trino.jdbc.TrinoDriver
 
@@ -19,7 +19,7 @@ at4_percent=15
 at5_percent=7
 at6_percent=3
 
-tpclient=5
+tpclient=64
 apclient=1
 tp_pasue_milliseconds=0
 
@@ -32,12 +32,12 @@ tp_pasue_milliseconds=0
 freshRunMins=1
 fresh_tp_interval=60
 
-fresh_interval=20
+fresh_interval=10
 pixelsFreshRunMins=1
 pixelsFreshWarmupSeconds=1
 
 apRunMins=1
-tpRunMins=1
+tpRunMins=20
 xpRunMins=1
 
 risk_rate=0.1
@@ -51,7 +51,6 @@ apround=1
 xtpclient=1
 xapclient=1
 
-
 tp1_percent=0
 tp2_percent=0
 tp3_percent=0
@@ -61,12 +60,12 @@ tp6_percent=0
 tp7_percent=0
 tp8_percent=0
 tp9_percent=0
-tp10_percent=0
-tp11_percent=0
-tp12_percent=0
-tp13_percent=0
-tp14_percent=0
-tp15_percent=0
-tp16_percent=0
-tp17_percent=100
-tp18_percent=0
+tp10_percent=1
+tp11_percent=10
+tp12_percent=10
+tp13_percent=1
+tp14_percent=1
+tp15_percent=1
+tp16_percent=1
+tp17_percent=40
+tp18_percent=35

@@ -1,4 +1,4 @@
-sf=1x
+sf=10x
 
 db=postgreSQL
 classname=org.postgresql.Driver
@@ -7,7 +7,7 @@ classname_ap=org.postgresql.Driver
 username=pixels
 password=pixels_realtime_crud
 
-url=jdbc:postgresql://localhost:5432/pixels_bench_sf1x
+url=jdbc:postgresql://localhost:5432/pixels_bench_sf10x
 trino_url=jdbc:trino://localhost:18081/paimon/pixels
 trino_user=pixels
 trino_driver=io.trino.jdbc.TrinoDriver

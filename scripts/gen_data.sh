@@ -3,6 +3,35 @@ dbgen_path=${DEVELOP_DIR}/example/tpch-dbgen
 
 tpcc_config=${DEVELOP_DIR}/example/tpcc_config
 benchmark_tool=${DEVELOP_DIR}/example/benchmarksql
+function link_data_for_pixels_relative() {
+    SCALE=${1:-"1"}
+    log_info "Scale ${SCALE}"
+    local target_base=`pwd`
+    local target_root=${target_base}/"Data_pixels"
+    mkdir -p "${target_root}"
+    local data_path=${target_base}/"Data_${SCALE}x"
+    log_info "raw data path is ${data_path}"
+
+    for f in "${data_path}"/*.csv; do
+        local base=$(basename "$f" .csv)
+        local subdir="${target_root}/${base}"
+        local link="${subdir}/$(basename "$f")"
+	
+	log_info "Link  ${link}"
+        # ensure subdir exists
+        mkdir -p "${subdir}"
+
+        # remove old symlink if exists
+        if [ -L "${link}" ] || [ -e "${link}" ]; then
+            rm -f "${link}"
+        fi
+
+        # create new symlink
+        ln -s "${f}" "${link}"
+        log_info "Linked ${link} -> ${f} "
+    done
+}
+
 
 function link_data_for_pixels() {
     SCALE=${1:-"1"}

@@ -30,7 +30,7 @@ docker image `quay.io/debezium/postgres:16` is recommended.
 ```bash
 psql -h localhost -U postgres -c 'create database pixels_bench_sf1x;'
 
-./pixels_bench -t sql -c conf/pg.props -f conf/ddl_pg.sql -r
+./pixels_bench -t sql -c conf/pg.props -f conf/ddl_pg.sql
 
 ./pixels_bench -t gendata -c conf/pg.props -f conf/stmt_postgres.toml
 
