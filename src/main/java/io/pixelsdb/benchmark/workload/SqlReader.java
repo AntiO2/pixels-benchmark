@@ -95,7 +95,7 @@ public class SqlReader
             sqls.setFresh_update(toml.getString("fresh-update.sql"));
             sqls.setFresh_query(toml.getString("fresh-query.sql"));
 
-            sqls.setCdc_init(getSqlArrayFromList(toml.getList("cdc-init.sql")));
+            // sqls.setCdc_init(getSqlArrayFromList(toml.getList("cdc-init.sql")));
         } catch (Exception e)
         {
             e.printStackTrace();

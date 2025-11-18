@@ -23,12 +23,6 @@ tpclient=64
 apclient=1
 tp_pasue_milliseconds=0
 
-
-
-
-
-
-
 freshRunMins=1
 fresh_tp_interval=60
 
@@ -37,7 +31,7 @@ pixelsFreshRunMins=1
 pixelsFreshWarmupSeconds=1
 
 apRunMins=1
-tpRunMins=20
+tpRunMins=30
 xpRunMins=1
 
 risk_rate=0.1
@@ -60,12 +54,12 @@ tp6_percent=0
 tp7_percent=0
 tp8_percent=0
 tp9_percent=0
-tp10_percent=1
+tp10_percent=5
 tp11_percent=10
 tp12_percent=10
-tp13_percent=1
+tp13_percent=2
 tp14_percent=1
 tp15_percent=1
 tp16_percent=1
 tp17_percent=40
-tp18_percent=35
+tp18_percent=30

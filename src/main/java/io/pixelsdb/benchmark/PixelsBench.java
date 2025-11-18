@@ -593,7 +593,7 @@ public class PixelsBench
 
         InitFreshness initFreshness = new InitFreshness(conn_tp, sqls, tpClientNum);
         initFreshness.populateFreshness();
-        initFreshness.initCdcReplica();
+        // initFreshness.initCdcReplica(); db = pg
         res.setEndTs(dateFormat.format(new Date()));
     }
 }

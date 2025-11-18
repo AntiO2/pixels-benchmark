@@ -101,7 +101,7 @@ public class ConnectionMgr
                 Class.forName(prop.getProperty("trino_driver"));
                 url = prop.getProperty("trino_url");
                 username = prop.getProperty("trino_user");
-                password = "";
+                password = prop.getProperty("trino_password");
             } else
                 Class.forName(prop.getProperty("classname"));
             conn = DriverManager.getConnection(

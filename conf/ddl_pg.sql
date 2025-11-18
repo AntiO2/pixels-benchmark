@@ -48,7 +48,7 @@ CREATE TABLE savingAccount
     userID    int,
     balance   real,
     Isblocked int,
-    timestamp timestamp
+    ts timestamp
 );
 
 CREATE TABLE checkingAccount
@@ -57,7 +57,7 @@ CREATE TABLE checkingAccount
     userID    int,
     balance   real,
     Isblocked int,
-    timestamp timestamp
+    ts timestamp
 );
 
 CREATE TABLE transfer
@@ -67,7 +67,7 @@ CREATE TABLE transfer
     targetID  int,
     amount    real,
     type      char(10),
-    timestamp timestamp
+    ts timestamp
 );
 
 CREATE TABLE checking
@@ -77,7 +77,7 @@ CREATE TABLE checking
     targetID  int,
     amount    real,
     type      char(10),
-    timestamp timestamp
+    ts timestamp
 );
 
 CREATE TABLE loanapps
@@ -87,7 +87,7 @@ CREATE TABLE loanapps
     amount      real,
     duration    int,
     status      char(12),
-    timestamp   timestamp
+    ts          timestamp
 );
 
 CREATE TABLE loantrans
