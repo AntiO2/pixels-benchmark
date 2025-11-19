@@ -1573,6 +1573,7 @@ public class TPClient extends Client
         {
             try
             {
+                e.printStackTrace();
                 conn.rollback();
             } catch (SQLException ex)
             {
@@ -1675,6 +1676,7 @@ public class TPClient extends Client
         {
             try
             {
+                e.printStackTrace();
                 conn.rollback();
             } catch (SQLException ex)
             {

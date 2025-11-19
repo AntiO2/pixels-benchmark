@@ -92,14 +92,14 @@ CREATE TABLE loanapps
 
 CREATE TABLE loantrans
 (
-    id                 int,
-    applicantID        int,
-    appID              int,
-    amount             real,
-    status             char(12),
-    timestamp          timestamp,
-    duration           int,
-    contract_timestamp timestamp,
-    delinquency        int
+    id                  int,
+    applicantID         int,
+    appID               int,
+    amount              real,
+    status              char(12),
+    ts                  timestamp,
+    duration            int,
+    contract_timestamp  timestamp,
+    delinquency         int
 );
 

@@ -57,7 +57,7 @@ CREATE TABLE IF NOT EXISTS savingAccount (
                                              userID int,
                                              balance real,
                                              Isblocked int,
-                                             timestamp timestamp
+                                             ts timestamp
 ) WITH (
       storage='s3',
       paths='s3://home-zinuo/hybench/sf10/savingAccount/',
@@ -70,7 +70,7 @@ CREATE TABLE IF NOT EXISTS checkingAccount (
                                                userID int,
                                                balance real,
                                                Isblocked int,
-                                               timestamp timestamp
+                                               ts timestamp
 ) WITH (
       storage='s3',
       paths='s3://home-zinuo/hybench/sf10/checkingAccount/',
@@ -84,7 +84,7 @@ CREATE TABLE IF NOT EXISTS transfer (
                                         targetID int,
                                         amount real,
                                         type char(10),
-    timestamp timestamp
+                                        ts timestamp
     ) WITH (
           storage='s3',
           paths='s3://home-zinuo/hybench/sf10/transfer/',
@@ -98,7 +98,7 @@ CREATE TABLE IF NOT EXISTS checking (
                                         targetID int,
                                         amount real,
                                         type char(10),
-    timestamp timestamp
+                                        ts timestamp
     ) WITH (
           storage='s3',
           paths='s3://home-zinuo/hybench/sf10/checking/',
@@ -111,7 +111,8 @@ CREATE TABLE IF NOT EXISTS loanapps (
                                         applicantID int,
                                         amount real,
                                         duration int,
-                                        status char(12)
+                                        status char(12),
+                                        ts timestamp
     ) WITH (
           storage='s3',
           paths='s3://home-zinuo/hybench/sf10/loanapps/',
@@ -125,7 +126,7 @@ CREATE TABLE IF NOT EXISTS loantrans (
                                          appID int,
                                          amount real,
                                          status char(12),
-    timestamp timestamp,
+                                        ts timestamp,
     duration int,
     contract_timestamp timestamp,
     delinquency int
